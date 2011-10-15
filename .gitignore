@@ -1,0 +1,4 @@
+*.installed_files
+*.project
+*.pydevproject
+*.pyc
