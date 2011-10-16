@@ -6,6 +6,11 @@ import sys
 import pango
 import gobject
 import math
+import gst
+from glib import markup_escape_text
+import random
+import time
+import gobject
 
 ## custom lib
 try:
@@ -18,7 +23,7 @@ import gplayer
 
 class Player(object):
     def __init__(self,mainGui):
-        self.gladeGui = gtk.glade.XML(config.glade_file, None ,config.APP_NAME)
+        self.gladeGui = mainGui.gladeGui
         self.duration = None
         self.time_label = gtk.Label("00:00 / 00:00")
         self.media_name = ""
@@ -27,6 +32,14 @@ class Player(object):
         self._cbuffering = -1
 	self.xsink = False
         self.file_tags = {}
+	self.media_codec = None
+	## time
+        self.timeFormat = gst.Format(gst.FORMAT_TIME)
+	self.status = gplayer.STATE_READY
+	## play mode options
+	self.play_options = "continue"
+	## seek
+	self.seeker_move = None
         
         # video drawing
         self.video_box = self.gladeGui.get_widget("video_box")
@@ -63,8 +76,8 @@ class Player(object):
         ## SIGNALS
         dic = {
         "on_pause_btn_clicked" : self.pause,
-        "on_shuffle_btn_toggled" : self.mainGui.set_play_options,
-        "on_repeat_btn_toggled" : self.mainGui.set_play_options,
+        "on_shuffle_btn_toggled" : self.set_play_options,
+        "on_repeat_btn_toggled" : self.set_play_options,
         "on_vol_btn_value_changed" : self.on_volume_changed,
         }
         self.gladeGui.signal_autoconnect(dic)
@@ -188,31 +201,39 @@ class Player(object):
     
     
     def on_volume_changed(self, widget, value=10):
-        self.player.set_property("volume", float(value))
+        self.player._player.set_property("volume", float(value))
         return True
     
-    def pause(self):
-        self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
-        self.player.pause()
+    def pause(self,widget=None):
+	if self.player.state == gplayer.STATE_PAUSED:
+            self.player.play()
+	    self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
+        else:
+	    self.player.pause()
+	    self.pause_btn_pb.set_from_pixbuf(self.play_icon)
         
+    def play_cache(self, data):
+	print "STREAM SIZEEEEEEEEEEEE %s" % data.stream.size
+	cache = gplayer.Cache(data.stream.data, data.stream.size)
+	self.player.play_cache(cache)
+    
     def on_drawingarea_realized(self, sender):
         if sys.platform == "win32":
             window = self.movie_window.get_window()
             window.ensure_native()
             self.videosink.set_xwindow_id(self.movie_window.window.handle)
         else:
-	    print "XIDDDDDDDDDDDDDDDDDDDDDDDDDDD : %s" % self.movie_window.window.xid
-            gobject.idle_add(self.videosink.set_xwindow_id,self.movie_window.window.xid)
+            gobject.idle_add(self.player.videosink.set_xwindow_id,self.movie_window.window.xid)
 
     def on_expose_event(self, widget, event):
-        if self.is_playing:
+        if self.player.state == gplayer.STATE_PLAYING:
             return
         x , y, self.area_width, self.area_height = event.area
         widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
                                       pixmap, x, y, x, y, self.area_width, self.area_height)
-        if self.draw_text:
+        if self.mainGui.draw_text:
             try:
-                self.search_engine.print_media_infos()
+                self.mainGui.search_engine.print_media_infos()
             except:
                 return False
         return False
@@ -230,7 +251,7 @@ class Player(object):
         visible =  self.mainGui.miniPlayer.get_property("visible")
         self.timer = 0
         if self.mainGui.fullscreen and not self.mainGui.mini_player and not visible:
-            self.show_mini_player()
+            self.mainGui.show_mini_player()
     
     def on_drawingarea_clicked(self, widget, event):
         if event.type == gtk.gdk._2BUTTON_PRESS:
@@ -243,10 +264,10 @@ class Player(object):
         t = message.type
         if t == gst.MESSAGE_EOS:
             self.play_thread_id = None
-            self.player.set_state(gst.STATE_NULL)
             self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
             self.play_btn_pb.set_from_pixbuf(self.stop_icon)
-            self.mainGui.check_play_options()
+	    gobject.idle_add(self.player.emit, 'finished')
+            self.check_play_options()
         elif t == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
@@ -254,34 +275,45 @@ class Player(object):
             self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
             self.play_btn_pb.set_from_pixbuf(self.stop_icon)
             ## continue if continue option selected...
-            if self.mainGui.play_options == "continue":
-                self.mainGui.check_play_options()
+            if self.play_options == "continue":
+                self.check_play_options()
     
     def on_message_buffering(self, bus, message):
-		percent = message.parse_buffering()
-		if math.floor(percent/5) > self._cbuffering:
-		    self._cbuffering = math.floor(percent/5)
-		    buffering = _('Buffering :')
-		    self.status = gplayer.STATE_BUFFERING
-		    self.player.set_state(self.status)
-		    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s%s</small>' % (buffering,percent,'%'))
-		
-		if percent == 100:
-		    if self.player.state == gplayer.STATE_PAUSED:
-			self.info_label.set_text('')
-			enc=_('Encoding:')
-			bit=_('Bitrate:')
-			play=_('Playing:')
-			name = glib.markup_escape_text(self.media_name)
-			gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (play,name))
-			self.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (bit,self.media_bitrate))
-			self.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (enc,self.media_codec))
-			self.status = gplayer.STATE_PLAYING
-			self.pause()
-		    self._cbuffering = -1
-		elif self.player.state == gplayer.STATE_BUFFERING:
-			if not self.player.state == gplayer.STATE_PAUSED:
-				self.pause()
+	percent = message.parse_buffering()
+	if math.floor(percent/5) > self._cbuffering:
+	    self._cbuffering = math.floor(percent/5)
+	    buffering = _('Buffering :')
+	    self.status = gplayer.STATE_BUFFERING
+	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s%s</small>' % (buffering,percent,'%'))
+	
+	if percent == 100:
+	    print self.player.state
+	    if self.player.state == gplayer.STATE_PAUSED:
+		self.mainGui.info_label.set_text('')
+		enc=_('Encoding:')
+		bit=_('Bitrate:')
+		play=_('Playing:')
+		name = markup_escape_text(self.mainGui.media_name)
+		gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (play,name))
+		self.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (bit,self.media_bitrate))
+		self.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (enc,self.media_codec))
+		self.status = gplayer.STATE_PLAYING
+		self.pause()
+	    self._cbuffering = -1
+	elif self.status == gplayer.STATE_BUFFERING:
+	    if not self.player.state == gplayer.STATE_PAUSED:
+		self.pause()
+    
+    def convert_ns(self, t):
+        # This method was submitted by Sam Mason.
+        # It's much shorter than the original one.
+        s,ns = divmod(t, 1000000000)
+        m,s = divmod(s, 60)
+        if m < 60:
+            return "%02i:%02i" %(m,s)
+        else:
+            h,m = divmod(m, 60)
+            return "%i:%02i:%02i" %(h,m,s)
     
     def bus_message_tag(self, bus, message):
 		codec = None
@@ -362,14 +394,102 @@ class Player(object):
                 win_id = self.movie_window.window.xid
             self.player.videosink.set_xwindow_id(win_id)
 	    
+	    
+    def set_play_options(self,widget):
+	wname = widget.name
+	wstate = widget.get_active()
+	if wname == "shuffle_btn":
+		if wstate:
+		    self.play_options = "shuffle"
+		    if not self.shuffle_btn.get_active():
+			self.shuffle_btn.set_active(1)
+		    if self.loop_btn.get_active():
+			self.loop_btn.set_active(0)
+		else:
+		    if self.loop_btn.get_active():
+			self.play_options = "loop"
+		    else:
+			self.play_options = "continue"
+	elif wname == "repeat_btn":
+	    if wstate:
+		self.play_options = "loop"
+		if not self.loop_btn.get_active():
+			self.loop_btn.set_active(1)
+		if self.shuffle_btn.get_active():
+			self.shuffle_btn.set_active(0)
+	    else:
+		if self.shuffle_btn.get_active():
+			self.play_options = "shuffle"
+		else:
+			self.play_options = "continue"
+	else:
+	    self.play_options = "continue"
+		
+    def check_play_options(self):
+	self.player.stop()
+	self.selected_iter = self.mainGui.selected_iter
+	path = self.mainGui.model.get_path(self.selected_iter)
+	self.path = self.mainGui.path
+	model = None
+	treeview = None
+	if path:
+	    model = self.mainGui.model
+	    treeview = self.mainGui.treeview
+	else:
+	    model = self.mainGui.Playlist.treestore
+	    path = model.get_path(self.selected_iter)
+	    treeview = self.mainGui.Playlist.treeview
+			
+	if self.play_options == "loop":
+	    path = model.get_path(self.selected_iter)
+	    if path:
+		treeview.set_cursor(path)
+		self.mainGui.get_model()
+	elif self.play_options == "continue":
+	    ## first, check if iter is still available (changed search while
+	    ## continue mode for exemple..)
+	    ## check for next iter
+	    try:
+		if not model.get_path(self.selected_iter) == self.path:
+		    try:
+			self.selected_iter = model.get_iter_first()
+			if self.selected_iter:
+			    path = model.get_path(self.selected_iter)
+			    treeview.set_cursor(path)
+			    self.mainGui.get_model()
+		    except:
+			    return
+		else:
+		    try:
+			self.selected_iter = model.iter_next(self.selected_iter)
+			path = model.get_path(self.selected_iter)
+			treeview.set_cursor(path)
+			self.mainGui.get_model()
+		    except:
+			if not self.mainGui.playlist_mode:
+			    self.mainGui.load_new_page()
+	    except:
+		if not self.mainGui.playlist_mode:
+		    self.mainGui.load_new_page()
+	
+	elif self.play_options == "shuffle":
+	    num = random.randint(0,len(model))
+	    self.selected_iter = model[num].iter
+	    path = model.get_path(self.selected_iter)
+	    treeview.set_cursor(path)
+	    self.mainGui.get_model()
+	    
     def update_info_section(self):
         """
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
+	if self.seeker_move == 1 or self.status == gplayer.STATE_BUFFERING:
+	    return
+	    
         if self.player.state != gplayer.STATE_PLAYING:
             adjustment = gtk.Adjustment(0, 0.00, 100.0, 0.1, 1.0, 1.0)
-            self.gui.seeker.set_adjustment(adjustment)
+            self.seeker.set_adjustment(adjustment)
             gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
             return False
         
@@ -377,7 +497,7 @@ class Player(object):
         ## without mouse movements
         self.timer += 1
         if self.mainGui.fullscreen and self.mainGui.mini_player and self.timer > 4:
-            self.show_mini_player()
+            self.mainGui.show_mini_player()
         
         ## disable screensaver
         if self.mainGui.fullscreen == True and self.mainGui.mini_player == False and self.timer > 55:
@@ -387,19 +507,16 @@ class Player(object):
                 send_string('a')
             self.timer = 0
         
-        if self.status == STATE_BUFFERING:
-            return
-        
         if self.duration == None:
           try:
-            self.length = self.player.query_duration(self.timeFormat, None)[0]
+            self.length = self.player._player.query_duration(self.timeFormat, None)[0]
             self.duration = self.convert_ns(self.length)
           except gst.QueryError:
             self.duration = None
         
         if self.duration != None:
             try:
-                self.current_position = self.player.query_position(self.timeFormat, None)[0]
+                self.current_position = self.player._player.query_position(self.timeFormat, None)[0]
             except gst.QueryError:
                 return 0
             current_position_formated = self.convert_ns(self.current_position)
@@ -409,19 +526,20 @@ class Player(object):
             # gtk.Adjustment(value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0)
             percent = (float(self.current_position)/float(self.length))*100.0
             adjustment = gtk.Adjustment(percent, 0.00, 100.0, 0.1, 1.0, 1.0)
-            self.gui.seeker.set_adjustment(adjustment)
+            self.seeker.set_adjustment(adjustment)
         
         return True
 	
+
     def seeker_button_release_event(self, widget, event):
-        self.seeker_move = None
         value = widget.get_value()
-        if self.is_playing == True:
-            duration = self.player.query_duration(self.timeFormat, None)[0]
-            time = value * (duration / 100)
-            self.player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
+	duration = self.player._player.query_duration(self.timeFormat, None)[0]
+	time = value * (duration / 100)
+	self.player._player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
+	self.seeker_move = None
+	#self.pause()
 
     def seeker_block(self,widget,event):
         self.seeker_move = 1
-        if not self.is_paused:
-            self.pause_resume()
+	#~ if not self.player.state == gplayer.STATE_PAUSED:
+            #~ self.pause()

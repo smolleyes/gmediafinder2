@@ -20,7 +20,6 @@ import os.path
 import threading
 import time
 import sys
-
 import gobject
 import gst
 
@@ -39,7 +38,8 @@ STATE_CANCELED = 2
 
 _STATE_MAPPING = {gst.STATE_PLAYING : STATE_PLAYING,
                   gst.STATE_PAUSED : STATE_PAUSED,
-                  gst.STATE_NULL : STATE_READY}
+                  gst.STATE_NULL : STATE_READY,
+                  }
 
 __version__ = '1.0'
 
@@ -200,8 +200,6 @@ class Player(gobject.GObject):
         '''
         Set state to playing.
         '''
-        self._gui.play_btn_pb.set_from_pixbuf(self._gui.stop_icon)
-        self._gui.pause_btn_pb.set_from_pixbuf(self._gui.pause_icon)
         self._player.set_state(gst.STATE_PLAYING)
 	
     
@@ -211,7 +209,7 @@ class Player(gobject.GObject):
         '''
         self._player.set_state(gst.STATE_PAUSED)
         
-    def stop(self):
+    def stop(self, widget=None):
         '''
         Cancel playing.
         You must call this if state is not :const:`STATE_READY` and you want to play a new file, file object or :class:`Cache` object.
@@ -311,7 +309,6 @@ class Player(gobject.GObject):
     def _on_message(self, bus, message):
         if message.type == gst.MESSAGE_EOS:
             self._reset()
-            gobject.idle_add(self.emit, 'finished')
         elif message.type == gst.MESSAGE_ERROR:
             print('Error: %s' % (str(message.parse_error())))
 

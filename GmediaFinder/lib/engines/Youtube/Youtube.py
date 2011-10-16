@@ -325,8 +325,9 @@ class Youtube(object):
                     continue
                 else:
                     if codec == 'mp4' and '%s|webm' % rate in str(self.quality_list):
+                        qn += 1
                         continue
-                    self.youtube_video_rate.set_active(qn)
+                self.youtube_video_rate.set_active(qn)
             active = gobject.idle_add(self.youtube_video_rate.get_active)
         else:
             if self.quality_list:

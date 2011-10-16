@@ -67,7 +67,6 @@ class GsongFinder(object):
         ## default search options
         self.is_playing = False
         self.is_paused = False
-        self.play_options = "continue"
         self.nbresults = 100
         self.user_search = ""
         self.fullscreen = False
@@ -76,7 +75,6 @@ class GsongFinder(object):
         self.timer = 0
         self.settings_folder = None
         self.conf_file = None
-        self.seeker_move = None
         self.active_downloads = 0
         self.thread_num = 0
         self.engine_list = {}
@@ -257,9 +255,6 @@ class GsongFinder(object):
         self.dlg = self.gladeGui.get_widget("settings_dialog")
         self.engines_box = self.gladeGui.get_widget("engines_box")
 
-        ## time
-        self.timeFormat = gst.Format(gst.FORMAT_TIME)
-
         ## mini player
         self.miniPlayer = self.gladeGui.get_widget("mini-player")
         self.miniPlayer.set_size_request(width,40)
@@ -297,8 +292,6 @@ class GsongFinder(object):
             ## init downloader
             self.downloader = downloader.Downloader(self)
             self.downloader.download_treeview.columns_autosize()
-            # resume downloads if needed
-            self.resume_downloads()
         
         ## tray icon
         if systray == 'True':
@@ -306,7 +299,6 @@ class GsongFinder(object):
         
         ## start gui
         self.window.show_all()
-        self.player.video_box.show_all()
         self.throbber.hide()
         ## start engines
         self.engines_client = Engines(self)
@@ -706,19 +698,9 @@ class GsongFinder(object):
                         7, orig_pixbuf,
                         )
 
-    def start_stop(self,widget=None):
-        if widget:
-            if not self.is_playing:
-                return self.get_model()
-            else:
-                return self.stop_play()
-        else:
-            if self.play and self.active_link:
-                if not self.is_playing:
-                    return self.start_play(self.active_link)
-                else:
-                    return self.stop_play()
-
+    def stop_play(self,widget=None):
+        self.player.stop()
+    
     def start_play(self,url):
         self.active_link = url
         self.play = True
@@ -744,109 +726,15 @@ class GsongFinder(object):
 
 
     def play_thread(self):
-		play_thread_id = self.play_thread_id
-		while play_thread_id == self.play_thread_id:
-			if play_thread_id == self.play_thread_id:
-				if not self.seeker_move:
-					self.player.update_info_section()
-			time.sleep(1)
-
-    def set_play_options(self,widget):
-		wname = widget.name
-		wstate = widget.get_active()
-		if wname == "shuffle_btn":
-			if wstate:
-				self.play_options = "shuffle"
-				if not self.shuffle_btn.get_active():
-					self.shuffle_btn.set_active(1)
-				if self.loop_btn.get_active():
-					self.loop_btn.set_active(0)
-			else:
-				if self.loop_btn.get_active():
-					self.play_options = "loop"
-				else:
-					self.play_options = "continue"
-		elif wname == "repeat_btn":
-			if wstate:
-				self.play_options = "loop"
-				if not self.loop_btn.get_active():
-					self.loop_btn.set_active(1)
-				if self.shuffle_btn.get_active():
-					self.shuffle_btn.set_active(0)
-			else:
-				if self.shuffle_btn.get_active():
-					self.play_options = "shuffle"
-				else:
-					self.play_options = "continue"
-		else:
-			self.play_options = "continue"
-		
-    def check_play_options(self):
-		self.player.stop()
-		path = self.model.get_path(self.selected_iter)
-		model = None
-		treeview = None
-		if path:
-			model = self.model
-			treeview = self.treeview
-		else:
-			model = self.Playlist.treestore
-			path = model.get_path(self.selected_iter)
-			treeview = self.Playlist.treeview
-				
-		if self.play_options == "loop":
-			path = model.get_path(self.selected_iter)
-			if path:
-				treeview.set_cursor(path)
-				self.get_model()
-		elif self.play_options == "continue":
-			## first, check if iter is still available (changed search while
-			## continue mode for exemple..)
-			## check for next iter
-			try:
-				if not model.get_path(self.selected_iter) == self.path:
-					try:
-						self.selected_iter = model.get_iter_first()
-						if self.selected_iter:
-							path = model.get_path(self.selected_iter)
-							treeview.set_cursor(path)
-							self.get_model()
-					except:
-						return
-				else:
-					try:
-						self.selected_iter = model.iter_next(self.selected_iter)
-						path = model.get_path(self.selected_iter)
-						treeview.set_cursor(path)
-						self.get_model()
-					except:
-						if not self.playlist_mode:
-							self.load_new_page()
-			except:
-				if not self.playlist_mode:
-					self.load_new_page()
-		
-		elif self.play_options == "shuffle":
-			num = random.randint(0,len(model))
-			self.selected_iter = model[num].iter
-			path = model.get_path(self.selected_iter)
-			treeview.set_cursor(path)
-			self.get_model()
+        play_thread_id = self.play_thread_id
+        while play_thread_id == self.play_thread_id:
+            if play_thread_id == self.play_thread_id:
+                self.player.update_info_section()
+            time.sleep(1)
 		
     def load_new_page(self):
         self.change_page_request=True
         self.change_page()
-
-    def convert_ns(self, t):
-        # This method was submitted by Sam Mason.
-        # It's much shorter than the original one.
-        s,ns = divmod(t, 1000000000)
-        m,s = divmod(s, 60)
-        if m < 60:
-            return "%02i:%02i" %(m,s)
-        else:
-            h,m = divmod(m, 60)
-            return "%i:%02i:%02i" %(h,m,s)
             
     def set_fullscreen(self,widget=None):
         self.timer = 0
@@ -856,7 +744,7 @@ class GsongFinder(object):
             self.infobox.reparent(self.infobox_cont)
             gobject.idle_add(self.search_box.show)
             gobject.idle_add(self.results_notebook.show)
-            gobject.idle_add(self.control_box.show)
+            gobject.idle_add(self.player.control_box.show)
             gobject.idle_add(self.options_bar.show)
             self.window.window.set_cursor(None)
             gobject.idle_add(self.window.window.unfullscreen)
@@ -864,8 +752,8 @@ class GsongFinder(object):
             if sys.platform == 'win32':
                 self.window.set_decorated(True)
             self.fullscreen = False
-            gobject.idle_add(self.fullscreen_btn_pixb.set_from_pixbuf,self.fullscreen_pix)
-            gobject.idle_add(self.fullscreen_btn_pixb.set_tooltip_text,_('enter fullscreen'))
+            gobject.idle_add(self.player.fullscreen_btn_pixb.set_from_pixbuf,self.player.fullscreen_pix)
+            gobject.idle_add(self.player.fullscreen_btn_pixb.set_tooltip_text,_('enter fullscreen'))
         else:
             gobject.idle_add(self.search_box.hide)
             gobject.idle_add(self.results_notebook.hide)
@@ -876,14 +764,14 @@ class GsongFinder(object):
             color = gtk.gdk.Color()
             cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
             self.window.window.set_cursor(cursor)
-            gobject.idle_add(self.control_box.hide)
+            gobject.idle_add(self.player.control_box.hide)
             gobject.idle_add(self.window.window.fullscreen)
             if sys.platform == 'win32':
                 self.window.set_decorated(False)
             self.fullscreen = True
             self.mini_player = False
-            gobject.idle_add(self.fullscreen_btn_pixb.set_from_pixbuf,self.leave_fullscreen_pix)
-            gobject.idle_add(self.fullscreen_btn_pixb.set_tooltip_text,_('leave fullscreen'))
+            gobject.idle_add(self.player.fullscreen_btn_pixb.set_from_pixbuf,self.player.leave_fullscreen_pix)
+            gobject.idle_add(self.player.fullscreen_btn_pixb.set_tooltip_text,_('leave fullscreen'))
         
 		
     def update_image(self,img, w, h):
@@ -950,36 +838,15 @@ class GsongFinder(object):
         except:
             return
     
-    def download_file(self,widget=None, link=None, name=None, codec=None, data=None, engine_type=None, engine_name=None):
+    def download_file(self,widget=None, link=None, name=None, codec = None, data=None, engine_type=None, engine_name=None):
 		if not link:
 			link = self.active_link
 		if not name:
 			name = self.media_name
 		if not codec:
-			codec = self.media_codec 
-		download = FileDownloader(self, link, name, codec, data, engine_name, engine_type)
+			codec = self.media_codec
+		download = downloader.FileDownloader(self, link, name, codec, data, engine_name, engine_type)
 		download.start()
-        
-    def resume_downloads(self):
-        for media in os.listdir(self.down_dir):
-            try:
-                if '.conf' in media:
-                    conf = os.path.join(self.down_dir, media)
-                    f = open('''%s''' % conf, 'r')
-                    data = f.read()
-                    f.close()
-                    link = data.split(':::')[0]
-                    name = data.split(':::')[1]
-                    codec = data.split(':::')[2]
-                    engine_type = data.split(':::')[3]
-                    engine_name = data.split(':::')[4]
-                    print engine_type
-                    if str(engine_type) == 'files':
-                        self.download_debrid(link)
-                    else:
-                        self.download_file(None,link, name, codec, None, engine_type, engine_name)
-            except:
-                continue
                 
     def download_debrid(self, link):
         check = self.url_checker.check([link])
@@ -990,12 +857,6 @@ class GsongFinder(object):
             link   = check[0][0]
         thread = threading.Thread(target=self.url_debrid.debrid ,args=(link,))
         thread.start()
-		
-    def show_folder(self,path):
-        if sys.platform == "win32":
-            os.system('explorer %s' % path)
-        else:
-            os.system('xdg-open %s' % path)
 
     def on_about_btn_pressed(self, widget):
         dlg = self.gladeGui.get_widget("aboutdialog")
