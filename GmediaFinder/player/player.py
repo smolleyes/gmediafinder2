@@ -11,15 +11,19 @@ from glib import markup_escape_text
 import random
 import time
 import gobject
+import thread
 
 ## custom lib
 try:
     import config
+    if sys.platform != "win32":
+	from pykey import send_string
 except:
     from GmediaFinder import config
+    if sys.platform != "win32":
+	from Gmediafinder.pykey import send_string
     
 from gplayer import *
-import gplayer 
 
 class Player(object):
     def __init__(self,mainGui):
@@ -35,7 +39,7 @@ class Player(object):
 	self.media_codec = None
 	## time
         self.timeFormat = gst.Format(gst.FORMAT_TIME)
-	self.status = gplayer.STATE_READY
+	self.status = STATE_READY
 	## play mode options
 	self.play_options = "continue"
 	## seek
@@ -84,7 +88,7 @@ class Player(object):
         #### load buttons and pixbufs
         self.load_gui_icons()
         #### init gst gplayer engine
-        self.player = gplayer.Player(mainGui,self)
+        self.player = Gplayer(mainGui,self)
 	
     def load_gui_icons(self):
         ## try to load and use the current gtk icon theme,
@@ -165,57 +169,121 @@ class Player(object):
         self.fullscreen_btn_pixb.set_from_pixbuf(self.fullscreen_pix)
         self.fullscreen_btn.connect('clicked', self.mainGui.set_fullscreen)
         self.fullscreen_btn.set_tooltip_text(_("enter fullscreen"))
-        
-        
         self.changepage_btn.set_sensitive(0)
         self.pageback_btn.set_sensitive(0)
+	
+	self.bitrate_label =_('Bitrate:')
+        self.codec_label =_('Encoding:')
+        self.play_label =_('Playing:')
          
-   
     def start_stop(self,widget=None):
         if widget:
-            if not self.player.state == player.STATE_PLAYING:
+            if not self.player.state == STATE_PLAYING:
                 return self.mainGui.get_model()
             else:
                 return self.stop()
         else:
-            if self.play and self.active_link:
-                if not self.is_playing:
+            if self.active_link:
+                if not self.player.state == STATE_PLAYING:
                     return self.start_play(self.active_link)
                 else:
                     return self.stop_play()
 
+    def start_play(self,url):
+        self.stop()
+        self.active_link = url
+        self.duration = None
+        self.file_tags = {}
+        #if not sys.platform == "win32":
+            #if not self.vis_selector.getSelectedIndex() == 0 and not self.search_engine.engine_type == "video":
+                #self.player.set_property('flags', "Render visualisation when no video is present")
+                #self.vis = self.change_visualisation()
+                #self.visual = gst.element_factory_make(self.vis,'visual')
+                #self.player.set_property('vis-plugin', self.visual)
+            #else:
+                #if self.search_engine.engine_type == "video":
+                    #self.player.set_property('flags', "Render the video stream")
+                #else:
+                    #self.player.set_property('flags', "Render the audio stream")
+        self.play_btn_pb.set_from_pixbuf(self.stop_icon)
+        self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
+        self.player.play_url(self.active_link)
+	try:
+	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
+	except:
+	    print ''
+        self.play_thread_id = thread.start_new_thread(self.play_thread, ())
+
+    def play_thread(self):
+        play_thread_id = self.play_thread_id
+        while play_thread_id == self.play_thread_id:
+            if play_thread_id == self.play_thread_id:
+                self.update_info_section()
+            time.sleep(1)
+    
     def stop(self,widget=None):
         self.player.stop()
         self.play_btn_pb.set_from_pixbuf(self.play_icon)
         self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
         self.duration = None
-        #self.play_thread_id = None
-        #self.active_link = None
+        self.play_thread_id = None
+        self.active_link = None
         self.movie_window.queue_draw()
         bit=_('Bitrate:')
         enc=_('Encoding:')
-        play=_('Playing:')
-        gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % play)
-        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b></small>' % bit)
-        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % enc)
-    
+        play_label=_('Playing:')
+        gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % self.play_label)
+        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b></small>' % self.bitrate_label)
+        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
     
     def on_volume_changed(self, widget, value=10):
         self.player._player.set_property("volume", float(value))
         return True
     
     def pause(self,widget=None):
-	if self.player.state == gplayer.STATE_PAUSED:
+	if self.player.state == STATE_PAUSED:
             self.player.play()
 	    self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
         else:
 	    self.player.pause()
 	    self.pause_btn_pb.set_from_pixbuf(self.play_icon)
         
-    def play_cache(self, data):
-	print "STREAM SIZEEEEEEEEEEEE %s" % data.stream.size
-	cache = gplayer.Cache(data.stream.data, data.stream.size)
+    def play_cache(self, data, size=None, name=None):
+	cache = None
+	markup = None
+	try:
+	    cache = Cache(data.stream.data, data.stream.size)
+	except:
+	    #cache = Cache(data, size)
+	    self.test_mplayer(data)
+	if name is None:
+	    markup = '<small><b>%s %s - %s </b></small>' % (self.play_label,data.artist.name, data.name)
+	else:
+	    markup = '<small><b>%s %s </b></small>' % (self.play_label, name)
 	self.player.play_cache(cache)
+	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
+        gobject.idle_add(self.media_name_label.set_markup,markup)
+        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, '...'))
+        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, 'mp3'))
+    
+    
+    def test_mplayer(self,d):
+	import tempfile, subprocess
+	output = tempfile.NamedTemporaryFile(suffix='.mp3', prefix='grooveshark_')
+	process = None
+	try:
+	    output.write(d.read(524288))
+	    process = subprocess.Popen(['/usr/bin/mplayer',output.name], stdout=None, stderr=None)
+	    data = d.read(2048)
+	    while data:
+		output.write(data)
+		data = d.read(2048)
+	    process.wait()
+	except KeyboardInterrupt:
+	    if process:
+		process.kill()
+	output.close()
+    
     
     def on_drawingarea_realized(self, sender):
         if sys.platform == "win32":
@@ -226,7 +294,7 @@ class Player(object):
             gobject.idle_add(self.player.videosink.set_xwindow_id,self.movie_window.window.xid)
 
     def on_expose_event(self, widget, event):
-        if self.player.state == gplayer.STATE_PLAYING:
+        if self.player.state == STATE_PLAYING:
             return
         x , y, self.area_width, self.area_height = event.area
         widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
@@ -283,25 +351,21 @@ class Player(object):
 	if math.floor(percent/5) > self._cbuffering:
 	    self._cbuffering = math.floor(percent/5)
 	    buffering = _('Buffering :')
-	    self.status = gplayer.STATE_BUFFERING
+	    self.status = STATE_BUFFERING
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s%s</small>' % (buffering,percent,'%'))
 	
 	if percent == 100:
-	    print self.player.state
-	    if self.player.state == gplayer.STATE_PAUSED:
+	    if self.player.state == STATE_PAUSED:
 		self.mainGui.info_label.set_text('')
-		enc=_('Encoding:')
-		bit=_('Bitrate:')
-		play=_('Playing:')
 		name = markup_escape_text(self.mainGui.media_name)
-		gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (play,name))
-		self.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (bit,self.media_bitrate))
-		self.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (enc,self.media_codec))
-		self.status = gplayer.STATE_PLAYING
+		gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,name))
+		self.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.bitrate_label,self.media_bitrate))
+		self.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.codec_label,self.media_codec))
+		self.status = STATE_PLAYING
 		self.pause()
 	    self._cbuffering = -1
-	elif self.status == gplayer.STATE_BUFFERING:
-	    if not self.player.state == gplayer.STATE_PAUSED:
+	elif self.status == STATE_BUFFERING:
+	    if not self.player.state == STATE_PAUSED:
 		self.pause()
     
     def convert_ns(self, t):
@@ -326,14 +390,14 @@ class Player(object):
 		self.old_name = self.media_name
 		#put the keys in the dictionary
 		for key in taglist.keys():
-			#print key, taglist[key]
+			print key, taglist[key]
 			if key == "preview-image" or key == "image":
 				ipath="/tmp/temp.png"
 				img = open(ipath, 'w')
 				img.write(taglist[key])
 				img.close()
 				self.media_thumb = gtk.gdk.pixbuf_new_from_file_at_scale(ipath, 64,64, 1)
-				self.model.set_value(self.selected_iter, 0, self.media_thumb)
+				self.mainGui.model.set_value(self.mainGui.selected_iter, 0, self.media_thumb)
 			elif key == "bitrate":
 				r = int(taglist[key]) / 1000
 				self.file_tags[key] = "%sk" % r
@@ -484,10 +548,10 @@ class Player(object):
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
-	if self.seeker_move == 1 or self.status == gplayer.STATE_BUFFERING:
+	if self.seeker_move == 1 or self.status == STATE_BUFFERING:
 	    return
 	    
-        if self.player.state != gplayer.STATE_PLAYING:
+        if self.player.state != STATE_PLAYING:
             adjustment = gtk.Adjustment(0, 0.00, 100.0, 0.1, 1.0, 1.0)
             self.seeker.set_adjustment(adjustment)
             gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")

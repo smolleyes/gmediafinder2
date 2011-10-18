@@ -43,8 +43,6 @@ _STATE_MAPPING = {gst.STATE_PLAYING : STATE_PLAYING,
 
 __version__ = '1.0'
 
-import player
-
 class Cache(object):
     '''
     Reads out the whole file object to avoid for example stream timeouts.
@@ -74,6 +72,13 @@ class Cache(object):
         
     def _read(self):
         data = self._fileobj.read(self._blocksize)
+        #try:
+            #self._active
+        #except:
+            #self.state = STATE_FINISHED
+            #self._fileobj.close()
+            #self.cancel()
+            #return
         while data and self._active:
             self._memory.append(data)
             self.bytes_read += len(data)
@@ -117,7 +122,7 @@ class Cache(object):
             result[0] = result[0][start_bytes:]
         return b''.join(result)    
 
-class Player(gobject.GObject):
+class Gplayer(gobject.GObject):
     '''
     Play media files, file objects and :class:`Cache` objects over GStreamer.
     Implemented as :class:`gobject.GObject`.
@@ -150,11 +155,13 @@ class Player(gobject.GObject):
         self._bus.add_signal_watch()
         self._bus.enable_sync_message_emission()
         self._bus.connect("message", self._gui.on_message)
+        #self._bus.connect("finished", self._on_finished)
         self._bus.connect("sync-message::element", self._gui.on_sync_message)
         self._bus.connect("message::tag", self._gui.bus_message_tag)
         self._bus.connect('message::buffering', self._gui.on_message_buffering)
+        self._player.connect('source-setup', self._source_setup)
         self._cache = None
-        #gobject.GObject.__init__(self)
+        gobject.GObject.__init__(self)
         
     def play_file(self, filename):
         '''
@@ -311,16 +318,18 @@ class Player(gobject.GObject):
             self._reset()
         elif message.type == gst.MESSAGE_ERROR:
             print('Error: %s' % (str(message.parse_error())))
+            
+    def on_finished(self):
+        self.stop()
 
-
-gobject.type_register(Player)
+gobject.type_register(Gplayer)
 gobject.signal_new('finished',
-                   Player,
+                   Gplayer,
                    gobject.SIGNAL_RUN_LAST,
                    gobject.TYPE_BOOLEAN,
                    ())
 gobject.signal_new('started',
-                   Player,
+                   Gplayer,
                    gobject.SIGNAL_RUN_LAST,
                    gobject.TYPE_BOOLEAN,
                    ())

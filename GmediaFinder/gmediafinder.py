@@ -34,12 +34,11 @@ import pangocairo
 
 if sys.platform == "win32":
     import win32api
-
 ## custom lib
 try:
     import debrid as debrider
     from downloads import downloader
-    from player import player
+    from player.player import Player
     from config import *
     from engines import Engines
     from functions import *
@@ -58,11 +57,6 @@ except:
     import GmediaFinder.checklinks as checkLink
 
 class GsongFinder(object):
-    STOPPED = 0
-    PLAYING = 1
-    PAUSED = 2
-    BUFFERING = 3
-    PREROLLING = 4
     def __init__(self):
         ## default search options
         self.is_playing = False
@@ -89,8 +83,6 @@ class GsongFinder(object):
         self.playlist_mode = False
         self.play = False
         self.draw_text = False
-        self.status = self.STOPPED
-        self.target_status = self.STOPPED
         self.url_checker = checkLink.CheckLinkIntegrity()
         self.url_debrid = debrider.Debrid(self)
         
@@ -282,7 +274,7 @@ class GsongFinder(object):
         ## load playlists
         self.Playlist = Playlist(self)
         ## init player
-        self.player = player.Player(self)
+        self.player = Player(self)
         
         ## check extra options
         if downloads == 'False':            
@@ -702,35 +694,7 @@ class GsongFinder(object):
         self.player.stop()
     
     def start_play(self,url):
-        self.active_link = url
-        self.play = True
-        self.is_playing = True
-        self.is_paused = False
-        self.duration = None
-        self.file_tags = {}
-        #if not sys.platform == "win32":
-            #if not self.vis_selector.getSelectedIndex() == 0 and not self.search_engine.engine_type == "video":
-                #self.player.set_property('flags', "Render visualisation when no video is present")
-                #self.vis = self.change_visualisation()
-                #self.visual = gst.element_factory_make(self.vis,'visual')
-                #self.player.set_property('vis-plugin', self.visual)
-            #else:
-                #if self.search_engine.engine_type == "video":
-                    #self.player.set_property('flags', "Render the video stream")
-                #else:
-                    #self.player.set_property('flags', "Render the audio stream")
-        self.player.play_btn_pb.set_from_pixbuf(self.player.stop_icon)
-        self.player.pause_btn_pb.set_from_pixbuf(self.player.pause_icon)
-        self.player.player.play_url(self.active_link)
-        self.play_thread_id = thread.start_new_thread(self.play_thread, ())
-
-
-    def play_thread(self):
-        play_thread_id = self.play_thread_id
-        while play_thread_id == self.play_thread_id:
-            if play_thread_id == self.play_thread_id:
-                self.player.update_info_section()
-            time.sleep(1)
+        self.player.start_play(url)
 		
     def load_new_page(self):
         self.change_page_request=True
@@ -777,7 +741,6 @@ class GsongFinder(object):
     def update_image(self,img, w, h):
 		# Get the size of the source pixmap
 		src_width, src_height = img.get_width(), img.get_height()
-		
 		# Scale preserving ratio
 		scale = min(float(w)/src_width, float(h)/src_height)
 		new_width = int(scale*src_width)
