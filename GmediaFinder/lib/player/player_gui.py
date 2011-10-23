@@ -271,9 +271,15 @@ class Player(object):
         if sys.platform == "win32":
             window = self.movie_window.get_window()
             window.ensure_native()
-            gobject.idle_add(self.player.set_window_id,self.movie_window.window.handle)
+	    try:
+		gobject.idle_add(self.player.set_window_id,self.movie_window.window.handle)
+	    except:
+		return
         else:
-            gobject.idle_add(self.player.set_window_id,self.movie_window.window.xid)
+	    try:
+		gobject.idle_add(self.player.set_window_id,self.movie_window.window.xid)
+	    except:
+		return
 
     def on_expose_event(self, widget, event):
         if self.player.state == STATE_PLAYING:

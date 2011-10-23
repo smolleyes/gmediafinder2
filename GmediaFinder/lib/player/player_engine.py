@@ -1,6 +1,7 @@
 #-*- coding: UTF-8 -*-
 #
 # gmediafinder's player engine (python-mplayer)
+import os, os.path
 import gtk
 import sys
 import gobject
@@ -13,8 +14,10 @@ from glib import markup_escape_text
 ## gstreamer modules
 import gst
 
+## mplayer module
+from mplayer.myplayer import MyPlayer
+
 ## import mplayer engine
-import mplayer
 from gplayer.gplayer import *
 
 if sys.platform != "win32":
@@ -29,7 +32,7 @@ STATE_BUFFERING = 4
 STATE_SEEKING = 5
 
 class PlayerEngine(object):
-    def __init__(self,mainGui,playerGui,engine='gstreamer'):
+    def __init__(self,mainGui,playerGui,engine='mplayer'):
 	## init main engine
 	if engine == 'mplayer':
 	    self.engine = Mplayer(mainGui,playerGui)
@@ -82,11 +85,102 @@ class Mplayer(object):
 	self.mainGui = mainGui
 	self.playerGui = playerGui
 	self.state = STATE_READY
+	wid = self.get_window_id()
+	self.player = MyPlayer( ['-wid', str(wid)])
+        #self.player.connect('eof', self.player_eof_cb)
+        self.player.connect('media-info', self.player_media_info_cb)
+        self.player.connect('position', self.player_position_cb)
+        self.player.start()
 	
-    def attach_drawingarea(self,window_id):
+    def get_window_id(self):
+	self.playerGui.movie_window.realize()
+	if sys.platform == "win32":
+            window = self.playerGui.movie_window.get_window()
+            window.ensure_native()
+            return self.playerGui.movie_window.window.handle
+        else:
+            return self.playerGui.movie_window.window.xid
+	    
+    def update_info_section(self):
 	pass
+	    
     
-
+    def player_eof_cb(self, player, uri):
+        ''' Player calback
+        @var player instance
+        @var uri média lu
+        @brief Appelé à l'arrêt du flux (fin du fichier/stream)
+        '''
+        gobject.idle_add(self.playerGui.seeker.set_value, 100)
+        return
+    
+    def player_position_cb(self, player, dic):
+        ''' Player calback
+        @var player instance
+        @var dic dictionnaire infos position
+        @brief Appelé chaque seconde, infos progress
+        '''
+        #print dic
+        if self.state == STATE_SEEKING:
+	    return
+	timeinf = '{format_pos}/{format_length}'.format(**dic)
+	print '___________%s__________'% timeinf
+	gobject.idle_add(self.playerGui.time_label.set_text,timeinf)
+	gobject.idle_add(self.playerGui.seeker.set_value, dic['percent'])
+        
+    def player_media_info_cb(self, player, dic):
+        ''' Player calback
+        @var player instance
+        @var dic dictionnaire infos media
+        @brief Appelé au commencement de la lecture
+        '''
+        print dic
+        audio = '''{audio-decoder}\n{audio-codec}\n{audio-info}\n{audio-output}'''.format(**dic)
+        try:
+            video = '''{video-decoder}\n{video-codec}\n{video-info}'''.format(**dic)
+        except: video = 'No video'
+	### get codec
+	codec = None
+	try:
+	    codec = self.player.mediainfo['video-codec']
+	except:
+	    codec = self.player.mediainfo['audio-codec']
+        ## get bitrate
+	bitrate = None
+	try:
+	    bitrate = self.player.mediainfo['video-bitrate']
+	except:
+	    bitrate = self.player.mediainfo['audio-bitrate']
+	
+	self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,bitrate))
+	self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,codec))
+    
+    def on_seeker_release(self, value):
+        self.player.cmd.seek('%s 1' % value)
+	self.state = STATE_PLAYING
+    
+    def set_volume(self,value):
+	self.player.cmd.volume('%s' % round(value))
+    
+    def play_url(self,url):
+	self.player.loadfile(url)
+	
+    def play(self):
+	if self.state == STATE_PAUSED:
+	    self.state = STATE_PLAYING
+	    self.player.pause()
+	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
+	
+    def pause(self):
+	self.player.pause()
+	self.state = STATE_PAUSED
+	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
+	
+    def stop(self):
+	self.player.cmd.stop()
+	self.state = STATE_READY
+    
+	
 class GstPlayer(object):
     def __init__(self,mainGui,playerGui):
 	self.mainGui = mainGui
@@ -108,12 +202,16 @@ class GstPlayer(object):
 	self.player.videosink.set_xwindow_id(window_id)
 	
     def set_volume(self,value):
-	self.player.set_property("volume", float(value))
+	self.player._player.set_property("volume", float(value))
     
     def play_url(self,url):
 	self.player.play_url(url)
 	
     def play(self):
+	name = markup_escape_text(self.mainGui.media_name)
+	gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.playerGui.play_label,name))
+	self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,self.media_bitrate))
+	self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
 	self.player.play()
 	self.state = STATE_PLAYING
 	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
@@ -223,10 +321,6 @@ class GstPlayer(object):
 	if percent == 100:
 	    if self.state == STATE_PAUSED:
 		self.mainGui.info_label.set_text('')
-		name = markup_escape_text(self.mainGui.media_name)
-		gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.playerGui.play_label,name))
-		self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,self.media_bitrate))
-		self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
 		self.play()
 	    self._cbuffering = -1
 	elif self.status == STATE_BUFFERING:
@@ -317,5 +411,4 @@ class GstPlayer(object):
 	duration = self.player._player.query_duration(self.timeFormat, None)[0]
 	time = value * (duration / 100)
 	self.player._player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
-	self.seeker_move = None
 
