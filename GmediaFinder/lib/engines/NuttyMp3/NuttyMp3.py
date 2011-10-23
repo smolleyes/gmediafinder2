@@ -4,9 +4,9 @@ import mechanize
 import os
 
 try:
-    from functions import *
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.functions import *
     
 class NuttyMp3(object):
     def __init__(self, gui):    

@@ -8,15 +8,9 @@ import time
 import gobject
 
 try:
-    from functions import create_comboBox
-    from functions import download_photo
-    from functions import get_url_data
-    from functions import ComboBox
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import create_comboBox
-    from GmediaFinder.functions import download_photo
-    from GmediaFinder.functions import get_url_data
-    from GmediaFinder.functions import ComboBox
+    from GmediaFinder.lib.functions import *
 
 
 URL = "http://youporn.com/"

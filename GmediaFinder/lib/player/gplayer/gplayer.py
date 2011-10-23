@@ -137,9 +137,9 @@ class Gplayer(gobject.GObject):
     | finished   | Playing of the current file, file object or :class:`Cache` object finished     |
     +------------+--------------------------------------------------------------------------------+
     '''
-    def __init__(self, mainGui, playerGui):
-        self._mainGui = mainGui
-        self._gui = playerGui
+    def __init__(self, engine):
+        self._mainGui = engine.mainGui
+        self._gui = engine.playerGui
         self._player = gst.element_factory_make("playbin2", "player")
         audiosink = gst.element_factory_make("autoaudiosink")
         audiosink.set_property('async-handling', True)
@@ -154,11 +154,11 @@ class Gplayer(gobject.GObject):
         self._bus = self._player.get_bus()
         self._bus.add_signal_watch()
         self._bus.enable_sync_message_emission()
-        self._bus.connect("message", self._gui.on_message)
+        self._bus.connect("message", engine.on_message)
         #self._bus.connect("finished", self._on_finished)
-        self._bus.connect("sync-message::element", self._gui.on_sync_message)
-        self._bus.connect("message::tag", self._gui.bus_message_tag)
-        self._bus.connect('message::buffering', self._gui.on_message_buffering)
+        self._bus.connect("sync-message::element", engine.on_sync_message)
+        self._bus.connect("message::tag", engine.bus_message_tag)
+        self._bus.connect('message::buffering', engine.on_message_buffering)
         self._player.connect('source-setup', self._source_setup)
         self._cache = None
         gobject.GObject.__init__(self)

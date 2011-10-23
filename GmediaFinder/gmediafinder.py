@@ -34,27 +34,39 @@ import pangocairo
 
 if sys.platform == "win32":
     import win32api
+import lib.debrid as debrider
+from lib.downloads import downloader
+from lib.player.player_gui import Player
+from lib.config import *
+from lib.engines.main import Engines
+from lib.functions import *
+from lib.playlist import Playlist
+if sys.platform != "win32":
+    from lib.pykey import send_string
+import lib.checklinks as checkLink
 ## custom lib
 try:
-    import debrid as debrider
-    from downloads import downloader
-    from player.player import Player
-    from config import *
-    from engines import Engines
-    from functions import *
-    from playlist import Playlist
+    import lib.debrid as debrider
+    from lib.downloads import downloader
+    from lib.player.player_gui import Player
+    from lib.config import *
+    from lib.engines.main import Engines
+    from lib.functions import *
+    from lib.playlist import Playlist
     if sys.platform != "win32":
-        from pykey import send_string
-    import checklinks as checkLink
+        from lib.pykey import send_string
+    import lib.checklinks as checkLink
 except:
-    from GmediaFinder.config import *
-    from GmediaFinder.engines import Engines
-    from GmediaFinder.functions import *
-    from GmediaFinder.playlist import Playlist
+    from GmediaFinder.lib.config import *
+    from GmediaFinder.lib.engines import Engines
+    from GmediaFinder.lib.functions import *
+    from GmediaFinder.lib.playlist import Playlist
     if sys.platform != "win32":
-        from GmediaFinder.pykey import send_string
-    import GmediaFinder.debrid as debrider
-    import GmediaFinder.checklinks as checkLink
+        from GmediaFinder.lib.pykey import send_string
+    import GmediaFinder.lib.debrid as debrider
+    import GmediaFinder.lib.checklinks as checkLink
+    from GmediaFinder.lib.player.player_gui import Player
+    from GmediaFinder.lib.downloads import downloader
 
 class GsongFinder(object):
     def __init__(self):

@@ -5,9 +5,9 @@ import urllib
 import gobject
 
 try:
-    from functions import *
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.functions import *
 
 class PornHub(object):
     def __init__(self,gui):

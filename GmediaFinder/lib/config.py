@@ -3,7 +3,7 @@ import os,sys,gtk
 import gettext
 from configobj import ConfigObj
 
-from Translation import Translation
+from lib.Translation import Translation
 from xml.dom import minidom
 from xml.dom.minidom import Document
 import re
@@ -23,11 +23,11 @@ if ('/usr/local' in exec_path):
 elif ('/usr' in exec_path):
 	data_path = os.path.join('/usr/share/gmediafinder')
 else:
-    data_path =  os.path.join(exec_path,"../data")
+    data_path =  os.path.join(exec_path,"../../data")
 
 if sys.platform == "win32" and ('config.py' in os.listdir(os.path.abspath('.'))):
-    rep_trad = os.path.join(os.path.abspath('..'),'po')
-    data_path= os.path.join(os.path.abspath('..'),'data')
+    rep_trad = os.path.join(os.path.abspath('../..'),'po')
+    data_path= os.path.join(os.path.abspath('../..'),'data')
 if sys.platform == "win32" and 'library.zip' in exec_path:
     p = re.search('(.*)\library.zip',exec_path).group(1)
     rep_trad = os.path.join(os.path.abspath(p),'po')
@@ -36,6 +36,9 @@ if sys.platform == "win32" and 'library.zip' in exec_path:
 img_path = os.path.join(data_path,"img")
 glade_path = os.path.join(data_path,"glade")
 glade_file = os.path.join(glade_path,"mainGui.glade")
+player_dir = os.path.join(exec_path,'player')
+sys.path.append(player_dir)
+print sys.path
 
 ##localisation end
 traduction = Translation(APP_NAME, source_lang, rep_trad)
@@ -90,7 +93,7 @@ conf = ConfigObj(conf_file,write_empty_values=True)
 
 ## modules paths
 engines_path = []
-engine_dir = os.path.join(exec_path,'lib/engines')
+engine_dir = os.path.join(exec_path,'engines')
 alt_engine_dir = os.path.join(settings_folder,'plugins')
 if not os.path.exists(alt_engine_dir):
 	os.mkdir(alt_engine_dir)

@@ -7,10 +7,9 @@ from configobj import ConfigObj
 
 ## custom lib
 try:
-    import config
-    import gui
+    import lib.config as config
 except:
-    from GmediaFinder import config
+    from GmediaFinder.lib import config
     
 class Engines(object):
     def __init__(self,gui):
@@ -29,6 +28,7 @@ class Engines(object):
         elif sys.platform == "win32" and not 'zip' in config.exec_path:
             self.engines_path.append(config.exec_path+'\lib\engines')
             sys.path.append(config.exec_path+'\lib\engines')
+        print  self.engines_path
         for path in self.engines_path:
             for engine in os.listdir(path):
                 if os.path.isdir(os.path.join(path, engine)):

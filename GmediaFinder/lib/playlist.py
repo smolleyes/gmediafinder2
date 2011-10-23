@@ -5,7 +5,7 @@ from xml.dom import minidom
 from xml.dom.minidom import Document, parse
 import thread
 import threading
-from functions import htmlentitydecode, translate_html
+from lib.functions import htmlentitydecode, translate_html
 import urllib2
 import re
 

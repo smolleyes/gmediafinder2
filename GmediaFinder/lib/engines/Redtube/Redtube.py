@@ -3,9 +3,9 @@ import urllib
 import gobject
 
 try:
-    from functions import *
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.functions import *
 
 class Redtube(object):
     def __init__(self,gui):

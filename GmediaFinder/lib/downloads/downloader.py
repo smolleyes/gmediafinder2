@@ -7,11 +7,11 @@ import pango
 
 #custom lib
 try:
-    from config import *
-    from functions import *
+    from lib.config import *
+    from lib.functions import *
 except:
-    from GmediaFinder.config import *
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.config import *
+    from GmediaFinder.lib.functions import *
         
 class Downloader(object):
     def __init__(self,mainGui):

@@ -3,9 +3,9 @@ import gobject
 import json
 import datetime
 try:
-    from functions import *
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.functions import *
 
 
 class Jamendo(object):

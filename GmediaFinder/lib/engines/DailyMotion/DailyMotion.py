@@ -4,9 +4,9 @@ import gobject,glib
 import json
 
 try:
-    from functions import *
+    from lib.functions import *
 except:
-    from GmediaFinder.functions import *
+    from GmediaFinder.lib.functions import *
 
 class DailyMotion(object):
     def __init__(self,gui):

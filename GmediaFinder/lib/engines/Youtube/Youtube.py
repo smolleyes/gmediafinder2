@@ -7,17 +7,11 @@ import sys
 from subprocess import Popen,PIPE,STDOUT
 
 try:
-    from functions import *
-    from functions import download_photo
-    from functions import ComboBox
-    from functions import sortDict
-    from config import img_path,_
+    from lib.functions import *
+    from lib.config import *
 except:
-    from GmediaFinder.functions import *
-    from GmediaFinder.functions import download_photo
-    from GmediaFinder.functions import ComboBox
-    from GmediaFinder.functions import sortDict
-    from GmediaFinder.config import img_path,_
+    from GmediaFinder.lib.functions import *
+    from GmediaFinder.lib.config import img_path,_
 
 class Youtube(object):
     def __init__(self,gui):
@@ -335,15 +329,12 @@ class Youtube(object):
 
     def on_youtube_video_rate_changed(self,widget):
         active = self.youtube_video_rate.get_active()
-        if self.gui.is_playing:
-            self.gui.stop_play()
-            try:
-                self.media_codec = self.quality_list[active].split('|')[1]
-                self.gui.start_play(self.media_link[active])
-            except:
-                pass
+        try:
+            self.media_codec = self.quality_list[active].split('|')[1]
+            self.gui.start_play(self.media_link[active])
+        except:
+            pass
 
-    
     def get_quality_list(self,vid_id):
         links_arr = []
         quality_arr = []

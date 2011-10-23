@@ -22,13 +22,13 @@ import htmllib
 from subprocess import Popen,PIPE
 
 try:
-    from functions import *
-    from config import data_path
-    from config import _
+    from lib.functions import *
+    from lib.config import data_path
+    from lib.config import _
 except:
-    from GmediaFinder.functions import *
-    from GmediaFinder.config import data_path
-    from GmediaFinder.config import _
+    from GmediaFinder.lib.functions import *
+    from GmediaFinder.lib.config import data_path
+    from GmediaFinder.lib.config import _
 
 HTMLParser.attrfind = re.compile(r'\s*([a-zA-Z_][-.:a-zA-Z_0-9]*)(\s*=\s*'r'(\'[^\']*\'|"[^"]*"|[^\s>^\[\]{}\|\'\"]*))?')
 
