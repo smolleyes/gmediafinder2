@@ -179,7 +179,6 @@ class Player(object):
                     return self.stop()
 
     def start_play(self,url):
-        self.stop()
         self.active_link = url
         self.file_tags = {}
         #if not sys.platform == "win32":
@@ -195,16 +194,19 @@ class Player(object):
                     #self.player.set_property('flags', "Render the audio stream")
 	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
 	self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
-        self.player.play_url(self.active_link)
 	try:
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
 	except:
 	    print ''
-        self.play_thread_id = thread.start_new_thread(self.play_thread, ())
+	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
 
-    def play_thread(self):
+    def play_thread(self,cache=None,length=None):
         play_thread_id = self.play_thread_id
-        while play_thread_id == self.play_thread_id:
+	if cache:
+	    self.player.play_cache(cache,length)
+	else:
+	    self.player.play_url(self.active_link)
+        while play_thread_id == self.play_thread_id and self.player.state != STATE_READY:
             if play_thread_id == self.play_thread_id:
                 self.player.update_info_section()
             time.sleep(1)
@@ -222,7 +224,6 @@ class Player(object):
         gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % self.play_label)
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b></small>' % self.bitrate_label)
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
-	self.player.update_info_section()
     
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
@@ -230,41 +231,27 @@ class Player(object):
     def pause(self,widget=None):
 	self.player.pause()
         
+    def shutdown(self):
+	self.player.shutdown()
+    
     def play_cache(self, data, size=None, name=None):
 	cache = None
 	markup = None
-	try:
-	    cache = Cache(data.stream.data, data.stream.size)
-	except:
-	    #cache = Cache(data, size)
-	    self.test_mplayer(data)
 	if name is None:
-	    markup = '<small><b>%s %s - %s </b></small>' % (self.play_label,data.artist.name, data.name)
+	    try:
+		markup = '<small><b>%s %s - %s </b></small>' % (self.play_label,data.artist.name, data.name)
+	    except:
+		markup = '<small><b>%s </b></small>' % (self.play_label)
 	else:
 	    markup = '<small><b>%s %s </b></small>' % (self.play_label, name)
-	self.player.play_cache(cache)
 	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
         gobject.idle_add(self.media_name_label.set_markup,markup)
-        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, '...'))
-        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, 'mp3'))
-    
-    
-    def test_mplayer(self,d):
-	import tempfile, subprocess
-	output = tempfile.NamedTemporaryFile(suffix='.mp3', prefix='grooveshark_')
-	process = None
+        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, ''))
+        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
 	try:
-	    output.write(d.read(524288))
-	    process = subprocess.Popen(['/usr/bin/mplayer',output.name], stdout=None, stderr=None)
-	    data = d.read(2048)
-	    while data:
-		output.write(data)
-		data = d.read(2048)
-	    process.wait()
-	except KeyboardInterrupt:
-	    if process:
-		process.kill()
-	output.close()
+	    self.play_thread_id = thread.start_new_thread(self.play_thread, (Cache(data.stream.data, data.stream.size),data.duration))
+	except:
+	    self.play_thread_id = thread.start_new_thread(self.play_thread, (Cache(data, size),))
     
     
     def on_drawingarea_realized(self, sender):
@@ -287,7 +274,7 @@ class Player(object):
         x , y, self.area_width, self.area_height = event.area
         widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
                                       pixmap, x, y, x, y, self.area_width, self.area_height)
-        if self.mainGui.draw_text:
+	if self.mainGui.draw_text:
             try:
                 self.mainGui.search_engine.print_media_infos()
             except:

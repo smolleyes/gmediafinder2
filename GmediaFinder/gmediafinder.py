@@ -516,8 +516,6 @@ class GsongFinder(object):
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             return self.Playlist.on_selected(self.Playlist.treeview)
         ## play in engine
-        if not self.search_engine.engine_type == 'files':
-            self.player.stop()
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
@@ -704,8 +702,10 @@ class GsongFinder(object):
 
     def stop_play(self,widget=None):
         self.player.stop()
+        self.active_link = None
     
     def start_play(self,url):
+        self.active_link = url
         self.player.start_play(url)
 		
     def load_new_page(self):
@@ -858,6 +858,10 @@ class GsongFinder(object):
     def exit(self,widget=None):
         """Stop method, sets the event to terminate the thread's main loop"""
         self.player.stop()
+        try:
+            self.player.shutdown()
+        except:
+            print 'player stopped'
         ## save window state
         self.save_window_state()
         self.manager.stop_all_threads(block=True)

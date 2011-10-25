@@ -72,13 +72,13 @@ class Cache(object):
         
     def _read(self):
         data = self._fileobj.read(self._blocksize)
-        #try:
-            #self._active
-        #except:
-            #self.state = STATE_FINISHED
-            #self._fileobj.close()
-            #self.cancel()
-            #return
+        try:
+            self._active
+        except:
+            self.state = STATE_FINISHED
+            self._fileobj.close()
+            self.cancel()
+            return
         while data and self._active:
             self._memory.append(data)
             self.bytes_read += len(data)

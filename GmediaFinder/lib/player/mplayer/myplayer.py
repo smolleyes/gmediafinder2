@@ -25,6 +25,7 @@ import threading
 import time
 import gtk
 import gobject
+import re
 
 try:
     import queue
@@ -33,7 +34,7 @@ except ImportError:
 
 gobject.threads_init()
 
-mplayer_cmd = ['mplayer','-slave','-idle','-msglevel','global=4', '-msglevel','global=6']
+mplayer_cmd = ['mplayer','-slave','-idle','-msglevel','global=6', '-msglevel','global=6', '-cache', '2048']
 
 dic_metadata = {
                 'uri'     : None,
@@ -46,17 +47,19 @@ dic_metadata = {
                 'genre'   : None,
 }
 dic_position = {
-                'format_pos'    : '00:00',
+                'format_pos'    : '00:00:00',
                 'pos'           : 0.0,
-                'format_length' : '00:00',
+                'format_length' : '00:00:00',
                 'length'        : 0.0,
                 'percent'       : 0.0,
 }
 
-def convert_s(s):
-    m = s / 60
-    s = s % 60
-    return '%.2i:%.2i' % (m, s)
+def convert_s(seconds):
+    m, s = divmod(int(seconds), 60)
+    h, m = divmod(m, 60)
+    if h == 0:
+        return "%02d:%02d" % (m, s)
+    return "%02d:%02d:%02d" % (h, m, s)
 
 class PlayerStdout(object):
     ''' # -------- MPLAYER STDOUT CB --------- # '''
@@ -76,8 +79,8 @@ class PlayerStdout(object):
         ''' starting playing 
         @var arg str
         '''
-        self.emit('metadata', self.metadata)
         self.emit('media-info', self.mediainfo)
+        self.emit('metadata', self.metadata)
         self.emit('starting', self.metadata['uri'])
         #time.sleep(5)
         #self.input_cmd('set_property percent_pos 90')
@@ -93,14 +96,36 @@ class PlayerStdout(object):
     
     def _AUDIO(self, arg):
         self.mediainfo['audio-info'] = arg
+        try:
+            bitrate = re.search('floatle, (.*)kbit',arg).group(1)
+            self.mediainfo['audio-bitrate'] = bitrate
+        except:
+            pass
     
     def _AO(self, arg):
         self.mediainfo['audio-output'] = arg
+        try:
+            src = self.mediainfo['audio-codec']
+            codec = self.get_codec_name(src)
+            self.mediainfo['audio-codec-name'] = codec
+        except:
+            pass
     
     def _VIDEO(self, arg):
         self.isVideo = True
         self.mediainfo['video-info'] = arg
-        self.input_cmd('get_time_length')
+        try:
+            src = self.mediainfo['video-info']
+            codec = self.get_codec_name(src)
+            self.mediainfo['video-codec-name'] = codec
+            bitrate = re.search('fps  (.*?)kbps',self.mediainfo['video-info']).group(1)
+            self.mediainfo['video-bitrate'] = bitrate
+            self.input_cmd('get_time_length')
+        except:
+            pass
+            
+    def _Cache(self, arg):
+            print '___Buffering___'
     
     ''' --- position --- '''
     def _ANS_TIME_POSITION(self, arg):
@@ -109,7 +134,6 @@ class PlayerStdout(object):
         '''
         self.time_position = round(arg, 2)
         percent = self.time_position / round(float(self.ANS_LENGTH), 2) * 100
-        #print 'percent____', percent, round(percent, 2)
         self.position = {
                 'format_pos'    : convert_s(self.time_position),
                 'pos'           : self.time_position,
@@ -118,48 +142,41 @@ class PlayerStdout(object):
                 'percent'       : round(percent, 2),
         }
         self.emit('position', self.position)
+     
     
     def _A(self, arg):
         # un retour de commande declanche le stdout de la progress
         # dernier element le retour de commande.
-        time, retour = arg.split('\x1b[J\r')[-2:]
+        #time, retour = arg.split('\x1b[J\r')[-2:]
         #print 'time:',time,'retour:', retour
         sys.stdout.flush()
-        l = time.replace('A: ','').split()
+        l = arg.replace('A: ','').split()
         # si video, le timer est different
         if self.isVideo:
             self._ANS_TIME_POSITION(float(l[0]) )
         else:
-            pos = l[0]
-            f_pos = l[1].strip('()')
-            length = l[-3]
-            f_length = l[-2].strip('()')
-            #print pos, f_pos, length, f_length
+            pos = float(l[0])
+            length = float(l[3])
             sys.stdout.flush()
-            percent = float(pos) / float(length) * 100
+            percent = pos / length * 100
             self.position = {
-                    'format_pos'    : f_pos,
+                    'format_pos'    : convert_s(pos),
                     'pos'           : pos,
-                    'format_length' : f_length,
+                    'format_length' : convert_s(length),
                     'length'        : length,
                     'percent'       : percent,
             }
             self.emit('position', self.position)
-        if retour.startswith('ANS_'):
-            if retour.startswith('ANS_AUDIO_SAMPLES'): return
-            var, arg = retour.split('=',1)
-            try: arg = eval(arg)
+        if arg.startswith('ANS_'):
+            if arg.startswith('ANS_AUDIO_SAMPLES'): return
+            var, args = arg.split('=',1)
+            try: args = eval(arg)
             except: pass
-            setattr(self, var, arg)
+            setattr(self, var, args)
             self.my_queue.put_nowait(retour)
             #print var, arg
             sys.stdout.flush()
-            
-        if retour.startswith('EOF code:'):
-                print '___eof___'
-                self.emit('eof', self.metadata['uri'])
-                #gobject.idle_add(self.emit, 'eof', self.metadata['uri'])
-                self.isVideo = False
+
 
     ''' --- metadata --- '''
     def _Artist(self, arg):
@@ -272,6 +289,7 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
         self.my_queue   = queue.Queue()
         self.cmd        = PlayerCommands(self)
         self.prop       = PlayerProps(self)
+        self.isStreaming = False
         
     def return_value(self, key):
         while True:
@@ -325,6 +343,11 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
                 #print var, arg
                 sys.stdout.flush()
                 continue
+            if sortie.startswith('EOF code:'):
+                print '___eof___'
+                self.emit('eof', sortie)
+                #gobject.idle_add(self.emit, 'eof', self.metadata['uri'])
+                self.isVideo = False
             if sortie == '': n += 1
             else: n = 0
             if n == 10: self.isRunning = False
@@ -348,6 +371,28 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
         cmd='''loadfile "%s" 0''' % arg
         self.input_cmd(cmd)
         #self.input_cmd('get_time_length')
+        
+    def stream(self,d):
+        import tempfile
+        self.isStreaming = True
+        output = tempfile.NamedTemporaryFile(suffix='.stream', prefix='tmp_')
+        try:
+            output.write(d.read(1048576))
+            self.loadfile(output.name)
+            data = d.read(2048)
+            while data and self.isStreaming:
+                output.write(data)
+                data = d.read(2048)
+            self.sb.wait()
+        except:
+            output.close()
+            self.isStreaming = False
+            return
+        output.close()
+        self.isStreaming = False
+        
+    def stop_stream(self):
+        self.isStreaming = False
     
     def pause(self):
         if self.isPaused:
@@ -355,12 +400,34 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
         else:
             self.isPaused = True
         self.input_cmd('pause')
+        
     
     def input_cmd(self, cmd):
         #print 'in input'
         if self.isRunning:
             self.sb.stdin.write('''pausing_keep %s\n''' % cmd)
             self.sb.stdin.flush()
+    
+    def get_codec_name(self,codec):
+        if ('MP3' in codec or 'ID3' in codec or 'ffmp3' in codec):
+            codec = 'mp3'
+        elif ('XVID' in codec):
+            codec = 'avi'
+        elif ('MPEG-4' in codec or 'H.264' in codec or 'MP4' in codec or 'H264' in codec):
+            codec = 'mp4'
+        elif ('MPEG-2' in codec):
+            codec = 'mpeg 2'
+        elif ('WMA' in codec or 'wma' in codec or 'ASF' in codec or 'Microsoft Windows Media 9' in codec):
+            codec = 'wma'
+        elif ('Quicktime' in codec):
+            codec = 'mov'
+        elif ('Vorbis' in codec or 'Ogg' in codec):
+            codec = 'ogg'
+        elif ('Sorenson Spark Video' in codec or 'On2 VP6/Flash' in codec or 'FLV' in codec):
+            codec = 'flv'
+        elif ('VP8' in codec):
+            codec = 'webm'
+        return codec
 
 
 # Register PyGTK type

@@ -10,13 +10,14 @@ import random
 import time
 import thread
 from glib import markup_escape_text
+import re
 
 ## gstreamer modules
 import gst
 
 ## mplayer module
 from mplayer.myplayer import MyPlayer
-
+from mplayer.myplayer import convert_s
 ## import mplayer engine
 from gplayer.gplayer import *
 
@@ -45,22 +46,26 @@ class PlayerEngine(object):
     def play_url(self,url):
 	self.engine.play_url(url)
 	
-    def play_cache(self,data):
+    def play_cache(self,data,length=None):
 	'''Use this to stream a fileobject'''
 	print 'play fileobject'
+	self.engine.play_cache(data,length)
     
     def play(self):
-	self.player.play()
+	self.engine.play()
     
     def pause(self):
 	print 'here %s' % self.engine.state
-	if self.engine.state == STATE_PAUSED:
-            self.engine.play()
+	if self.state == STATE_PAUSED:
+            self.play()
         else:
 	    self.engine.pause()
 	
     def stop(self):
 	self.engine.stop()
+	
+    def shutdown(self):
+	self.engine.shutdown()
 	
     @property
     def state(self):
@@ -87,10 +92,12 @@ class Mplayer(object):
 	self.state = STATE_READY
 	wid = self.get_window_id()
 	self.player = MyPlayer( ['-wid', str(wid)])
-        #self.player.connect('eof', self.player_eof_cb)
+        self.player.connect('eof', self.player_eof_cb)
         self.player.connect('media-info', self.player_media_info_cb)
         self.player.connect('position', self.player_position_cb)
         self.player.start()
+	self.duration = None
+	self.timer = 0
 	
     def get_window_id(self):
 	self.playerGui.movie_window.realize()
@@ -102,17 +109,22 @@ class Mplayer(object):
             return self.playerGui.movie_window.window.xid
 	    
     def update_info_section(self):
-	pass
+	if self.state == STATE_READY:
+	    adjustment = gtk.Adjustment(0, 0.00, 100.0, 0.1, 1.0, 1.0)
+	    self.playerGui.seeker.set_adjustment(adjustment)
+	#gobject.idle_add(self.playerGui.time_label.set_text,timeinf)
+	#gobject.idle_add(self.playerGui.seeker.set_value, dic['percent'])
 	    
     
-    def player_eof_cb(self, player, uri):
+    def player_eof_cb(self, player, code):
         ''' Player calback
         @var player instance
         @var uri média lu
         @brief Appelé à l'arrêt du flux (fin du fichier/stream)
         '''
-        gobject.idle_add(self.playerGui.seeker.set_value, 100)
-        return
+	print "FIN OEF CB"
+	if 'code: 1' in code:
+	    self.playerGui.check_play_options()
     
     def player_position_cb(self, player, dic):
         ''' Player calback
@@ -120,13 +132,22 @@ class Mplayer(object):
         @var dic dictionnaire infos position
         @brief Appelé chaque seconde, infos progress
         '''
-        #print dic
-        if self.state == STATE_SEEKING:
+        if self.state == STATE_SEEKING or self.state == STATE_PAUSED:
 	    return
-	timeinf = '{format_pos}/{format_length}'.format(**dic)
-	print '___________%s__________'% timeinf
+	if self.player.isStreaming:
+	    if self.duration:
+		pos = convert_s(self.timer)
+		timeinf = '%s/%s' % (pos,convert_s(self.duration))
+		percent = int(self.timer) / round(float(self.duration), 2) * 100
+		gobject.idle_add(self.playerGui.seeker.set_value, percent)
+		self.timer += 1
+	    else:
+		timeinf = '{format_pos}/-1:00'.format(**dic)
+	else:
+	    timeinf = '{format_pos}/{format_length}'.format(**dic)
+	    gobject.idle_add(self.playerGui.seeker.set_value, dic['percent'])
+	#print '___________%s__________'% timeinf
 	gobject.idle_add(self.playerGui.time_label.set_text,timeinf)
-	gobject.idle_add(self.playerGui.seeker.set_value, dic['percent'])
         
     def player_media_info_cb(self, player, dic):
         ''' Player calback
@@ -134,42 +155,51 @@ class Mplayer(object):
         @var dic dictionnaire infos media
         @brief Appelé au commencement de la lecture
         '''
-        print dic
-        audio = '''{audio-decoder}\n{audio-codec}\n{audio-info}\n{audio-output}'''.format(**dic)
+        audio = '''{audio-codec}\n{audio-info}\n{audio-output}'''.format(**dic)
         try:
             video = '''{video-decoder}\n{video-codec}\n{video-info}'''.format(**dic)
         except: video = 'No video'
 	### get codec
 	codec = None
 	try:
-	    codec = self.player.mediainfo['video-codec']
+	    codec = dic['video-codec-name']
 	except:
-	    codec = self.player.mediainfo['audio-codec']
+	    codec = dic['audio-codec-name']
         ## get bitrate
 	bitrate = None
 	try:
-	    bitrate = self.player.mediainfo['video-bitrate']
+	    bitrate = dic['video-bitrate']
 	except:
-	    bitrate = self.player.mediainfo['audio-bitrate']
+	    bitrate = dic['audio-bitrate']
 	
-	self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,bitrate))
+	self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s Kbps</small>' % (self.playerGui.bitrate_label,bitrate))
 	self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,codec))
     
     def on_seeker_release(self, value):
-        self.player.cmd.seek('%s 1' % value)
 	self.state = STATE_PLAYING
+        self.player.cmd.seek('%s 1' % value)
     
     def set_volume(self,value):
-	self.player.cmd.volume('%s' % round(value))
+	self.player.cmd.volume('%s 1' % (value * 100))
     
     def play_url(self,url):
+	self.timer = 0
+	self.state = STATE_PLAYING
 	self.player.loadfile(url)
 	
+    def play_cache(self, data, length=None):
+	self.timer = 0
+	self.player.stop_stream()
+	self.state == STATE_PLAYING
+	if length:
+	    self.duration = length
+	self.player.stream(data)
+	
     def play(self):
-	if self.state == STATE_PAUSED:
-	    self.state = STATE_PLAYING
-	    self.player.pause()
-	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
+	self.timer = 0
+	self.state = STATE_PLAYING
+	self.player.pause()
+	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
 	
     def pause(self):
 	self.player.pause()
@@ -177,8 +207,21 @@ class Mplayer(object):
 	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
 	
     def stop(self):
-	self.player.cmd.stop()
+	self.timer = 0
+	if self.state != STATE_READY:
+	    self.player.cmd.stop()
+	try:
+	    self.player.stop_stream()
+	except:
+	    print ''
 	self.state = STATE_READY
+	gobject.idle_add(self.playerGui.seeker.set_value,0)
+	gobject.idle_add(self.playerGui.time_label.set_text,"00:00 / 00:00")
+	
+    def shutdown(self):
+	self.player.cmd.exit()
+	self.player.isRunning = False
+        os.kill(self.player.PID, 3)
     
 	
 class GstPlayer(object):
@@ -407,8 +450,7 @@ class GstPlayer(object):
 			return
 
     def on_seeker_release(self, value):
-	self.state = STATE_PLAYING
 	duration = self.player._player.query_duration(self.timeFormat, None)[0]
 	time = value * (duration / 100)
 	self.player._player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
-
+	self.state = STATE_PLAYING
