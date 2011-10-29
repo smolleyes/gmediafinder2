@@ -470,8 +470,8 @@ class GsongFinder(object):
         ## do not set the engine if global search
         if self.engine == self.global_search or self.engine == self.global_video_search or self.engine == self.global_audio_search:
             return
-        ## load the plugi
-        self.search_engine = self.engines_client.init_engine(self.engine)
+        ## load the plugin
+        self.search_engine = getattr(self.engines_client,'%s' % self.engine)
         #if not global_search:
         self.search_engine.load_gui()
 

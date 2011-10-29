@@ -42,8 +42,6 @@ class Engines(object):
         module = __import__(modstr, globals(), locals(), ['*'])
         init = getattr(module, '%s' % engine)
         setattr(self, '%s' % engine, init(self.gui))
-        return getattr(self, '%s' % engine)
-        
                     
     def load_plugins_conf(self):
         try:
@@ -72,9 +70,7 @@ class Engines(object):
             checkbox.connect('toggled', self.change_engine_state)
             if any(x in engine for x in self.engines_list):
                 checkbox.set_active(True)
-                if not self.first_init:
-                    self.init_engine(engine)
-                self.gui.engine_list[engine] = ''
+                self.init_engine(engine)
             self.gui.engines_box.show_all()
         self.first_init = False
             
