@@ -38,7 +38,6 @@ glade_path = os.path.join(data_path,"glade")
 glade_file = os.path.join(glade_path,"mainGui.glade")
 player_dir = os.path.join(exec_path,'player')
 sys.path.append(player_dir)
-print sys.path
 
 ##localisation end
 traduction = Translation(APP_NAME, source_lang, rep_trad)
