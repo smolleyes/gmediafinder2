@@ -28,7 +28,7 @@ class Jamendo(object):
     def start_engine(self):
         self.gui.engine_list[self.name] = ''
     
-    def load_gui(self):       
+    def load_gui(self):  
         self.order_list = {self.order_label:{_("Date of release"):"releasedate", _("Average rating"):"rating",
                                              _("Week rating"):"ratingweek", _("Month rating"):"ratingmonth",
                                              _("Listened"):"listened", _("Starred"):"starred", _("Tag relevant"):"weight",

@@ -39,9 +39,12 @@ class NuttyMp3(object):
                           }
         self.orderby = create_comboBox(self.gui, self.order_list)
         
-    def get_search_url(self,query,page):              
-        choice = self.orderby.getSelected()
-        orderby = self.order_list[self.order_label][choice]
+    def get_search_url(self,query,page):
+        try:              
+            choice = self.orderby.getSelected()
+            orderby = self.order_list[self.order_label][choice]
+        except:
+            orderby = 'date'
         if orderby == 'download':
             arg = orderby
         else:

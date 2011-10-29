@@ -155,18 +155,22 @@ class PlayerStdout(object):
         if self.isVideo:
             self._ANS_TIME_POSITION(float(l[0]) )
         else:
-            pos = float(l[0])
-            length = float(l[3])
-            sys.stdout.flush()
-            percent = pos / length * 100
-            self.position = {
-                    'format_pos'    : convert_s(pos),
-                    'pos'           : pos,
-                    'format_length' : convert_s(length),
-                    'length'        : length,
-                    'percent'       : percent,
-            }
-            self.emit('position', self.position)
+            try:
+                pos = float(l[0])
+                length = float(l[3])
+                sys.stdout.flush()
+                percent = pos / length * 100
+                self.position = {
+                        'format_pos'    : convert_s(pos),
+                        'pos'           : pos,
+                        'format_length' : convert_s(length),
+                        'length'        : length,
+                        'percent'       : percent,
+                }
+                self.emit('position', self.position)
+            except:
+                print "caFECKKKK"
+                return
         if arg.startswith('ANS_'):
             if arg.startswith('ANS_AUDIO_SAMPLES'): return
             var, args = arg.split('=',1)

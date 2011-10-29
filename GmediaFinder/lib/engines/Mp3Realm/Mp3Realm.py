@@ -50,7 +50,7 @@ class Mp3Realm(object):
             ## search title
             elif 'search?q=lyrics:' in line:
                 title = re.search('lyrics:(.*?)\'>',line).group(1)
-                name, ext = os.path.splitext(titre)
+                name, ext = os.path.splitext(title)
                 gobject.idle_add(self.gui.add_sound, name, link, None, None, self.name)
             ## check for next page
             elif '<li class="currentpage"><b>%s</b>' % self.current_page in line:

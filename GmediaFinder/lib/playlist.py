@@ -123,7 +123,7 @@ class Playlist(object):
             return
         engine = self.treestore.get_value(self.selected_iter, 3)
         try:
-            self.gui.set_engine(engine)
+            self.gui.set_engine(None,engine)
         except:
             return
         self.gui.playlist_mode = True

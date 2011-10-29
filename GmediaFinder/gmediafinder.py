@@ -451,15 +451,9 @@ class GsongFinder(object):
         self.conf.write()
         return self.vis
 
-    def set_engine(self,engine=None):
+    def set_engine(self,widget=None,engine=None):
         self.quality_box.hide()
         global_search = False
-        try:
-            self.engine = self.engine_selector.getSelected()
-        except:
-            self.engine = engine
-            self.engine_selector.setIndexFromString(engine)
-            global_search = True
         iter = self.engine_selector.getSelectedIndex()
         if iter == 0:
             self.engine = None
@@ -467,13 +461,22 @@ class GsongFinder(object):
         ## clean the gui options box and load the plugin gui
         for w in self.search_opt_box:
             self.search_opt_box.remove(w)
-        ## do not set the engine if global search
-        if self.engine == self.global_search or self.engine == self.global_video_search or self.engine == self.global_audio_search:
-            return
+        ## get engine infos
+        selected = self.engine_selector.getSelected()
+ 
         ## load the plugin
-        self.search_engine = getattr(self.engines_client,'%s' % self.engine)
-        #if not global_search:
-        self.search_engine.load_gui()
+        if engine:
+            self.engine = engine
+            self.engine_selector.setIndexFromString(self.engine)
+        else:
+            if selected == self.global_search or selected == self.global_video_search or selected == self.global_audio_search:
+                global_search = True
+            ## do not set the engine if global search
+            if global_search:
+                return
+            self.engine = selected
+            self.search_engine = getattr(self.engines_client,'%s' % self.engine)
+            self.search_engine.load_gui()
 
     def get_model(self,widget=None,path=None,column=None):
         #if self.search_playlist_menu_active:
@@ -498,7 +501,8 @@ class GsongFinder(object):
             self.media_plugname = self.model.get_value(self.selected_iter, 5)
             ## for global search
             if not self.engine_selector.getSelected() == self.media_plugname:
-                self.set_engine(self.media_plugname)
+                print self.media_plugname
+                self.set_engine(None,self.media_plugname)
             ## return only theme name and description then extract infos from hash
             self.media_link = self.model.get_value(self.selected_iter, 2)
             self.media_img = self.model.get_value(self.selected_iter, 0)
@@ -515,6 +519,7 @@ class GsongFinder(object):
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             return self.Playlist.on_selected(self.Playlist.treeview)
         ## play in engine
+        self.stop_play()
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
