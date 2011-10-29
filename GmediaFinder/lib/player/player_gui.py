@@ -78,7 +78,12 @@ class Player(object):
         self.load_gui_icons()
         #### init gst gplayer engine
         self.player = PlayerEngine(mainGui,self)
+	self.radio_mode = False
 	
+    @property
+    def state(self):
+	return self.player.state
+    
     def load_gui_icons(self):
         ## try to load and use the current gtk icon theme,
         ## if not possible, use fallback icons
@@ -168,7 +173,10 @@ class Player(object):
     def start_stop(self,widget=None):
         if widget:
             if not self.player.state == STATE_PLAYING:
-                return self.mainGui.get_model()
+                try:
+		    return self.mainGui.get_model()
+		except:
+		    return self.stop()
             else:
                 return self.stop()
         else:
@@ -212,7 +220,6 @@ class Player(object):
             time.sleep(1)
     
     def stop(self,widget=None):
-        self.player.stop()
         self.play_btn_pb.set_from_pixbuf(self.play_icon)
         self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
         self.play_thread_id = None
@@ -224,6 +231,8 @@ class Player(object):
         gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % self.play_label)
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b></small>' % self.bitrate_label)
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
+	self.radio_mode = False
+	self.player.stop()
     
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
@@ -249,9 +258,9 @@ class Player(object):
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, ''))
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
 	try:
-	    self.play_thread_id = thread.start_new_thread(self.play_thread, (Cache(data.stream.data, data.stream.size),data.duration))
+	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data.stream.data, data.duration,))
 	except:
-	    self.play_thread_id = thread.start_new_thread(self.play_thread, (Cache(data, size),))
+	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data, size,))
     
     
     def on_drawingarea_realized(self, sender):
@@ -331,7 +340,6 @@ class Player(object):
 	    self.play_options = "continue"
 		
     def check_play_options(self):
-	self.player.stop()
 	self.selected_iter = self.mainGui.selected_iter
 	path = self.mainGui.model.get_path(self.selected_iter)
 	self.path = self.mainGui.path

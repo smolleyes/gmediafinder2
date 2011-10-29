@@ -48,24 +48,22 @@ class PlayerEngine(object):
 	
     def play_cache(self,data,length=None):
 	'''Use this to stream a fileobject'''
-	print 'play fileobject'
 	self.engine.play_cache(data,length)
     
     def play(self):
 	self.engine.play()
     
     def pause(self):
-	print 'here %s' % self.engine.state
-	if self.state == STATE_PAUSED:
-            self.play()
-        else:
-	    self.engine.pause()
+	self.engine.pause()
 	
     def stop(self):
 	self.engine.stop()
 	
     def shutdown(self):
 	self.engine.shutdown()
+	
+    def get_state(self):
+	return self.engine.state
 	
     @property
     def state(self):
@@ -122,9 +120,15 @@ class Mplayer(object):
         @var uri média lu
         @brief Appelé à l'arrêt du flux (fin du fichier/stream)
         '''
-	print "FIN OEF CB"
+	self.timer = 0
+	print code
 	if 'code: 1' in code:
-	    self.playerGui.check_play_options()
+	    try:
+		self.playerGui.check_play_options()
+	    except:
+		self.stop()
+	elif 'code: 4' in code:
+	    self.stop()
     
     def player_position_cb(self, player, dic):
         ''' Player calback
@@ -135,7 +139,7 @@ class Mplayer(object):
         if self.state == STATE_SEEKING or self.state == STATE_PAUSED:
 	    return
 	if self.player.isStreaming:
-	    if self.duration:
+	    if self.duration and int(self.duration) > 0:
 		pos = convert_s(self.timer)
 		timeinf = '%s/%s' % (pos,convert_s(self.duration))
 		percent = int(self.timer) / round(float(self.duration), 2) * 100
@@ -183,40 +187,35 @@ class Mplayer(object):
 	self.player.cmd.volume('%s 1' % (value * 100))
     
     def play_url(self,url):
-	self.timer = 0
 	self.state = STATE_PLAYING
 	self.player.loadfile(url)
 	
     def play_cache(self, data, length=None):
-	self.timer = 0
-	self.player.stop_stream()
-	self.state == STATE_PLAYING
+	self.state = STATE_PLAYING
 	if length:
 	    self.duration = length
 	self.player.stream(data)
 	
     def play(self):
-	self.timer = 0
-	self.state = STATE_PLAYING
-	self.player.pause()
+	if self.state == STATE_PAUSED:
+	    self.state = STATE_PLAYING
 	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
 	
     def pause(self):
 	self.player.pause()
-	self.state = STATE_PAUSED
 	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
+	self.state = STATE_PAUSED
 	
     def stop(self):
-	self.timer = 0
 	if self.state != STATE_READY:
 	    self.player.cmd.stop()
 	try:
 	    self.player.stop_stream()
 	except:
 	    print ''
-	self.state = STATE_READY
 	gobject.idle_add(self.playerGui.seeker.set_value,0)
 	gobject.idle_add(self.playerGui.time_label.set_text,"00:00 / 00:00")
+	self.state = STATE_READY
 	
     def shutdown(self):
 	self.player.cmd.exit()

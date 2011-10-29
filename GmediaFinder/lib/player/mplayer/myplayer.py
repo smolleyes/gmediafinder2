@@ -34,7 +34,7 @@ except ImportError:
 
 gobject.threads_init()
 
-mplayer_cmd = ['mplayer','-slave','-idle','-msglevel','global=6', '-msglevel','global=6', '-cache', '2048']
+mplayer_cmd = ['mplayer','-slave','-idle','-msglevel','global=6', '-msglevel','all=6', '-cache', '2048']
 
 dic_metadata = {
                 'uri'     : None,
@@ -348,6 +348,7 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
                 self.emit('eof', sortie)
                 #gobject.idle_add(self.emit, 'eof', self.metadata['uri'])
                 self.isVideo = False
+                continue
             if sortie == '': n += 1
             else: n = 0
             if n == 10: self.isRunning = False
@@ -385,13 +386,12 @@ class MyPlayer(threading.Thread, gobject.GObject, PlayerStdout):
                 data = d.read(2048)
             self.sb.wait()
         except:
-            output.close()
-            self.isStreaming = False
-            return
+            print 'waiting data'
         output.close()
         self.isStreaming = False
         
     def stop_stream(self):
+        self.timer = 0 
         self.isStreaming = False
     
     def pause(self):
