@@ -17,6 +17,7 @@ class Engines(object):
         self.local_engines_list = []
         self.engines_path = config.engines_path
         self.gui = gui
+        self.first_init = True
         self.load_engines()
     
     def load_engines(self):
@@ -41,7 +42,8 @@ class Engines(object):
         module = __import__(modstr, globals(), locals(), ['*'])
         init = getattr(module, '%s' % engine)
         setattr(self, '%s' % engine, init(self.gui))
-        getattr(self, '%s' % engine).load_gui()
+        return getattr(self, '%s' % engine)
+        
                     
     def load_plugins_conf(self):
         try:
@@ -70,8 +72,11 @@ class Engines(object):
             checkbox.connect('toggled', self.change_engine_state)
             if any(x in engine for x in self.engines_list):
                 checkbox.set_active(True)
-                self.init_engine(engine)
+                if not self.first_init:
+                    self.init_engine(engine)
+                self.gui.engine_list[engine] = ''
             self.gui.engines_box.show_all()
+        self.first_init = False
             
             
     def change_engine_state(self,widget):
