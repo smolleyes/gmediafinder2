@@ -169,6 +169,7 @@ class Player(object):
 	self.bitrate_label =_('Bitrate:')
         self.codec_label =_('Encoding:')
         self.play_label =_('Playing:')
+	self.seekmove= False
          
     def start_stop(self,widget=None):
         if widget:
@@ -214,12 +215,14 @@ class Player(object):
 	    self.player.play_cache(cache,length)
 	else:
 	    self.player.play_url(self.active_link)
-        while play_thread_id == self.play_thread_id and self.player.state != STATE_READY:
-            if play_thread_id == self.play_thread_id:
-                self.player.update_info_section()
-            time.sleep(1)
+        #while play_thread_id == self.play_thread_id and self.player.state != STATE_READY:
+            #if play_thread_id == self.play_thread_id:
+                #self.player.update_info_section()
+            #time.sleep(1)
     
     def stop(self,widget=None):
+	self.radio_mode = False
+	self.player.stop()
         self.play_btn_pb.set_from_pixbuf(self.play_icon)
         self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
         self.play_thread_id = None
@@ -231,8 +234,8 @@ class Player(object):
         gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % self.play_label)
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b></small>' % self.bitrate_label)
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
-	self.radio_mode = False
-	self.player.stop()
+	gobject.idle_add(self.seeker.set_value,0)
+	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
     
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
@@ -393,8 +396,9 @@ class Player(object):
 	    self.mainGui.get_model()
 	    
     def on_seeker_release(self, widget, event):
+	self.seekmove = False
 	value = widget.get_value()
 	self.player.on_seeker_release(value)
 	
     def on_seeker_move(self, widget, event):
-	self.player.engine.state = STATE_SEEKING
+	self.seekmove = True

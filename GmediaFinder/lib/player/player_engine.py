@@ -11,6 +11,7 @@ import time
 import thread
 from glib import markup_escape_text
 import re
+import tempfile
 
 ## gstreamer modules
 import gst
@@ -20,6 +21,9 @@ from mplayer.myplayer import MyPlayer
 from mplayer.myplayer import convert_s
 ## import mplayer engine
 from gplayer.gplayer import *
+
+## vlc
+from vlcplayer import vlc
 
 if sys.platform != "win32":
     from lib.pykey import send_string
@@ -33,12 +37,14 @@ STATE_BUFFERING = 4
 STATE_SEEKING = 5
 
 class PlayerEngine(object):
-    def __init__(self,mainGui,playerGui,engine='mplayer'):
+    def __init__(self,mainGui,playerGui,engine='vlc'):
 	## init main engine
 	if engine == 'mplayer':
 	    self.engine = Mplayer(mainGui,playerGui)
-	else:
+	elif engine == 'gst':
 	    self.engine = GstPlayer(mainGui,playerGui)
+	else:
+	    self.engine = VlcPlayer(mainGui,playerGui)
 	    
     def play_file(self,path):
 	print 'play'
@@ -81,6 +87,160 @@ class PlayerEngine(object):
 	
     def update_info_section(self):
 	self.engine.update_info_section()
+
+
+class VlcPlayer(object):
+    def __init__(self,mainGui,playerGui):
+	self.mainGui = mainGui
+	self.playerGui = playerGui
+	self.title = None
+        self.artist = None
+        self.album = None
+        self.tracknumber = None
+        self.url = None
+        self.nowplaying = None
+        self.position = None
+        self.old_position = None
+        self.instance=vlc.Instance()
+        self.player = self.instance.media_player_new()
+        self.mediastats = vlc.MediaStats()
+        self.events = vlc.EventType
+        self.manager = self.player.event_manager()
+	self.manager.event_attach(self.events.MediaPlayerTimeChanged,
+                                  self.update_info_section,self.player)
+				  
+	self.timer = 0
+	
+    def state_callback(self,event,player):
+        print player.get_state()
+    
+    #############
+    def format_time(self, milliseconds):
+        """formats milliseconds to h:mm:ss
+        """
+        self.position = milliseconds / 1000
+        m, s = divmod(self.position, 60)
+        h, m = divmod(m, 60)
+	if m < 60:
+            return "%02i:%02i" %(m,s)
+	else:
+            return "%i:%02i:%02i" %(h,m,s)
+    
+    def meta_callback(self, event, media):
+        self.title = media.get_meta(vlc.Meta.Title)
+        self.artist = media.get_meta(vlc.Meta.Artist)
+        self.album = media.get_meta(vlc.Meta.Album)
+        self.tracknumber = media.get_meta(vlc.Meta.TrackNumber)
+        self.url = media.get_meta(vlc.Meta.URL)
+        self.nowplaying = media.get_meta(vlc.Meta.NowPlaying)
+        print 'Title: ', self.title
+        print 'Artist: ', self.artist
+        print 'Album: ', self.album
+        print 'Track: ', self.tracknumber
+        print 'Url: ', self.url
+        print 'Now Playing: ', self.nowplaying
+    
+    def attach_drawingarea(self,window_id):
+	if sys.platform == 'win32':
+	    self.player.set_hwnd(window_id)
+	else:
+	    self.player.set_xwindow(window_id)
+	    
+    def stop(self):
+	self.player.stop()
+    
+    def pause(self):
+	state = self.player.get_state()
+	if self.state == 'State.Paused':
+	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
+	else:
+	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
+	self.player.pause()
+	
+    @property
+    def state(self):
+	return self.player.get_state()
+    
+    def play_url(self,link):
+	"""loads a file or stream
+        """
+        self.media = self.instance.media_new(link)
+        self.player.set_media(self.media)
+	#self.media.parse()
+        self.mediaManager = self.media.event_manager()
+        self.mediaManager.event_attach(vlc.EventType.MediaParsedChanged,
+                                      self.meta_callback, self.media)
+
+        self.player.play()
+	
+    def play_cache(self,d,length):
+	output = tempfile.NamedTemporaryFile(suffix='.stream', prefix='tmp_')
+        try:
+            output.write(d.read(1048576))
+            self.play_url(output.name)
+            data = d.read(2048)
+            while data:
+                output.write(data)
+                data = d.read(2048)
+        except:
+            print 'waiting data'
+        output.close()
+	
+    def play_file(self,media):
+	pass
+	
+    def update_info_section(self, event, player=None):
+        """
+        Update the time_label to display the current location
+        in the media file as well as update the seek bar
+        """
+	if self.playerGui.seekmove:
+	    return
+	    
+        ## update timer for mini_player and hide it if more than 5 sec
+        ## without mouse movements
+        self.timer += 1
+        if self.mainGui.fullscreen and self.mainGui.mini_player and self.timer > 4:
+            self.mainGui.show_mini_player()
+        
+        ## disable screensaver
+        if self.mainGui.fullscreen == True and self.mainGui.mini_player == False and self.timer > 55:
+            if sys.platform == "win32":
+                win32api.keybd_event(7,0,0,0)
+            else:
+                send_string('a')
+            self.timer = 0
+        
+        self.length = self.media.get_duration()
+	if self.length != -1:
+          try:
+            self.duration = self.format_time(self.length)
+          except:
+            self.duration = None
+        
+        if self.length > 0:
+            try:
+                self.current_position = self.player.get_time()
+            except:
+                return 0
+            current_position_formated = self.format_time(self.current_position)
+            gobject.idle_add(self.playerGui.time_label.set_text,current_position_formated + "/" + str(self.duration))
+        
+            # Update the seek bar
+            # gtk.Adjustment(value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0)
+	    percent = (float(self.current_position)/float(self.length))*100.0
+            adjustment = gtk.Adjustment(percent, 0.00, 100.0, 0.1, 1.0, 1.0)
+            self.playerGui.seeker.set_adjustment(adjustment)
+	    
+    def on_seeker_release(self, value):
+	if self.player.is_seekable():
+	    self.player.set_position(value / 100.0)
+	else:
+	    print "stream not seekable"
+	
+    def set_volume(self, value):
+	self.player.audio_set_volume(int(value * 100))
+	self.player.play()
 	
 	
 class Mplayer(object):
@@ -213,8 +373,6 @@ class Mplayer(object):
 	    self.player.stop_stream()
 	except:
 	    print ''
-	gobject.idle_add(self.playerGui.seeker.set_value,0)
-	gobject.idle_add(self.playerGui.time_label.set_text,"00:00 / 00:00")
 	self.state = STATE_READY
 	
     def shutdown(self):
@@ -258,6 +416,12 @@ class GstPlayer(object):
 	self.state = STATE_PLAYING
 	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
 	
+    def play_cache(self, data, length=None):
+	self.state = STATE_PLAYING
+	if length:
+	    self.duration = length
+	self.player.play_fileobj(data,length)
+    
     def pause(self):
 	self.player.pause()
 	self.state = STATE_PAUSED
@@ -309,7 +473,7 @@ class GstPlayer(object):
             except gst.QueryError:
                 return 0
             current_position_formated = self.convert_ns(self.current_position)
-            gobject.idle_add(self.playerGui.time_label.set_text,current_position_formated + "/" + self.duration)
+            gobject.idle_add(self.playerGui.time_label.set_text,current_position_formated + "/" + str(self.duration))
         
             # Update the seek bar
             # gtk.Adjustment(value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0)
