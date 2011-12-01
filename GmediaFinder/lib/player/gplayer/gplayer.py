@@ -22,6 +22,7 @@ import time
 import sys
 import gobject
 import gst
+import tempfile
 
 if sys.platform == "win32":
     import win32api
@@ -147,7 +148,7 @@ class Gplayer(gobject.GObject):
             self.videosink = gst.element_factory_make('dshowvideosink')
         else:
             self.videosink = gst.element_factory_make('xvimagesink')
-        self.videosink.set_property('async', False)
+        #self.videosink.set_property('async', False)
         self._player.set_property("audio-sink", audiosink)
         self._player.set_property('video-sink', self.videosink)
         self._player.set_property('buffer-size', 1024000)
@@ -161,6 +162,8 @@ class Gplayer(gobject.GObject):
         self._bus.connect('message::buffering', engine.on_message_buffering)
         self._player.connect('source-setup', self._source_setup)
         self._cache = None
+        self.timer= 0 
+        self.isStreaming = False
         gobject.GObject.__init__(self)
         
     def play_file(self, filename):
@@ -217,11 +220,27 @@ class Gplayer(gobject.GObject):
         self._player.set_state(gst.STATE_PAUSED)
         
     def stop(self, widget=None):
-        '''
-        Cancel playing.
-        You must call this if state is not :const:`STATE_READY` and you want to play a new file, file object or :class:`Cache` object.
-        '''
         self._reset()
+    
+    def stream(self,d):
+        self.isStreaming = True
+        output = tempfile.NamedTemporaryFile(suffix='.stream', prefix='tmp_')
+        #try:
+        output.write(d.read(1048576))
+        self.play_file(output.name)
+        data = d.read(2048)
+        while data and self.isStreaming:
+            output.write(data)
+            data = d.read(2048)
+        #except:
+            #sleep(1)
+        output.close()
+        self.isStreaming = False
+        
+    def stop_stream(self):
+        self.timer = 0 
+        self.isStreaming = False
+    
     
     @property
     def state(self):

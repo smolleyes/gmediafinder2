@@ -30,6 +30,7 @@ class Debrid(object):
                                   #'uploaded'     : '3dljy11', 
                                   'wupload'      : '4iidlag11', 
                                   '4shared'      : '3dljy11',
+				  'videobb'      : '3dl098',
                      		    }
         
            
@@ -58,7 +59,7 @@ class Debrid(object):
         n=0
         while True:
             try:
-                response = urllib2.urlopen(req, timeout=10)
+                response = urllib2.urlopen(req, timeout=30)
             except urllib2.HTTPError, e:
                 print e, n, "essai(s)", link
                 if e.code == 503:

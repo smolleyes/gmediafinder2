@@ -37,15 +37,18 @@ STATE_BUFFERING = 4
 STATE_SEEKING = 5
 
 class PlayerEngine(object):
-    def __init__(self,mainGui,playerGui,engine='vlc'):
+    def __init__(self,mainGui,playerGui,engine='Gstreamer'):
 	## init main engine
-	if engine == 'mplayer':
+	if engine == 'Mplayer':
 	    self.engine = Mplayer(mainGui,playerGui)
-	elif engine == 'gst':
+	    self.engine.name = 'Mplayer'
+	elif engine == 'Gstreamer':
 	    self.engine = GstPlayer(mainGui,playerGui)
+	    self.engine.name = 'Gstreamer'
 	else:
 	    self.engine = VlcPlayer(mainGui,playerGui)
-	    
+	    self.engine.name = 'Vlc'
+    
     def play_file(self,path):
 	print 'play'
     
@@ -63,6 +66,7 @@ class PlayerEngine(object):
 	self.engine.pause()
 	
     def stop(self):
+	print "stop 5"
 	self.engine.stop()
 	
     def shutdown(self):
@@ -101,19 +105,20 @@ class VlcPlayer(object):
         self.nowplaying = None
         self.position = None
         self.old_position = None
+	self.trackinfo = vlc.MediaTrackInfo()
         self.instance=vlc.Instance()
         self.player = self.instance.media_player_new()
         self.mediastats = vlc.MediaStats()
         self.events = vlc.EventType
         self.manager = self.player.event_manager()
-	self.manager.event_attach(self.events.MediaPlayerTimeChanged,
-                                  self.update_info_section,self.player)
+	#self.manager.event_attach(self.events.MediaPlayerTimeChanged,
+                                  #self.update_info_section,self.player)
+	self.manager.event_attach(self.events.MediaPlayerEndReached,
+                                      self._on_finished)
 				  
-	self.timer = 0
+	self.timer = self.playerGui.timer
+	self.state = STATE_READY
 	
-    def state_callback(self,event,player):
-        print player.get_state()
-    
     #############
     def format_time(self, milliseconds):
         """formats milliseconds to h:mm:ss
@@ -125,21 +130,34 @@ class VlcPlayer(object):
             return "%02i:%02i" %(m,s)
 	else:
             return "%i:%02i:%02i" %(h,m,s)
+	
     
-    def meta_callback(self, event, media):
-        self.title = media.get_meta(vlc.Meta.Title)
-        self.artist = media.get_meta(vlc.Meta.Artist)
-        self.album = media.get_meta(vlc.Meta.Album)
-        self.tracknumber = media.get_meta(vlc.Meta.TrackNumber)
-        self.url = media.get_meta(vlc.Meta.URL)
-        self.nowplaying = media.get_meta(vlc.Meta.NowPlaying)
-        print 'Title: ', self.title
-        print 'Artist: ', self.artist
-        print 'Album: ', self.album
-        print 'Track: ', self.tracknumber
-        print 'Url: ', self.url
-        print 'Now Playing: ', self.nowplaying
-    
+    def print_info(self,event=None):
+        mstats = self.mediastats
+        print "Stats:", self.media.get_stats(mstats), mstats
+        print "State:", self.player.get_state()
+        print "Time:", self.player.get_time(), self.player.get_position()
+        print "Length:", self.player.get_length()
+        print "Aspect:", self.player.video_get_aspect_ratio()
+        print "Sub:", self.player.video_get_spu_count(), \
+                      self.player.video_get_spu()
+        print "Audio track:", self.player.audio_get_track_count(), \
+                              self.player.audio_get_track()
+        for id, name in self.player.audio_get_track_description():
+          print "%10d  %s" % (id, name)
+        print "Audio channel:", self.player.audio_get_channel()
+	print "codec :", self.trackinfo
+	self.media.parse()
+	#self.stat = self.media.get_stats(mstats)
+	print self.media.get_tracks_info()
+	
+	#print "%0.f kB/s" % (float(self.stat['demux_bitrate'])*8000)
+        
+    def _on_finished(self,event):
+	print "media finished..."
+	self.state = STATE_READY
+	self.playerGui.check_play_options()
+	
     def attach_drawingarea(self,window_id):
 	if sys.platform == 'win32':
 	    self.player.set_hwnd(window_id)
@@ -147,30 +165,26 @@ class VlcPlayer(object):
 	    self.player.set_xwindow(window_id)
 	    
     def stop(self):
+	self.state = STATE_READY
+	print "stop final"
 	self.player.stop()
     
     def pause(self):
-	state = self.player.get_state()
-	if self.state == 'State.Paused':
+	if self.state == STATE_PAUSED:
 	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
+	    self.state = STATE_PAUSED
 	else:
 	    self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
+	    self.state = STATE_PLAYING
 	self.player.pause()
-	
-    @property
-    def state(self):
-	return self.player.get_state()
-    
+	    
     def play_url(self,link):
 	"""loads a file or stream
         """
         self.media = self.instance.media_new(link)
         self.player.set_media(self.media)
-	#self.media.parse()
         self.mediaManager = self.media.event_manager()
-        self.mediaManager.event_attach(vlc.EventType.MediaParsedChanged,
-                                      self.meta_callback, self.media)
-
+	self.state = STATE_PLAYING
         self.player.play()
 	
     def play_cache(self,d,length):
@@ -182,29 +196,29 @@ class VlcPlayer(object):
             while data:
                 output.write(data)
                 data = d.read(2048)
-        except:
+        except: 
             print 'waiting data'
         output.close()
 	
     def play_file(self,media):
 	pass
 	
-    def update_info_section(self, event, player=None):
+    def update_info_section(self):
         """
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
 	if self.playerGui.seekmove:
 	    return
-	    
         ## update timer for mini_player and hide it if more than 5 sec
         ## without mouse movements
         self.timer += 1
-        if self.mainGui.fullscreen and self.mainGui.mini_player and self.timer > 4:
-            self.mainGui.show_mini_player()
+        if self.playerGui.fullscreen and self.playerGui.mini_player and self.timer > 4:
+	    self.playerGui.show_mini_player()
         
         ## disable screensaver
-        if self.mainGui.fullscreen == True and self.mainGui.mini_player == False and self.timer > 55:
+        #print self.mainGui.fullscreen, self.mainGui.mini_player, self.timer 
+	if self.playerGui.fullscreen == True and self.playerGui.mini_player == False and self.timer > 55:
             if sys.platform == "win32":
                 win32api.keybd_event(7,0,0,0)
             else:
@@ -231,16 +245,27 @@ class VlcPlayer(object):
 	    percent = (float(self.current_position)/float(self.length))*100.0
             adjustment = gtk.Adjustment(percent, 0.00, 100.0, 0.1, 1.0, 1.0)
             self.playerGui.seeker.set_adjustment(adjustment)
+	else:
+	    try:
+                self.current_position = self.player.get_time()
+            except:
+                return 0
+	    current_position_formated = self.format_time(self.current_position)
+            gobject.idle_add(self.playerGui.time_label.set_text,current_position_formated + "/-1:00:00")
+	    if self.current_position > 2:
+		gobject.idle_add(self.playerGui.seeker.set_sensitive,0)
 	    
     def on_seeker_release(self, value):
 	if self.player.is_seekable():
-	    self.player.set_position(value / 100.0)
+	    try:
+		self.player.set_position(value / 100.0)
+	    except:
+		print "seek error..."
 	else:
 	    print "stream not seekable"
 	
     def set_volume(self, value):
 	self.player.audio_set_volume(int(value * 100))
-	self.player.play()
 	
 	
 class Mplayer(object):
@@ -354,6 +379,7 @@ class Mplayer(object):
 	self.state = STATE_PLAYING
 	if length:
 	    self.duration = length
+	print data, length
 	self.player.stream(data)
 	
     def play(self):
@@ -389,8 +415,9 @@ class GstPlayer(object):
 	self.state = STATE_READY
 	## time
         self.timeFormat = gst.Format(gst.FORMAT_TIME)
-	self.timer = 0
+	self.timer = self.playerGui.timer
 	self.duration = None
+	self.cache_duration = None
 	## seek
 	self._cbuffering = -1
 	## media infos
@@ -405,6 +432,7 @@ class GstPlayer(object):
 	self.player._player.set_property("volume", float(value))
     
     def play_url(self,url):
+	self.state = STATE_PLAYING
 	self.player.play_url(url)
 	
     def play(self):
@@ -414,18 +442,18 @@ class GstPlayer(object):
 	self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
 	self.player.play()
 	self.state = STATE_PLAYING
-	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
+	gobject.idle_add(self.playerGui.pause_btn_pb.set_from_pixbuf,self.playerGui.pause_icon)
 	
     def play_cache(self, data, length=None):
 	self.state = STATE_PLAYING
 	if length:
-	    self.duration = length
-	self.player.play_fileobj(data,length)
+	    self.cache_duration = length
+	self.player.stream(data)
     
     def pause(self):
 	self.player.pause()
 	self.state = STATE_PAUSED
-	self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.play_icon)
+	gobject.idle_add(self.playerGui.pause_btn_pb.set_from_pixbuf,self.playerGui.play_icon)
 	
     def stop(self):
 	self.player.stop()
@@ -437,7 +465,7 @@ class GstPlayer(object):
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
-	if self.state == STATE_SEEKING or self.state == STATE_BUFFERING or self.state == STATE_PAUSED:
+	if self.state == STATE_PAUSED:
 	    return
 	    
         if self.player.state == STATE_READY:
@@ -448,26 +476,32 @@ class GstPlayer(object):
         
         ## update timer for mini_player and hide it if more than 5 sec
         ## without mouse movements
-        self.timer += 1
-        if self.mainGui.fullscreen and self.mainGui.mini_player and self.timer > 4:
-            self.mainGui.show_mini_player()
+        self.playerGui.timer += 1
+        if self.playerGui.fullscreen and self.playerGui.mini_player and self.playerGui.timer > 4:
+            self.playerGui.show_mini_player()
         
         ## disable screensaver
-        if self.mainGui.fullscreen == True and self.mainGui.mini_player == False and self.timer > 55:
+        if self.playerGui.fullscreen == True and self.playerGui.mini_player == False and self.playerGui.timer > 55:
             if sys.platform == "win32":
                 win32api.keybd_event(7,0,0,0)
             else:
                 send_string('a')
             self.timer = 0
         
-        if self.duration == None:
+	
+	if self.duration == None:
           try:
-            self.length = self.player._player.query_duration(self.timeFormat, None)[0]
-            self.duration = self.convert_ns(self.length)
+              self.length = self.player._player.query_duration(self.timeFormat, None)[0]
+              self.duration = self.convert_ns(self.length)
           except gst.QueryError:
-            self.duration = None
-        
-        if self.duration != None:
+	      self.duration = None
+        elif self.cache_duration:
+	    self.length = int(self.cache_duration)
+	    self.duration = self.format_time(int(self.cache_duration))
+	else:
+	    self.duration = None
+	
+	if self.duration != None:
             try:
                 self.current_position = self.player._player.query_position(self.timeFormat, None)[0]
             except gst.QueryError:
@@ -492,17 +526,14 @@ class GstPlayer(object):
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
+	    self.player.stop()
 	    gobject.idle_add(self.player.emit, 'finished')
-            self.playerGui.check_play_options()
         elif t == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
             print "Error: %s" % err, debug
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
-            ## continue if continue option selected...
-            if self.playerGui.play_options == "continue":
-                self.playerGui.check_play_options()
     
     def on_sync_message(self, bus, message):
         if message.structure is None:
@@ -523,12 +554,13 @@ class GstPlayer(object):
 	    buffering = _('Buffering :')
 	    self.status = STATE_BUFFERING
 	    gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b> %s%s</small>' % (buffering,percent,'%'))
-	
+
 	if percent == 100:
+	    self._cbuffering = -1
 	    if self.state == STATE_PAUSED:
 		self.mainGui.info_label.set_text('')
+		gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b></small>' % self.mainGui.media_name)
 		self.play()
-	    self._cbuffering = -1
 	elif self.status == STATE_BUFFERING:
 	    if not self.state == STATE_PAUSED:
 		self.pause()
@@ -542,6 +574,17 @@ class GstPlayer(object):
             return "%02i:%02i" %(m,s)
         else:
             h,m = divmod(m, 60)
+            return "%i:%02i:%02i" %(h,m,s)
+	    
+    def format_time(self, sec):
+        """formats milliseconds to h:mm:ss
+        """
+        self.position = sec
+        m, s = divmod(self.position, 60)
+        h, m = divmod(m, 60)
+	if m < 60:
+            return "%02i:%02i" %(m,s)
+	else:
             return "%i:%02i:%02i" %(h,m,s)
     
     def bus_message_tag(self, bus, message):
@@ -562,7 +605,10 @@ class GstPlayer(object):
 				img.write(taglist[key])
 				img.close()
 				self.media_thumb = gtk.gdk.pixbuf_new_from_file_at_scale(ipath, 64,64, 1)
-				self.mainGui.model.set_value(self.mainGui.selected_iter, 0, self.media_thumb)
+				try:
+				    self.mainGui.model.set_value(self.mainGui.selected_iter, 0, self.media_thumb)
+				except:
+				    thumb = None
 			elif key == "bitrate":
 				r = int(taglist[key]) / 1000
 				self.file_tags[key] = "%sk" % r
@@ -616,4 +662,4 @@ class GstPlayer(object):
 	duration = self.player._player.query_duration(self.timeFormat, None)[0]
 	time = value * (duration / 100)
 	self.player._player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
-	self.state = STATE_PLAYING
+	self.playerGui.seekmove = False

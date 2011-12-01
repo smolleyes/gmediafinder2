@@ -34,16 +34,6 @@ import pangocairo
 
 if sys.platform == "win32":
     import win32api
-import lib.debrid as debrider
-from lib.downloads import downloader
-from lib.player.player_gui import Player
-from lib.config import *
-from lib.engines.main import Engines
-from lib.functions import *
-from lib.playlist import Playlist
-if sys.platform != "win32":
-    from lib.pykey import send_string
-import lib.checklinks as checkLink
 ## custom lib
 try:
     import lib.debrid as debrider
@@ -56,6 +46,7 @@ try:
     if sys.platform != "win32":
         from lib.pykey import send_string
     import lib.checklinks as checkLink
+    from lib.get_stream import Browser as browser
 except:
     from GmediaFinder.lib.config import *
     from GmediaFinder.lib.engines import Engines
@@ -75,10 +66,7 @@ class GsongFinder(object):
         self.is_paused = False
         self.nbresults = 100
         self.user_search = ""
-        self.fullscreen = False
-        self.mini_player = True
         self.showed = True ## trayicon
-        self.timer = 0
         self.settings_folder = None
         self.conf_file = None
         self.active_downloads = 0
@@ -258,23 +246,6 @@ class GsongFinder(object):
         ## engines
         self.dlg = self.gladeGui.get_widget("settings_dialog")
         self.engines_box = self.gladeGui.get_widget("engines_box")
-
-        ## mini player
-        self.miniPlayer = self.gladeGui.get_widget("mini-player")
-        self.miniPlayer.set_size_request(width,40)
-        self.miniPlayer.move(0,height-42)
-        self.miniPlayer_init = False
-        self.miniPlayer.set_keep_above(True)
-        self.miniPlayer.set_transient_for(self.window)
-        self.infobox = self.gladeGui.get_widget("btn_info_box")
-        self.infobox_cont = self.gladeGui.get_widget("btn_infobox_cont")
-        self.mini_infobox_cont = self.gladeGui.get_widget("mini_infobox_cont")
-        ## btn box
-        self.btn_box = self.gladeGui.get_widget("btn_box")
-        self.btn_box_cont = self.gladeGui.get_widget("btn_box_cont")
-        self.mini_btn_box_cont = self.gladeGui.get_widget("mini_btn_box_cont")
-        
-        self.mini_seekbox = self.gladeGui.get_widget("mini_seekbox_cont")
         
         ## create engines selector combobox
         box = self.gladeGui.get_widget("engine_selector_box")
@@ -300,6 +271,13 @@ class GsongFinder(object):
         ## tray icon
         if systray == 'True':
             self.__create_trayicon()
+        
+        
+        ## browser notebook
+        self.media_notebook = self.gladeGui.get_widget("media_notebook")
+        self.browser_box = self.gladeGui.get_widget("browser_cont")
+        self.browser = browser(self)
+        self.browser.load_uri('http://video.google.com/')
         
         ## start gui
         self.window.show_all()
@@ -519,7 +497,6 @@ class GsongFinder(object):
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             return self.Playlist.on_selected(self.Playlist.treeview)
         ## play in engine
-        self.stop_play()
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
@@ -705,53 +682,19 @@ class GsongFinder(object):
                         )
 
     def stop_play(self,widget=None):
-        self.player.stop()
         self.active_link = None
+        self.player.stop()
     
     def start_play(self,url):
+        if self.player.state != 3:
+            self.stop_play()
+        self.media_notebook.set_current_page(1)
         self.active_link = url
         self.player.start_play(url)
 		
     def load_new_page(self):
         self.change_page_request=True
         self.change_page()
-            
-    def set_fullscreen(self,widget=None):
-        self.timer = 0
-        if self.fullscreen :
-            self.miniPlayer.hide()
-            self.btn_box.reparent(self.btn_box_cont)
-            self.infobox.reparent(self.infobox_cont)
-            gobject.idle_add(self.search_box.show)
-            gobject.idle_add(self.results_notebook.show)
-            gobject.idle_add(self.player.control_box.show)
-            gobject.idle_add(self.options_bar.show)
-            self.window.window.set_cursor(None)
-            gobject.idle_add(self.window.window.unfullscreen)
-            gobject.idle_add(self.window.set_position,gtk.WIN_POS_CENTER)
-            if sys.platform == 'win32':
-                self.window.set_decorated(True)
-            self.fullscreen = False
-            gobject.idle_add(self.player.fullscreen_btn_pixb.set_from_pixbuf,self.player.fullscreen_pix)
-            gobject.idle_add(self.player.fullscreen_btn_pixb.set_tooltip_text,_('enter fullscreen'))
-        else:
-            gobject.idle_add(self.search_box.hide)
-            gobject.idle_add(self.results_notebook.hide)
-            gobject.idle_add(self.options_bar.hide)
-            self.btn_box.reparent(self.mini_btn_box_cont)
-            self.infobox.reparent(self.mini_infobox_cont)
-            pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
-            color = gtk.gdk.Color()
-            cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
-            self.window.window.set_cursor(cursor)
-            gobject.idle_add(self.player.control_box.hide)
-            gobject.idle_add(self.window.window.fullscreen)
-            if sys.platform == 'win32':
-                self.window.set_decorated(False)
-            self.fullscreen = True
-            self.mini_player = False
-            gobject.idle_add(self.player.fullscreen_btn_pixb.set_from_pixbuf,self.player.leave_fullscreen_pix)
-            gobject.idle_add(self.player.fullscreen_btn_pixb.set_tooltip_text,_('leave fullscreen'))
         
 		
     def update_image(self,img, w, h):
@@ -764,34 +707,13 @@ class GsongFinder(object):
 		pixbuf = img.scale_simple(new_width, new_height, gtk.gdk.INTERP_BILINEAR)
 		return pixbuf
     
-    def show_mini_player(self):
-        self.timer = 0
-        visible =  self.miniPlayer.get_property("visible")
-        if self.mini_player and visible :
-            gobject.idle_add(self.miniPlayer.hide)
-            self.mini_player = False
-            pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
-            color = gtk.gdk.Color()
-            cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
-            try:
-                self.window.window.set_cursor(cursor)
-            except:
-                return
-        else:
-            if not visible:
-                gobject.idle_add(self.miniPlayer.show)
-            self.mini_player = True
-            try:
-                self.window.window.set_cursor(None)
-            except:
-                return
 
     def onKeyPress(self, widget, event):
-        if self.search_entry.is_focus():
+        if self.search_entry.is_focus() or self.browser.view.has_focus():
             return
         key = gtk.gdk.keyval_name(event.keyval)
         if key == 'f':
-            return self.set_fullscreen()
+            return self.player.set_fullscreen()
         elif key == 'space':
             return self.pause_resume()
         elif key == 's':
@@ -807,8 +729,8 @@ class GsongFinder(object):
                 gobject.idle_add(self.notebook.set_current_page,0)
 
         # If user press Esc button in fullscreen mode
-        if event.keyval == gtk.keysyms.Escape and self.fullscreen:
-            return self.set_fullscreen()
+        if event.keyval == gtk.keysyms.Escape and self.player.fullscreen:
+            return self.player.set_fullscreen()
 
     def on_treeview_clicked(self,widget):
         '''prepare media infos from engine if available'''

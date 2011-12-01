@@ -17,28 +17,29 @@ class WebView(webkit.WebView):
 		self.execute_script('document.title=oldtitle;')
 		return html
  
-class Crawler(gtk.Window):
+class Crawler():
     def __init__(self, url):
         gtk.Window.__init__(self)
+	self.connect('delete-event', lambda window, event: gtk.main_quit())
+	self.scrolled_window = gtk.ScrolledWindow()
         self._url = url
     
     def crawl(self):
         view = WebView()
         view.load_uri(self._url)
-        view.connect('document-load-finished', self._finished_loading)
-        self.add(view)
+	view.connect('resource-request-starting', self.resource_cb)
+
+	self.scrolled_window.add(view)     
+	self.add(self.scrolled_window)
+	self.set_size_request(1024,800)
 	self.show_all()
         gtk.main()
     
-    def _finished_loading(self, view, frame):
-        d = urllib.unquote(view.get_html())
-        data = re.sub('&quot;','"',d)
-        try:
-            link = re.search('clip":{"url":"(.*?)"',data).group(1)
-        except:
-            return
-        print link
-        gtk.main_quit()
+    def resource_cb(self, view, frame, resource, request, response):
+	req = request.get_uri()
+    	if 'megavideo.com/files/' in req:
+		print "MEGAVIDEO: Link %s detected" % req
+		
  
 def main():
     options = get_cmd_options()

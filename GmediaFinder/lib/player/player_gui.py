@@ -23,6 +23,7 @@ except:
 
 class Player(object):
     def __init__(self,mainGui):
+	self.timer = 0
         self.gladeGui = mainGui.gladeGui
         self.time_label = gtk.Label("00:00 / 00:00")
         self.media_name = ""
@@ -45,6 +46,7 @@ class Player(object):
         self.movie_window.connect('button-press-event', self.on_drawingarea_clicked)
         self.movie_window.add_events(gtk.gdk.BUTTON_PRESS_MASK)
         self.pic_box = self.gladeGui.get_widget("picture_box")
+	self.movie_window.realize()
         
         # seekbar and signals
         self.control_box = self.gladeGui.get_widget("control_box")
@@ -56,7 +58,7 @@ class Player(object):
         self.seekbox.add(self.seeker)
         self.seeker.connect("button-release-event", self.on_seeker_release)
         self.seeker.connect("button-press-event", self.on_seeker_move)
-	self.seeker_move = None
+	self.seekmove = None
         #timer
         self.timerbox = self.gladeGui.get_widget("timer_box")
         self.timerbox.add(self.time_label)
@@ -65,6 +67,27 @@ class Player(object):
         self.media_name_label.set_property('ellipsize', pango.ELLIPSIZE_END)
         self.media_codec_label = self.gladeGui.get_widget("media_codec")
         self.media_bitrate_label = self.gladeGui.get_widget("media_bitrate")
+	
+	## mini player
+	width = gtk.gdk.screen_width()
+	height = gtk.gdk.screen_height()
+        self.miniPlayer = self.gladeGui.get_widget("mini-player")
+        self.miniPlayer.set_size_request(width,40)
+        self.miniPlayer.move(0,height-42)
+        self.miniPlayer_init = False
+        self.miniPlayer.set_keep_above(True)
+        #self.miniPlayer.set_transient_for(self.mainGui.window)
+        self.infobox = self.gladeGui.get_widget("btn_info_box")
+        self.infobox_cont = self.gladeGui.get_widget("btn_infobox_cont")
+        self.mini_infobox_cont = self.gladeGui.get_widget("mini_infobox_cont")
+	self.fullscreen = False
+        self.mini_player = False
+        ## btn box
+        self.btn_box = self.gladeGui.get_widget("btn_box")
+        self.btn_box_cont = self.gladeGui.get_widget("btn_box_cont")
+        self.mini_btn_box_cont = self.gladeGui.get_widget("mini_btn_box_cont")
+        
+        self.mini_seekbox = self.gladeGui.get_widget("mini_seekbox_cont")
 	
         ## SIGNALS
         dic = {
@@ -161,7 +184,7 @@ class Player(object):
         self.fullscreen_btn = self.gladeGui.get_widget("fullscreen_btn")
         self.fullscreen_btn_pixb = self.gladeGui.get_widget("fullscreen_pix")
         self.fullscreen_btn_pixb.set_from_pixbuf(self.fullscreen_pix)
-        self.fullscreen_btn.connect('clicked', self.mainGui.set_fullscreen)
+        self.fullscreen_btn.connect('clicked', self.set_fullscreen)
         self.fullscreen_btn.set_tooltip_text(_("enter fullscreen"))
         self.changepage_btn.set_sensitive(0)
         self.pageback_btn.set_sensitive(0)
@@ -201,8 +224,8 @@ class Player(object):
                     #self.player.set_property('flags', "Render the video stream")
                 #else:
                     #self.player.set_property('flags', "Render the audio stream")
-	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
-	self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
+	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
+	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 	try:
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
 	except:
@@ -210,24 +233,27 @@ class Player(object):
 	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
 
     def play_thread(self,cache=None,length=None):
+	gobject.idle_add(self.seeker.set_sensitive,1)
         play_thread_id = self.play_thread_id
 	if cache:
 	    self.player.play_cache(cache,length)
 	else:
 	    self.player.play_url(self.active_link)
-        #while play_thread_id == self.play_thread_id and self.player.state != STATE_READY:
-            #if play_thread_id == self.play_thread_id:
-                #self.player.update_info_section()
-            #time.sleep(1)
+	state = self.player.state
+	print "play thread player state : %s" % state
+        while play_thread_id == self.play_thread_id and state != STATE_READY:
+            if play_thread_id == self.play_thread_id:
+		if not self.seekmove:
+		    self.player.update_info_section()
+            time.sleep(1)
     
     def stop(self,widget=None):
 	self.radio_mode = False
-	self.player.stop()
-        self.play_btn_pb.set_from_pixbuf(self.play_icon)
-        self.pause_btn_pb.set_from_pixbuf(self.pause_icon)
+        gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
+        gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
         self.play_thread_id = None
         self.active_link = None
-        self.movie_window.queue_draw()
+        gobject.idle_add(self.movie_window.queue_draw)
         bit=_('Bitrate:')
         enc=_('Encoding:')
         play_label=_('Playing:')
@@ -236,6 +262,7 @@ class Player(object):
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
 	gobject.idle_add(self.seeker.set_value,0)
 	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
+	self.player.stop()
     
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
@@ -260,9 +287,12 @@ class Player(object):
         gobject.idle_add(self.media_name_label.set_markup,markup)
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, ''))
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
-	try:
-	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data.stream.data, data.duration,))
-	except:
+	if name is None:
+	    try:
+		self.play_thread_id = thread.start_new_thread(self.play_thread, (data.stream.data, data.duration,))
+	    except:
+		return
+	else:
 	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data, size,))
     
     
@@ -303,30 +333,30 @@ class Player(object):
 		return True
     
     def on_motion_notify(self, widget, event):
-        visible =  self.mainGui.miniPlayer.get_property("visible")
-        self.timer = 0
-        if self.mainGui.fullscreen and not self.mainGui.mini_player and not visible:
-            self.mainGui.show_mini_player()
+        visible =  self.miniPlayer.get_property("visible")
+	self.timer = 0
+        if self.fullscreen and not self.mini_player and not visible:
+            self.show_mini_player()
     
     def on_drawingarea_clicked(self, widget, event):
         if event.type == gtk.gdk._2BUTTON_PRESS:
-            return self.mainGui.set_fullscreen()
+            self.set_fullscreen()
 	    
     def set_play_options(self,widget):
 	wname = widget.name
 	wstate = widget.get_active()
 	if wname == "shuffle_btn":
-		if wstate:
-		    self.play_options = "shuffle"
-		    if not self.shuffle_btn.get_active():
-			self.shuffle_btn.set_active(1)
-		    if self.loop_btn.get_active():
-			self.loop_btn.set_active(0)
+	    if wstate:
+		self.play_options = "shuffle"
+		if not self.shuffle_btn.get_active():
+		    self.shuffle_btn.set_active(1)
+		if self.loop_btn.get_active():
+		    self.loop_btn.set_active(0)
+	    else:
+		if self.loop_btn.get_active():
+		    self.play_options = "loop"
 		else:
-		    if self.loop_btn.get_active():
-			self.play_options = "loop"
-		    else:
-			self.play_options = "continue"
+		    self.play_options = "continue"
 	elif wname == "repeat_btn":
 	    if wstate:
 		self.play_options = "loop"
@@ -343,8 +373,11 @@ class Player(object):
 	    self.play_options = "continue"
 		
     def check_play_options(self):
-	self.selected_iter = self.mainGui.selected_iter
-	path = self.mainGui.model.get_path(self.selected_iter)
+	try:
+	    self.selected_iter = self.mainGui.selected_iter
+	    path = self.mainGui.model.get_path(self.selected_iter)
+	except:
+	    return
 	self.path = self.mainGui.path
 	model = None
 	treeview = None
@@ -402,3 +435,65 @@ class Player(object):
 	
     def on_seeker_move(self, widget, event):
 	self.seekmove = True
+	
+    def set_fullscreen(self,widget=None):
+        self.timer = 0
+        if self.fullscreen :
+            self.miniPlayer.hide()
+            self.btn_box.reparent(self.btn_box_cont)
+            self.infobox.reparent(self.infobox_cont)
+            gobject.idle_add(self.mainGui.search_box.show)
+            gobject.idle_add(self.mainGui.results_notebook.show)
+	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,1)
+            gobject.idle_add(self.control_box.show)
+            gobject.idle_add(self.mainGui.options_bar.show)
+            self.mainGui.window.window.set_cursor(None)
+            gobject.idle_add(self.mainGui.window.window.unfullscreen)
+            gobject.idle_add(self.mainGui.window.set_position,gtk.WIN_POS_CENTER)
+            if sys.platform == 'win32':
+                self.mainGui.window.set_decorated(True)
+            self.fullscreen = False
+            gobject.idle_add(self.fullscreen_btn_pixb.set_from_pixbuf,self.fullscreen_pix)
+            gobject.idle_add(self.fullscreen_btn_pixb.set_tooltip_text,_('enter fullscreen'))
+        else:
+            gobject.idle_add(self.mainGui.search_box.hide)
+            gobject.idle_add(self.mainGui.results_notebook.hide)
+	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,0)
+            gobject.idle_add(self.mainGui.options_bar.hide)
+            self.btn_box.reparent(self.mini_btn_box_cont)
+            self.infobox.reparent(self.mini_infobox_cont)
+            pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
+            color = gtk.gdk.Color()
+            cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
+            self.mainGui.window.window.set_cursor(cursor)
+            gobject.idle_add(self.control_box.hide)
+            gobject.idle_add(self.mainGui.window.window.fullscreen)
+            if sys.platform == 'win32':
+                self.mainGui.window.set_decorated(False)
+            self.fullscreen = True
+            self.mini_player = False
+            gobject.idle_add(self.fullscreen_btn_pixb.set_from_pixbuf,self.leave_fullscreen_pix)
+            gobject.idle_add(self.fullscreen_btn_pixb.set_tooltip_text,_('leave fullscreen'))
+	    
+    def show_mini_player(self):
+	self.timer = 0
+        visible =  self.miniPlayer.get_property("visible")
+        if self.mini_player and visible :
+            gobject.idle_add(self.miniPlayer.hide)
+            self.mini_player = False
+            pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
+            color = gtk.gdk.Color()
+            cursor = gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
+            try:
+                self.mainGui.window.window.set_cursor(cursor)
+            except:
+                return
+        else:
+            if not visible:
+                gobject.idle_add(self.miniPlayer.show)
+            self.mini_player = True
+            try:
+		self.mainGui.window.window.set_cursor(None)
+            except:
+                return
+		
