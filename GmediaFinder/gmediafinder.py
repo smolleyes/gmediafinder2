@@ -709,7 +709,7 @@ class GsongFinder(object):
     
 
     def onKeyPress(self, widget, event):
-        if self.search_entry.is_focus() or self.browser.view.has_focus():
+        if self.search_entry.is_focus() or self.browser.url_bar.is_focus() or self.browser.view.has_focus():
             return
         key = gtk.gdk.keyval_name(event.keyval)
         if key == 'f':

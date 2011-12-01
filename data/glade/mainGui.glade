@@ -571,13 +571,174 @@
                                     <property name="can_focus">True</property>
                                     <property name="show_border">False</property>
                                     <child>
-                                      <widget class="GtkScrolledWindow" id="browser_cont">
+                                      <widget class="GtkVBox" id="vbox15">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="hscrollbar_policy">automatic</property>
-                                        <property name="vscrollbar_policy">automatic</property>
+                                        <property name="can_focus">False</property>
                                         <child>
-                                          <placeholder/>
+                                          <widget class="GtkHBox" id="hbox18">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <widget class="GtkButton" id="back_btn">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="relief">none</property>
+                                                <signal name="clicked" handler="on_back_btn_clicked" swapped="no"/>
+                                                <child>
+                                                  <widget class="GtkImage" id="image14">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-go-back</property>
+                                                  </widget>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkButton" id="next_btn">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="relief">none</property>
+                                                <signal name="clicked" handler="on_next_btn_clicked" swapped="no"/>
+                                                <child>
+                                                  <widget class="GtkImage" id="image15">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-go-forward</property>
+                                                  </widget>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkButton" id="refresh_btn">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="relief">none</property>
+                                                <signal name="clicked" handler="on_refresh_btn_clicked" swapped="no"/>
+                                                <child>
+                                                  <widget class="GtkImage" id="image16">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-refresh</property>
+                                                  </widget>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">2</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkButton" id="home_btn">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="relief">none</property>
+                                                <signal name="clicked" handler="on_home_btn_clicked" swapped="no"/>
+                                                <child>
+                                                  <widget class="GtkImage" id="image17">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-home</property>
+                                                  </widget>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">3</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkEntry" id="browser_entry">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="invisible_char">•</property>
+                                                <property name="invisible_char_set">True</property>
+                                                <property name="secondary_icon_stock">gtk-clear</property>
+                                                <property name="primary_icon_activatable">False</property>
+                                                <property name="secondary_icon_activatable">True</property>
+                                                <property name="primary_icon_sensitive">True</property>
+                                                <property name="secondary_icon_sensitive">True</property>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">4</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <widget class="GtkButton" id="search_btn">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="use_action_appearance">False</property>
+                                                <property name="relief">none</property>
+                                                <signal name="clicked" handler="on_search_btn_clicked" swapped="no"/>
+                                                <child>
+                                                  <widget class="GtkImage" id="image18">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">gtk-media-play</property>
+                                                  </widget>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">5</property>
+                                              </packing>
+                                            </child>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <widget class="GtkVBox" id="browser_box">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <widget class="GtkScrolledWindow" id="browser_cont">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="hscrollbar_policy">automatic</property>
+                                                <property name="vscrollbar_policy">automatic</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </widget>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                          </widget>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
                                         </child>
                                       </widget>
                                     </child>

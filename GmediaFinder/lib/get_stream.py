@@ -21,9 +21,25 @@ class WebView(webkit.WebView):
 class Browser():
     def __init__(self, mainGui):
 	self.mainGui = mainGui
-        self.view = WebView()
-        self.view.connect('resource-request-starting', self.resource_cb)
-	self.mainGui.browser_box.add(self.view)    
+	self.url_bar = self.mainGui.gladeGui.get_widget("browser_entry")
+	self.url_bar.connect("activate", self.on_active)
+	self.back_button = self.mainGui.gladeGui.get_widget("back_btn")
+	self.forward_button = self.mainGui.gladeGui.get_widget("next_btn")
+	self.view = WebView()
+	## get requested pages
+	self.view.connect('resource-request-starting', self.resource_cb)
+	## update adress bar
+	self.view.connect("load_committed", self.update_buttons)
+	self.mainGui.browser_box.add(self.view)
+	
+	## SIGNALS
+	dic = {
+	"on_back_btn_clicked" : self.go_back,
+	"on_next_btn_clicked" : self.go_forward,
+	"on_refresh_btn_clicked" : self.refresh,
+	"on_search_btn_clicked" : self.on_active,
+	}
+	self.mainGui.gladeGui.signal_autoconnect(dic)
 	
     def load_uri(self,uri):
 	gobject.idle_add(self.view.load_uri,uri)  
@@ -68,4 +84,39 @@ class Browser():
 	    self.mainGui.media_name = 'Streaming Gametrailer...'
 	    self.mainGui.start_play(req)
 	    gobject.idle_add(self.view.go_back)
+	    
+    def on_active(self, widget, data=None):
+        '''When the user enters an address in the bar, we check to make
+           sure they added the http://, if not we add it for them.  Once
+           the url is correct, we just ask webkit to open that site.'''
+        url = self.url_bar.get_text()
+        try:
+            url.index("://")
+        except:
+            url = "http://"+url
+        self.url_bar.set_text(url)
+        self.view.open(url)
+
+    def go_back(self, widget, data=None):
+        '''Webkit will remember the links and this will allow us to go
+           backwards.'''
+        self.view.go_back()
+
+    def go_forward(self, widget, data=None):
+        '''Webkit will remember the links and this will allow us to go
+           forwards.'''
+        self.view.go_forward()
+
+    def refresh(self, widget, data=None):
+        '''Simple makes webkit reload the current back.'''
+        self.view.reload()
+
+    def update_buttons(self, widget, data=None):
+        '''Gets the current url entry and puts that into the url bar.
+           It then checks to see if we can go back, if we can it makes the
+           back button clickable.  Then it does the same for the foward
+           button.'''
+        self.url_bar.set_text( widget.get_main_frame().get_uri() )
+        self.back_button.set_sensitive(self.view.can_go_back())
+        self.forward_button.set_sensitive(self.view.can_go_forward())
 
