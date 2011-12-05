@@ -32,12 +32,16 @@ class Browser():
 	self.view.connect("load_committed", self.update_buttons)
 	self.mainGui.browser_box.add(self.view)
 	
+	## opt
+	self.homepage = 'http://www.google.com'
+	
 	## SIGNALS
 	dic = {
 	"on_back_btn_clicked" : self.go_back,
 	"on_next_btn_clicked" : self.go_forward,
 	"on_refresh_btn_clicked" : self.refresh,
 	"on_search_btn_clicked" : self.on_active,
+	"on_home_btn_clicked" : self.go_home,
 	}
 	self.mainGui.gladeGui.signal_autoconnect(dic)
 	
@@ -97,6 +101,9 @@ class Browser():
         self.url_bar.set_text(url)
         self.view.open(url)
 
+    def go_home(self,widget):
+	self.view.open(self.homepage)
+    
     def go_back(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            backwards.'''
