@@ -165,6 +165,7 @@ class GsongFinder(object):
         self.warn_dialog = self.gladeGui.get_widget("warn_dialog")
         self.systray_check = self.gladeGui.get_widget("systray_enabled")
         self.down_dir = down_dir
+        self.down_btn = self.gladeGui.get_widget("down_btn")
         if downloads == 'True':
             self.downloads_check.set_active(1)
         if convert == 'True':
