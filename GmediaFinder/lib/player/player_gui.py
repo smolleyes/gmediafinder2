@@ -31,6 +31,8 @@ class Player(object):
         self.mainGui = mainGui
 	self.xsink = False
 	self.media_codec = None
+	self.old_link = None
+	self.play_thread_id = None
 	## play mode options
 	self.play_options = "continue"
         
@@ -91,10 +93,11 @@ class Player(object):
 	
         ## SIGNALS
         dic = {
-        "on_pause_btn_clicked" : self.pause,
+        "on_pause_btn_clicked" : self.pause_resume,
         "on_shuffle_btn_toggled" : self.set_play_options,
         "on_repeat_btn_toggled" : self.set_play_options,
         "on_vol_btn_value_changed" : self.on_volume_changed,
+	"on_media_notebook_switch_page" : self.refresh_screen,
         }
         self.gladeGui.signal_autoconnect(dic)
         #### load buttons and pixbufs
@@ -239,9 +242,7 @@ class Player(object):
 	    self.player.play_cache(cache,length)
 	else:
 	    self.player.play_url(self.active_link)
-	state = self.player.state
-	print "play thread player state : %s" % state
-        while play_thread_id == self.play_thread_id and state != STATE_READY:
+        while play_thread_id == self.play_thread_id and self.player.state != 3:
             if play_thread_id == self.play_thread_id:
 		if not self.seekmove:
 		    self.player.update_info_section()
@@ -267,8 +268,13 @@ class Player(object):
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
     
-    def pause(self,widget=None):
-	self.player.pause()
+	
+    def pause_resume(self,widget=None):
+        if not self.state == 2:
+            self.pause_btn_pb.set_from_pixbuf(self.play_icon)
+            self.player.pause()
+        else:
+            self.player.play()
         
     def shutdown(self):
 	self.player.shutdown()
@@ -310,6 +316,10 @@ class Player(object):
 	    except:
 		return
 
+    def refresh_screen(self, page, page_num, param):
+	print "change page %s %s" % (page, page_num)
+        self.movie_window.queue_draw()
+    
     def on_expose_event(self, widget, event):
         if self.player.state == STATE_PLAYING:
             return
@@ -435,6 +445,8 @@ class Player(object):
 	
     def on_seeker_move(self, widget, event):
 	self.seekmove = True
+	if not self.state == STATE_PAUSED:
+            self.pause_resume()
 	
     def set_fullscreen(self,widget=None):
         self.timer = 0

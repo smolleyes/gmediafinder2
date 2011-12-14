@@ -156,7 +156,6 @@ class Gplayer(gobject.GObject):
         self._bus.add_signal_watch()
         self._bus.enable_sync_message_emission()
         self._bus.connect("message", engine.on_message)
-        #self._bus.connect("finished", self._on_finished)
         self._bus.connect("sync-message::element", engine.on_sync_message)
         self._bus.connect("message::tag", engine.bus_message_tag)
         self._bus.connect('message::buffering', engine.on_message_buffering)
@@ -225,15 +224,15 @@ class Gplayer(gobject.GObject):
     def stream(self,d):
         self.isStreaming = True
         output = tempfile.NamedTemporaryFile(suffix='.stream', prefix='tmp_')
-        #try:
-        output.write(d.read(1048576))
-        self.play_file(output.name)
-        data = d.read(2048)
-        while data and self.isStreaming:
-            output.write(data)
+        try:
+            output.write(d.read(1048576))
+            self.play_file(output.name)
             data = d.read(2048)
-        #except:
-            #sleep(1)
+            while data and self.isStreaming:
+                output.write(data)
+                data = d.read(2048)
+        except:
+            sleep(1)
         output.close()
         self.isStreaming = False
         

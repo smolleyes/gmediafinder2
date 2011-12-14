@@ -35,6 +35,17 @@ import pangocairo
 if sys.platform == "win32":
     import win32api
 ## custom lib
+import lib.debrid as debrider
+from lib.downloads import downloader
+from lib.player.player_gui import Player
+from lib.config import *
+from lib.engines.main import Engines
+from lib.functions import *
+from lib.playlist import Playlist
+if sys.platform != "win32":
+    from lib.pykey import send_string
+import lib.checklinks as checkLink
+from lib.get_stream import Browser as browser
 try:
     import lib.debrid as debrider
     from lib.downloads import downloader

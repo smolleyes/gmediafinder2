@@ -56,23 +56,22 @@ class Browser():
 	    print "MEGAVIDEO: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming Megavideo...'
 	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.stop_loading)
+	    gobject.idle_add(self.view.go_back)
 	elif 'videobb.com/s?v=' in req:
 	    print "Videobb: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming Videobb...'
 	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.stop_loading)
-	    return self.mainGui.start_play(req)
+	    gobject.idle_add(self.view.go_back)
 	elif 'mixturecloud.com/streaming.php?key_stream=' in req and not 'player.mixturecloud' in req:
 	    print "Videobb: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming mixture video...'
 	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.stop_loading)
+	    gobject.idle_add(self.view.go_back)
 	elif 'http://av.vimeo.com' in req and '?token=' in req:
 	    print "Vimeo: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming Vimeo...'
 	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.stop_loading)
+	    gobject.idle_add(self.view.go_back)
 	elif 'dailymotion.com/video/' in req and 'proxy' in req:
 	    print "Dailymotion: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming dailymotion...'

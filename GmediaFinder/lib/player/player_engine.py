@@ -412,6 +412,7 @@ class GstPlayer(object):
 	self.mainGui = mainGui
 	self.playerGui = playerGui
 	self.player = Gplayer(self)
+	self.player.connect('finished', self.on_finished)
 	self.state = STATE_READY
 	## time
         self.timeFormat = gst.Format(gst.FORMAT_TIME)
@@ -424,6 +425,9 @@ class GstPlayer(object):
 	self.file_tags = {}
 	self.media_codec = None
 	self.status= None
+    
+    def on_finished(self,widget):
+        self.playerGui.check_play_options()
     
     def attach_drawingarea(self,window_id):
 	self.player.videosink.set_xwindow_id(window_id)
@@ -465,6 +469,8 @@ class GstPlayer(object):
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
+	print "---------------update_info-----------------"
+	print "state : %s" % self.state
 	if self.state == STATE_PAUSED:
 	    return
 	    
@@ -488,7 +494,7 @@ class GstPlayer(object):
                 send_string('a')
             self.timer = 0
         
-	
+	print self.duration
 	if self.duration == None:
           try:
               self.length = self.player._player.query_duration(self.timeFormat, None)[0]
@@ -498,10 +504,12 @@ class GstPlayer(object):
         elif self.cache_duration:
 	    self.length = int(self.cache_duration)
 	    self.duration = self.format_time(int(self.cache_duration))
-	else:
-	    self.duration = None
+
 	
+	print self.duration
 	if self.duration != None:
+	    print "change duration"
+	    self.current_position = 0
             try:
                 self.current_position = self.player._player.query_position(self.timeFormat, None)[0]
             except gst.QueryError:
@@ -548,6 +556,7 @@ class GstPlayer(object):
             self.attach_drawingarea(win_id)
     
     def on_message_buffering(self, bus, message):
+	percent = 0
 	percent = message.parse_buffering()
 	if math.floor(percent/5) > self._cbuffering:
 	    self._cbuffering = math.floor(percent/5)
@@ -588,78 +597,78 @@ class GstPlayer(object):
             return "%i:%02i:%02i" %(h,m,s)
     
     def bus_message_tag(self, bus, message):
-		codec = None
-		self.audio_codec = None
-		self.media_bitrate = None
-		self.mode = None
-		self.media_codec = None
-		#we received a tag message
-		taglist = message.parse_tag()
-		self.old_name = self.mainGui.media_name
-		#put the keys in the dictionary
-		for key in taglist.keys():
-			print key, taglist[key]
-			if key == "preview-image" or key == "image":
-				ipath="/tmp/temp.png"
-				img = open(ipath, 'w')
-				img.write(taglist[key])
-				img.close()
-				self.media_thumb = gtk.gdk.pixbuf_new_from_file_at_scale(ipath, 64,64, 1)
-				try:
-				    self.mainGui.model.set_value(self.mainGui.selected_iter, 0, self.media_thumb)
-				except:
-				    thumb = None
-			elif key == "bitrate":
-				r = int(taglist[key]) / 1000
-				self.file_tags[key] = "%sk" % r
-			elif key == "channel-mode":
-				self.file_tags[key] = taglist[key]
-			elif key == "audio-codec":
-				k = str(taglist[key])
-				if not self.file_tags.has_key(key) or self.file_tags[key] == '':
-					self.file_tags[key] = k
-			elif key == "video-codec":
-				k = str(taglist[key])
-				if not self.file_tags.has_key(key) or self.file_tags[key] == '':
-					self.file_tags[key] = k
-			elif key == "container-format":
-				k = str(taglist[key])
-				if not self.file_tags.has_key(key) or self.file_tags[key] == '':
-					self.file_tags[key] = k
-			#print self.file_tags
-		try:
-			if self.file_tags.has_key('video-codec') and self.file_tags['video-codec'] != "":
-				codec = self.file_tags['video-codec']
-			else:
-				codec = self.file_tags['audio-codec']
-			if codec == "" and self.file_tags['container-format'] != "":
-				codec = self.file_tags['container-format']
-			if ('MP3' in codec or 'ID3' in codec):
-					self.media_codec = 'mp3'
-			elif ('XVID' in codec):
-					self.media_codec = 'avi'
-			elif ('MPEG-4' in codec or 'H.264' in codec or 'MP4' in codec):
-					self.media_codec = 'mp4'
-			elif ('WMA' in codec or 'ASF' in codec or 'Microsoft Windows Media 9' in codec):
-					self.media_codec = 'wma'
-			elif ('Quicktime' in codec):
-					self.media_codec = 'mov'
-			elif ('Vorbis' in codec or 'Ogg' in codec):
-					self.media_codec = 'ogg'
-			elif ('Sorenson Spark Video' in codec or 'On2 VP6/Flash' in codec):
-					self.media_codec = 'flv'
-			elif ('VP8' in codec):
-				self.media_codec = 'webm'
-			self.media_bitrate = self.file_tags['bitrate']
-			self.mode = self.file_tags['channel-mode']
-			#self.model.set_value(self.selected_iter, 1, self.media_markup)
-			self.file_tags = tags
-			self.playerGui.media_codec = self.media_codec
-		except:
-			return
+	codec = None
+	self.audio_codec = None
+	self.media_bitrate = None
+	self.mode = None
+	self.media_codec = None
+	#we received a tag message
+	taglist = message.parse_tag()
+	self.old_name = self.mainGui.media_name
+	#put the keys in the dictionary
+	for key in taglist.keys():
+		#print key, taglist[key]
+		if key == "preview-image" or key == "image":
+			ipath="/tmp/temp.png"
+			img = open(ipath, 'w')
+			img.write(taglist[key])
+			img.close()
+			self.media_thumb = gtk.gdk.pixbuf_new_from_file_at_scale(ipath, 64,64, 1)
+			try:
+			    self.mainGui.model.set_value(self.mainGui.selected_iter, 0, self.media_thumb)
+			except:
+			    thumb = None
+		elif key == "bitrate":
+			r = int(taglist[key]) / 1000
+			self.file_tags[key] = "%sk" % r
+		elif key == "channel-mode":
+			self.file_tags[key] = taglist[key]
+		elif key == "audio-codec":
+			k = str(taglist[key])
+			if not self.file_tags.has_key(key) or self.file_tags[key] == '':
+				self.file_tags[key] = k
+		elif key == "video-codec":
+			k = str(taglist[key])
+			if not self.file_tags.has_key(key) or self.file_tags[key] == '':
+				self.file_tags[key] = k
+		elif key == "container-format":
+			k = str(taglist[key])
+			if not self.file_tags.has_key(key) or self.file_tags[key] == '':
+				self.file_tags[key] = k
+		#print self.file_tags
+	try:
+		if self.file_tags.has_key('video-codec') and self.file_tags['video-codec'] != "":
+			codec = self.file_tags['video-codec']
+		else:
+			codec = self.file_tags['audio-codec']
+		if codec == "" and self.file_tags['container-format'] != "":
+			codec = self.file_tags['container-format']
+		if ('MP3' in codec or 'ID3' in codec):
+				self.media_codec = 'mp3'
+		elif ('XVID' in codec):
+				self.media_codec = 'avi'
+		elif ('MPEG-4' in codec or 'H.264' in codec or 'MP4' in codec):
+				self.media_codec = 'mp4'
+		elif ('WMA' in codec or 'ASF' in codec or 'Microsoft Windows Media 9' in codec):
+				self.media_codec = 'wma'
+		elif ('Quicktime' in codec):
+				self.media_codec = 'mov'
+		elif ('Vorbis' in codec or 'Ogg' in codec):
+				self.media_codec = 'ogg'
+		elif ('Sorenson Spark Video' in codec or 'On2 VP6/Flash' in codec):
+				self.media_codec = 'flv'
+		elif ('VP8' in codec):
+			self.media_codec = 'webm'
+		self.media_bitrate = self.file_tags['bitrate']
+		self.mode = self.file_tags['channel-mode']
+		#self.model.set_value(self.selected_iter, 1, self.media_markup)
+		self.file_tags = tags
+		self.playerGui.media_codec = self.media_codec
+	except:
+		return
 
     def on_seeker_release(self, value):
 	duration = self.player._player.query_duration(self.timeFormat, None)[0]
 	time = value * (duration / 100)
 	self.player._player.seek_simple(self.timeFormat, gst.SEEK_FLAG_FLUSH, time)
-	self.playerGui.seekmove = False
+	self.seekmove = False
