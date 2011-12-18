@@ -295,7 +295,7 @@ class Player(object):
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
 	if name is None:
 	    try:
-		self.play_thread_id = thread.start_new_thread(self.play_thread, (data.stream.data, data.duration,))
+		self.play_thread_id = thread.start_new_thread(self.play_thread, (data, data.duration,))
 	    except:
 		return
 	else:
@@ -316,9 +316,12 @@ class Player(object):
 	    except:
 		return
 
-    def refresh_screen(self, page, page_num, param):
-	print "change page %s %s" % (page, page_num)
-        self.movie_window.queue_draw()
+    def refresh_screen(self, widget, page_num, param):
+	print
+	print "change page %s %s %s" % (widget, page_num, param)
+	x , y = self.movie_window.get_size_request()
+        self.movie_window.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
+                                      pixmap, x, y, x, y, x,y)
     
     def on_expose_event(self, widget, event):
         if self.player.state == STATE_PLAYING:

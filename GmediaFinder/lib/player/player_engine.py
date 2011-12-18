@@ -21,6 +21,7 @@ from mplayer.myplayer import MyPlayer
 from mplayer.myplayer import convert_s
 ## import mplayer engine
 from gplayer.gplayer import *
+from gplayer.gplayer import Cache as make_cache
 
 ## vlc
 from vlcplayer import vlc
@@ -452,7 +453,7 @@ class GstPlayer(object):
 	self.state = STATE_PLAYING
 	if length:
 	    self.cache_duration = length
-	self.player.stream(data)
+	self.player.play_cache(Cache(data.stream.data,length))
     
     def pause(self):
 	self.player.pause()
