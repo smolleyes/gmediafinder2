@@ -159,7 +159,10 @@ class Gplayer(gobject.GObject):
         self._bus.connect("sync-message::element", engine.on_sync_message)
         self._bus.connect("message::tag", engine.bus_message_tag)
         self._bus.connect('message::buffering', engine.on_message_buffering)
-        self._player.connect('source-setup', self._source_setup)
+        try:
+            self._player.connect('source-setup', self._source_setup)
+        except:
+            print "no source-setup signal available..."
         self._cache = None
         self.timer= 0 
         self.isStreaming = False
