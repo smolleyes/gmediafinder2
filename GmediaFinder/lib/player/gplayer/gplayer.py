@@ -58,7 +58,7 @@ class Cache(object):
     :param seekable: file object is seekable (not implemented yet)
     :param blocksize: size of blocks for reading and caching
     '''
-    def __init__(self, fileobj, size, seekable=False, blocksize=2048):
+    def __init__(self, fileobj, size=None, seekable=False, blocksize=2048):
         self._fileobj = fileobj
         self.size = size
         self.seekable = seekable # Not implemented yet

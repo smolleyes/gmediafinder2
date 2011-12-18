@@ -295,11 +295,11 @@ class Player(object):
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
 	if name is None:
 	    try:
-		self.play_thread_id = thread.start_new_thread(self.play_thread, (data, data.duration,))
+		self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
 	    except:
 		return
 	else:
-	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data, size,))
+	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
     
     
     def on_drawingarea_realized(self, sender):

@@ -441,19 +441,24 @@ class GstPlayer(object):
 	self.player.play_url(url)
 	
     def play(self):
+	self.duration = None
 	name = markup_escape_text(self.mainGui.media_name)
 	gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.playerGui.play_label,name))
-	self.playerGui.media_bitrate_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,self.media_bitrate))
-	self.playerGui.media_codec_label.set_markup('<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
 	self.player.play()
 	self.state = STATE_PLAYING
 	gobject.idle_add(self.playerGui.pause_btn_pb.set_from_pixbuf,self.playerGui.pause_icon)
 	
-    def play_cache(self, data, length=None):
+    def play_cache(self, stream, length=None):
 	self.state = STATE_PLAYING
-	if length:
-	    self.cache_duration = length
-	self.player.play_cache(Cache(data.stream.data,length))
+	try:
+	    self.cache_duration = stream.size
+	except:
+	    self.cache_duration = None
+	try:
+	    self.player.play_cache(Cache(stream.data,stream.size))
+	    self.play()
+	except:
+	    return
     
     def pause(self):
 	self.player.pause()
@@ -470,8 +475,8 @@ class GstPlayer(object):
         Update the time_label to display the current location
         in the media file as well as update the seek bar
         """
-	print "---------------update_info-----------------"
-	print "state : %s" % self.state
+	#print "---------------update_info-----------------"
+	#print "state : %s" % self.state
 	if self.state == STATE_PAUSED:
 	    return
 	    
@@ -480,7 +485,14 @@ class GstPlayer(object):
             self.playerGui.seeker.set_adjustment(adjustment)
             gobject.idle_add(self.playerGui.time_label.set_text,"00:00 / 00:00")
             return False
-        
+	    
+	try:
+	    gobject.idle_add(self.playerGui.media_bitrate_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,self.media_bitrate))
+	    gobject.idle_add(self.playerGui.media_codec_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
+	except:
+	    gobject.idle_add(self.playerGui.media_bitrate_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,'unknown'))
+	    gobject.idle_add(self.playerGui.media_codec_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,'unknown'))
+
         ## update timer for mini_player and hide it if more than 5 sec
         ## without mouse movements
         self.playerGui.timer += 1
@@ -494,22 +506,19 @@ class GstPlayer(object):
             else:
                 send_string('a')
             self.timer = 0
-        
-	print self.duration
+
 	if self.duration == None:
           try:
               self.length = self.player._player.query_duration(self.timeFormat, None)[0]
               self.duration = self.convert_ns(self.length)
           except gst.QueryError:
 	      self.duration = None
-        elif self.cache_duration:
+        elif self.cache_duration and not self.duration:
 	    self.length = int(self.cache_duration)
 	    self.duration = self.format_time(int(self.cache_duration))
 
 	
-	print self.duration
 	if self.duration != None:
-	    print "change duration"
 	    self.current_position = 0
             try:
                 self.current_position = self.player._player.query_position(self.timeFormat, None)[0]
@@ -535,7 +544,7 @@ class GstPlayer(object):
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
-	    self.player.stop()
+	    self.stop()
 	    gobject.idle_add(self.player.emit, 'finished')
         elif t == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
