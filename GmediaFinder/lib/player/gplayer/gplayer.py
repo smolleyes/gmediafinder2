@@ -162,7 +162,7 @@ class Gplayer(gobject.GObject):
         try:
             self._player.connect('source-setup', self._source_setup)
         except:
-            print "no source-setup signal available..."
+            print "no source-setup signal available... "
         self._cache = None
         self.timer= 0 
         self.isStreaming = False
