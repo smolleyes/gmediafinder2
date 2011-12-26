@@ -428,7 +428,14 @@ class GstPlayer(object):
 	self.status= None
     
     def on_finished(self,widget):
-        self.playerGui.check_play_options()
+	print 'finish in player_engine.py'
+	try:
+	    if self.playerGui.radio_mode:
+		self.mainGui.search_engine.play_next()
+	    else:
+		self.playerGui.check_play_options()
+	except:
+	    self.playerGui.stop()
     
     def attach_drawingarea(self,window_id):
 	self.player.videosink.set_xwindow_id(window_id)
@@ -444,9 +451,9 @@ class GstPlayer(object):
 	self.duration = None
 	name = markup_escape_text(self.mainGui.media_name)
 	gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.playerGui.play_label,name))
-	self.player.play()
 	self.state = STATE_PLAYING
 	gobject.idle_add(self.playerGui.pause_btn_pb.set_from_pixbuf,self.playerGui.pause_icon)
+	self.player.play()
 	
     def play_cache(self, stream, length=None):
 	self.state = STATE_PLAYING
@@ -454,11 +461,7 @@ class GstPlayer(object):
 	    self.cache_duration = stream.size
 	except:
 	    self.cache_duration = None
-	try:
-	    self.player.play_cache(Cache(stream.data,stream.size))
-	    self.play()
-	except:
-	    return
+	self.player.play_cache(Cache(self.player,stream.data,stream.size))
     
     def pause(self):
 	self.player.pause()
@@ -477,7 +480,7 @@ class GstPlayer(object):
         """
 	#print "---------------update_info-----------------"
 	#print "state : %s" % self.state
-	if self.state == STATE_PAUSED:
+	if self.state != 1:
 	    return
 	    
         if self.player.state == STATE_READY:
@@ -487,6 +490,7 @@ class GstPlayer(object):
             return False
 	    
 	try:
+	    self.playerGui.media_codec = self.media_codec
 	    gobject.idle_add(self.playerGui.media_bitrate_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.bitrate_label,self.media_bitrate))
 	    gobject.idle_add(self.playerGui.media_codec_label.set_markup,'<small><b>%s </b> %s</small>' % (self.playerGui.codec_label,self.media_codec))
 	except:
@@ -544,14 +548,14 @@ class GstPlayer(object):
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
-	    self.stop()
 	    gobject.idle_add(self.player.emit, 'finished')
         elif t == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
-            print "Error: %s" % err, debug
+            print "Error Gstreamer: %s" % err, debug
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
+	    gobject.idle_add(self.player.emit, 'finished')
     
     def on_sync_message(self, bus, message):
         if message.structure is None:

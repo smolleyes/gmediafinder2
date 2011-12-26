@@ -58,27 +58,30 @@ class Cache(object):
     :param seekable: file object is seekable (not implemented yet)
     :param blocksize: size of blocks for reading and caching
     '''
-    def __init__(self, fileobj, size=None, seekable=False, blocksize=2048):
+    def __init__(self, player, fileobj, size=None, seekable=False, blocksize=2048):
         self._fileobj = fileobj
         self.size = size
         self.seekable = seekable # Not implemented yet
         self._blocksize = blocksize
-        self._read_thread = threading.Thread(target=self._read)
-        self._read_thread.start()
-        self.state = STATE_READING
+        self.player = player
         self._memory = []
         self._current = 0
         self._active = True
         self.bytes_read = 0
+        self._read_thread = threading.Thread(target=self._read)
+        self._read_thread.start()
+        self.state = STATE_READING
         
     def _read(self):
         data = self._fileobj.read(self._blocksize)
         try:
             self._active
         except:
+            print('stop reading cacheeeeeeeeeeeeeeeeee')
             self.state = STATE_FINISHED
             self._fileobj.close()
             self.cancel()
+            gobject.idle_add(self.player.emit, 'finished')
             return
         while data and self._active:
             self._memory.append(data)
@@ -87,11 +90,13 @@ class Cache(object):
         if self._active:
             self.state = STATE_FINISHED
         self._fileobj.close()
+        return True
         
     def cancel(self):
         '''
         Cancels the reading thread.
         '''
+        print('cancel cache')
         if self.state == STATE_READING:
             self._active = False
             self.state = STATE_CANCELED
@@ -162,7 +167,7 @@ class Gplayer(gobject.GObject):
         try:
             self._player.connect('source-setup', self._source_setup)
         except:
-            print "no source-setup signal available... "
+            print('no source-setup signal available...')
         self._cache = None
         self.timer= 0 
         self.isStreaming = False

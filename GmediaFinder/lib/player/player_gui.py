@@ -105,6 +105,7 @@ class Player(object):
         #### init gst gplayer engine
         self.player = PlayerEngine(mainGui,self)
 	self.radio_mode = False
+	self.is_playing = False
 	
     @property
     def state(self):
@@ -199,21 +200,23 @@ class Player(object):
          
     def start_stop(self,widget=None):
         if widget:
-            if not self.player.state == STATE_PLAYING:
-                try:
-		    return self.mainGui.get_model()
+            if self.player.state == 3:
+		try:
+		    self.mainGui.get_model()
 		except:
-		    return self.stop()
-            else:
-                return self.stop()
+		    self.stop()
+	    else:
+		self.stop()
         else:
             if self.active_link:
-                if not self.player.state == STATE_PLAYING:
-                    return self.start_play(self.active_link)
+                if self.player.state == 3:
+                    self.start_play(self.active_link)
                 else:
-                    return self.stop()
+                    self.stop()
 
     def start_play(self,url):
+	if self.state != 3:
+	    self.stop()
         self.active_link = url
         self.file_tags = {}
         #if not sys.platform == "win32":
@@ -227,7 +230,6 @@ class Player(object):
                     #self.player.set_property('flags', "Render the video stream")
                 #else:
                     #self.player.set_property('flags', "Render the audio stream")
-	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
 	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 	try:
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
@@ -236,25 +238,28 @@ class Player(object):
 	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
 
     def play_thread(self,cache=None,length=None):
+	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
+	self.is_playing = True
 	gobject.idle_add(self.seeker.set_sensitive,1)
         play_thread_id = self.play_thread_id
 	if cache:
 	    self.player.play_cache(cache,length)
 	else:
 	    self.player.play_url(self.active_link)
-        while play_thread_id == self.play_thread_id and self.player.state != 3:
+        while play_thread_id == self.play_thread_id and self.is_playing:
             if play_thread_id == self.play_thread_id:
 		if not self.seekmove:
 		    self.player.update_info_section()
             time.sleep(1)
     
     def stop(self,widget=None):
+	self.play_thread_id = None
+	self.is_playing = False
 	self.radio_mode = False
+	self.active_link = None
+	self.player.stop()
         gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
         gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
-        self.play_thread_id = None
-        self.active_link = None
-        gobject.idle_add(self.movie_window.queue_draw)
         bit=_('Bitrate:')
         enc=_('Encoding:')
         play_label=_('Playing:')
@@ -263,12 +268,12 @@ class Player(object):
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
 	gobject.idle_add(self.seeker.set_value,0)
 	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
-	self.player.stop()
+	self.refresh_screen()
+    
     
     def on_volume_changed(self, widget, value=10):
         self.player.set_volume(value)
     
-	
     def pause_resume(self,widget=None):
         if not self.state == 2:
             self.pause_btn_pb.set_from_pixbuf(self.play_icon)
@@ -280,6 +285,9 @@ class Player(object):
 	self.player.shutdown()
     
     def play_cache(self, data, size=None, name=None):
+	print 'play cache gui %s' % self.state
+	if self.state != 3:
+	    self.stop()
 	cache = None
 	markup = None
 	if name is None:
@@ -290,16 +298,13 @@ class Player(object):
 	else:
 	    markup = '<small><b>%s %s </b></small>' % (self.play_label, name)
 	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
-        gobject.idle_add(self.media_name_label.set_markup,markup)
+	try:
+	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
+	except:
+	    gobject.idle_add(self.media_name_label.set_markup,markup)
         gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, ''))
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
-	if name is None:
-	    try:
-		self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
-	    except:
-		return
-	else:
-	    self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
+	self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
     
     
     def on_drawingarea_realized(self, sender):
@@ -316,15 +321,17 @@ class Player(object):
 	    except:
 		return
 
-    def refresh_screen(self, widget, page_num, param):
-	print
-	print "change page %s %s %s" % (widget, page_num, param)
+    def refresh_screen(self, widget=None, page_num=None, param=None):
 	x , y = self.movie_window.get_size_request()
-        self.movie_window.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
+        try:
+	    gobject.idle_add(self.movie_window.window.draw_drawable,self.movie_window.get_style().fg_gc[gtk.STATE_NORMAL],
                                       pixmap, x, y, x, y, x,y)
+	    gobject.idle_add(self.mainGui.media_notebook.queue_draw_area,0,0,-1,-1)
+	except:
+	    return
     
     def on_expose_event(self, widget, event):
-        if self.player.state == STATE_PLAYING:
+        if self.player.state == STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
             return
         x , y, self.area_width, self.area_height = event.area
         widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
@@ -420,7 +427,8 @@ class Player(object):
 			    treeview.set_cursor(path)
 			    self.mainGui.get_model()
 		    except:
-			    return
+			self.stop()
+			return
 		else:
 		    try:
 			self.selected_iter = model.iter_next(self.selected_iter)
@@ -430,9 +438,13 @@ class Player(object):
 		    except:
 			if not self.mainGui.playlist_mode:
 			    self.mainGui.load_new_page()
+			else:
+			    self.stop()
 	    except:
 		if not self.mainGui.playlist_mode:
 		    self.mainGui.load_new_page()
+		else:
+		    self.stop()
 	
 	elif self.play_options == "shuffle":
 	    num = random.randint(0,len(model))

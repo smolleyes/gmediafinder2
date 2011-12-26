@@ -510,7 +510,6 @@ class GsongFinder(object):
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             return self.Playlist.on_selected(self.Playlist.treeview)
         ## play in engine
-        self.stop_play()
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
@@ -700,8 +699,6 @@ class GsongFinder(object):
         self.player.stop()
     
     def start_play(self,url):
-        if self.player.state != 3:
-            self.stop_play()
         self.media_notebook.set_current_page(1)
         self.active_link = url
         self.player.start_play(url)
@@ -738,7 +735,6 @@ class GsongFinder(object):
         elif key == 'd':
             if self.notebook.get_current_page() == 0:
                 gobject.idle_add(self.notebook.set_current_page,1)
-                self.notebook.queue_draw()
             else:
                 gobject.idle_add(self.notebook.set_current_page,0)
 
@@ -753,15 +749,29 @@ class GsongFinder(object):
         except:
             return
     
-    def download_file(self,widget=None, link=None, name=None, codec = None, data=None, engine_type=None, engine_name=None):
-		if not link:
-			link = self.active_link
-		if not name:
-			name = self.media_name
-		if not codec:
-			codec = self.media_codec
-		download = downloader.FileDownloader(self, link, name, codec, data, engine_name, engine_type)
-		download.start()
+    
+    def download_file(self, widget=None,link=None,name=None,codec = None,data=None,engine_type=None,engine_name=None,receive=False):
+        try:
+            if receive == False:
+                try:
+                    self.search_engine.download_file()
+                except:
+                    print '%s no download_file func' % self.engine.name
+                return
+        except:
+            print ''
+        if not link:
+            try:
+                link = self.active_link
+            except:
+                data = self.media_link.stream.data
+        if not name:
+            name = self.media_name
+        if not codec:
+            codec = self.player.media_codec
+        print link, name, codec, data, engine_name, engine_type
+        download = downloader.FileDownloader(self, link, name, codec, data, engine_name, engine_type)
+        download.start()
                 
     def download_debrid(self, link):
         check = self.url_checker.check([link])
