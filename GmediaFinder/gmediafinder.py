@@ -764,7 +764,7 @@ class GsongFinder(object):
             try:
                 link = self.active_link
             except:
-                data = self.media_link.stream.data
+                link = link
         if not name:
             name = self.media_name
         if not codec:

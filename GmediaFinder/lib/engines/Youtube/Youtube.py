@@ -285,6 +285,7 @@ class Youtube(object):
         return codec
     
     def load_youtube_res(self,link):
+        gobject.idle_add(self.youtube_video_rate.show)
         gobject.idle_add(self.youtube_quality_model.clear)
         self.media_link = None
         self.quality_list = None
@@ -300,7 +301,6 @@ class Youtube(object):
                             0, rate,
                             )
         self.set_default_youtube_video_rate()
-        gobject.idle_add(self.youtube_video_rate.show)
 
     def set_default_youtube_video_rate(self,widget=None):
         active = self.youtube_video_rate.get_active()
