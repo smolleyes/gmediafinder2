@@ -305,6 +305,7 @@ class FileDownloader(threading.Thread, Downloader):
         self.target_opener = None
         self.start_time = None
         size_local = None
+        self.aborted = False
         self.localheaders = { 'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.2) Gecko/2008092313 Ubuntu/8.04 (hardy) Firefox/3.1.6' }
         
         ## add thread to gui download pool
@@ -528,7 +529,9 @@ class FileDownloader(threading.Thread, Downloader):
         self.canceled = True
         self.gui.downloader.download_treestore.set_value(self.treeiter, 2, _("Cancelling download..."))
         
-    def stop(self,widget=None):
+    def stop(self,widget=None, abort=None):
+        if abort: ## is True when gmf main exit...
+            self.aborted = True
         self._stopevent.set()
         self.stopped = True
         try:
@@ -540,10 +543,11 @@ class FileDownloader(threading.Thread, Downloader):
             if os.path.exists(self.conf_temp_file):
                 os.remove(self.conf_temp_file)
         elif self.canceled or self.failed:
-            if os.path.exists(self.conf_temp_file):
-                os.remove(self.conf_temp_file)
-            if os.path.exists(self.temp_file):
-                os.remove(self.temp_file)
+            if not self.aborted:
+                if os.path.exists(self.conf_temp_file):
+                    os.remove(self.conf_temp_file)
+                if os.path.exists(self.temp_file):
+                    os.remove(self.temp_file)
     
     def pause(self):
         if not self.paused:

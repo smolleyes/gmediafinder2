@@ -327,6 +327,7 @@ class GsongFinder(object):
         gobject.threads_init()
         #THE ACTUAL THREAD BIT
         self.manager = FooThreadManager(20)
+        self.resume_downloads()
         self.mainloop = gobject.MainLoop(is_running=True)
     
     
@@ -719,6 +720,28 @@ class GsongFinder(object):
 		return pixbuf
     
 
+    def resume_downloads(self):
+        for media in os.listdir(self.down_dir):
+            try:
+                if '.conf' in media:
+                    conf = os.path.join(self.down_dir, media)
+                    f = open('''%s''' % conf, 'r')
+                    data = f.read()
+                    f.close()
+                    link = data.split(':::')[0]
+                    name = data.split(':::')[1]
+                    codec = data.split(':::')[2]
+                    engine_type = data.split(':::')[3]
+                    engine_name = data.split(':::')[4]
+                    print engine_type
+                    if str(engine_type) == 'files':
+                        self.download_debrid(link)
+                    else:
+                        self.download_file(None,link, name, codec, None, engine_type, engine_name)
+            except:
+                continue
+    
+    
     def onKeyPress(self, widget, event):
         if self.search_entry.is_focus() or self.browser.url_bar.is_focus() or self.browser.view.has_focus():
             return
@@ -817,7 +840,8 @@ class GsongFinder(object):
         self.manager.stop_all_threads(block=True)
         for th in self.download_pool:
             if not th._stopevent.isSet():
-                th.stop()
+                print 'call stop download %s' % th.name
+                th.stop(abort=True)
         self.mainloop.quit()
 
     def stop_threads(self, *args):
