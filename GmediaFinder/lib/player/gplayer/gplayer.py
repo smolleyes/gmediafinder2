@@ -314,7 +314,10 @@ class Gplayer(gobject.GObject):
     def _source_setup(self, playbin, source):
         self._source = source
         if self._uri == 'appsrc://':
-            self._source.connect('need-data', self._read_data)
+            try:
+                self._source.connect('need-data', self._read_data)
+            except:
+                gobject.idle_add(self._player.emit, 'finished')
             if self._size:
                 self._source.set_property('size', self._size)
         gobject.idle_add(self.emit, 'started')
