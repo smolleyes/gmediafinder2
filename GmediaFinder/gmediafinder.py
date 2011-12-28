@@ -480,7 +480,7 @@ class GsongFinder(object):
             self.playlist_mode = True
         else:
             self.playlist_mode = False
-        if widget or not self.playlist_mode:
+        if widget or select or not self.playlist_mode:
             selected = self.treeview.get_selection()
             self.selected_iter = selected.get_selected()[1]
             self.path = self.model.get_path(self.selected_iter)
@@ -578,7 +578,7 @@ class GsongFinder(object):
             name = widget.name
         except:
             name = ""
-        self.model.clear()
+        gobject.idle_add(self.model.clear)
         user_search = self.search_entry.get_text()
         engine = self.latest_engine
         if not user_search or user_search != self.user_search or not engine or engine != self.latest_engine:
@@ -705,7 +705,7 @@ class GsongFinder(object):
         self.player.stop()
     
     def start_play(self,url):
-        self.media_notebook.set_current_page(1)
+        gobject.idle_add(self.media_notebook.set_current_page,1)
         self.active_link = url
         self.player.start_play(url)
 		

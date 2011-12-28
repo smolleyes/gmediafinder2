@@ -145,7 +145,7 @@ def error_dialog(message, parent = None):
     dialog.set_position('center')
 
     result = dialog.run()
-    dialog.destroy()
+    gobject.idle_add(dialog.destroy)
 
 def sortDict(d):
     """ Returns the keys of dictionary d sorted by their values """
@@ -175,7 +175,7 @@ def create_comboBox(gui=None,dic=None,combo=None,createLabel=True):
                 cb.append(val)
             target.add(combobox)
             cb.select(0)
-            target.show_all()
+            gobject.idle_add(target.show_all)
         if combo:
             return cb, combobox
         else:
@@ -196,10 +196,10 @@ class ComboBox(object):
             self.combobox.append_text(what)
 
     def remove(self,what):
-        self.combobox.remove_text(what)
+        gobject.idle_add(self.combobox.remove_text,what)
 
     def select(self,which):
-        self.combobox.set_active(which)
+        gobject.idle_add(self.combobox.set_active,which)
 
     def getSelectedIndex(self):
         return self.combobox.get_active()

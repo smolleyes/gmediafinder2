@@ -174,7 +174,6 @@ class Browser():
 	    reqid = None
 	    current_id = None
 	    url = self.url_bar.get_text()
-	    print url
 	    try:
 		reqid = re.search('\?v=(.*)&',url).group(1)
 	    except:

@@ -393,6 +393,7 @@ class Player(object):
 	    self.play_options = "continue"
 		
     def check_play_options(self):
+	print "play option : %s" % self.play_options
 	try:
 	    self.selected_iter = self.mainGui.selected_iter
 	    path = self.mainGui.model.get_path(self.selected_iter)

@@ -97,14 +97,13 @@ class Youtube(object):
     
     def load_gui(self):
         ## paste entry
-        btn = gtk.Button()
         image = gtk.Image()
-        pb = gtk.gdk.pixbuf_new_from_file(img_path+"/yt_icone.jpg")
-        image.set_from_pixbuf(pb) 
+        image.set_from_stock(gtk.STOCK_PASTE,24) 
         button = gtk.Button()
         button.set_image(image)
         button.connect("clicked", self.on_paste)
         button.set_tooltip_text(_('Paste youtube link'))
+        button.props.relief = gtk.RELIEF_NONE
         self.gui.search_opt_box.pack_start(button,False,False,10)
         
         ## create orderby combobox
@@ -151,7 +150,7 @@ class Youtube(object):
             try:
                 text = data.get_text()
             except:
-                error_dialog(_("There's no link to paste..."))
+                gobject.idle_add(error_dialog,_("There's no link to paste..."))
                 return
         else:
             text = url
@@ -163,7 +162,8 @@ class Youtube(object):
                 try:
                     vid = re.search('watch\?v=(.*)',text).group(1)
                 except:
-                    error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
+                    if not url:
+                        error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
                     return
             yt = yt_service.YouTubeService()
             entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
@@ -236,7 +236,6 @@ class Youtube(object):
         self.thread_stop=True
 
     def play(self,link):
-        gobject.idle_add(self.gui.quality_box.show)
         self.load_youtube_res(link)
         self.gui.media_link=link
         link = 'http://www.youtube.com/watch?v=%s' % link
@@ -247,6 +246,7 @@ class Youtube(object):
             self.media_codec = self.quality_list[active].split('|')[1]
         except:
             self.gui.start_play('')
+        gobject.idle_add(self.gui.quality_box.show)
 
     def make_youtube_entry(self,video,read=None, select=None):
         duration = video.media.duration.seconds
