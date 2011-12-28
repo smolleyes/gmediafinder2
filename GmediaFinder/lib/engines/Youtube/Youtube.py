@@ -239,8 +239,8 @@ class Youtube(object):
         gobject.idle_add(self.gui.quality_box.show)
         self.load_youtube_res(link)
         self.gui.media_link=link
-        self.gui.browser.load_code(link)
-        self.get_comments(link)
+        link = 'http://www.youtube.com/watch?v=%s' % link
+        self.gui.browser.load_uri(link)
         active = self.youtube_video_rate.get_active()
         try:
             self.gui.start_play(self.media_link[active])

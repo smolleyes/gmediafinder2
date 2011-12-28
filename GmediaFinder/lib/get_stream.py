@@ -14,12 +14,54 @@ from optparse import OptionParser
 warnings.filterwarnings('ignore')
  
 class WebView(webkit.WebView):
-	def get_html(self):
-		self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
-		html = self.get_main_frame().get_title()
-		self.execute_script('document.title=oldtitle;')
-		return html
- 
+    def __init__(self):
+        webkit.WebView.__init__(self)
+	settings = self.get_settings()
+	settings.set_property("enable-developer-extras", True)
+	
+	# scale other content besides from text as well
+	self.set_full_content_zoom(True)
+	# make sure the items will be added in the en
+	# hence the reason for the connect_after
+	self.connect_after("populate-popup", self.populate_popup)
+    
+    def populate_popup(self, view, menu):
+	# zoom buttons
+	zoom_in = gtk.ImageMenuItem(gtk.STOCK_ZOOM_IN)
+	zoom_in.connect('activate', zoom_in_cb, view)
+	menu.append(zoom_in)
+    
+	zoom_out = gtk.ImageMenuItem(gtk.STOCK_ZOOM_OUT)
+	zoom_out.connect('activate', zoom_out_cb, view)
+	menu.append(zoom_out)
+    
+	zoom_hundred = gtk.ImageMenuItem(gtk.STOCK_ZOOM_100)
+	zoom_hundred.connect('activate', zoom_hundred_cb, view)
+	menu.append(zoom_hundred)
+    
+	printitem = gtk.ImageMenuItem(gtk.STOCK_PRINT)
+	menu.append(printitem)
+	printitem.connect('activate', print_cb, view)
+    
+	page_properties = gtk.ImageMenuItem(gtk.STOCK_PROPERTIES)
+	menu.append(page_properties)
+	page_properties.connect('activate', page_properties_cb, view)
+    
+	menu.append(gtk.SeparatorMenuItem())
+    
+	aboutitem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
+	menu.append(aboutitem)
+	aboutitem.connect('activate', about_pywebkitgtk_cb, view)
+    
+	menu.show_all()
+	return False
+	
+    def get_html(self):
+	    self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
+	    html = self.get_main_frame().get_title()
+	    self.execute_script('document.title=oldtitle;')
+	    return html
+
 class Browser():
     def __init__(self, mainGui):
 	self.mainGui = mainGui
@@ -36,7 +78,10 @@ class Browser():
 	
 	settings = webkit.WebSettings()
 	settings.set_property('enable-scripts', True)
-	settings.set_property('javascript-can-open-windows-automatically', False)
+	settings.set_property('javascript-can-open-windows-automatically', True)
+	self.view.connect('create-web-view',self.on_new_window_cb)
+	self.view.connect("hovering-over-link", self._hovering_over_link_cb)
+	self._hovered_uri = None
 	
 	## opt
 	self.homepage = 'http://www.google.com'
@@ -50,6 +95,38 @@ class Browser():
 	"on_home_btn_clicked" : self.go_home,
 	}
 	self.mainGui.gladeGui.signal_autoconnect(dic)
+	
+    def on_new_window_cb(self, web_view, frame, data=None):
+	scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
+        scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
+        view = WebView()
+        scrolled_window.add(view)
+	scrolled_window.show_all()
+  
+        vbox = gtk.VBox(spacing=1)
+        vbox.pack_start(scrolled_window, True, True)
+  
+        window = gtk.Window()
+        window.add(vbox)
+	view.connect("web-view-ready", self.new_web_view_ready)
+        return view
+  
+    def new_web_view_ready (self, web_view):
+        self.new_window_requested(web_view)
+  
+    def new_window_requested(self, view):
+        features = view.get_window_features()
+        window = view.get_toplevel()
+        scrolled_window = view.get_parent()
+        window.set_default_size(features.props.width, features.props.height)
+	window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+	window.show_all()
+        return True
+	
+    
+    def _hovering_over_link_cb (self, view, title, uri):
+        self._hovered_uri = uri
 	
     def load_uri(self,uri):
 	gobject.idle_add(self.view.load_uri,uri)  
@@ -188,4 +265,55 @@ class Browser():
 		    <div class="fb-like" data-send="true" data-width="450" data-href="http://www.youtube.com/watch?v=%s" data-show-faces="true" data-colorscheme="dark"></div>
 		</body>
 	    </html>''' % like_link
-	gobject.idle_add(self.view.load_html_string,html, "file:///")  
+	gobject.idle_add(self.view.load_html_string,html, "file:///")
+ 
+def zoom_in_cb(menu_item, web_view):
+    """Zoom into the page"""
+    web_view.zoom_in()
+  
+def zoom_out_cb(menu_item, web_view):
+    """Zoom out of the page"""
+    web_view.zoom_out()
+  
+def zoom_hundred_cb(menu_item, web_view):
+    """Zoom 100%"""
+    if not (web_view.get_zoom_level() == 1.0):
+        web_view.set_zoom_level(1.0)
+
+def print_cb(menu_item, web_view):
+    mainframe = web_view.get_main_frame()
+    mainframe.print_full(gtk.PrintOperation(), gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG);
+    
+def page_properties_cb(menu_item, web_view):
+    mainframe = web_view.get_main_frame()
+    datasource = mainframe.get_data_source()
+    main_resource = datasource.get_main_resource()
+    window = gtk.Window()
+    window.set_default_size(100, 60)
+    vbox = gtk.VBox()
+    hbox = gtk.HBox()
+    hbox.pack_start(gtk.Label("MIME Type :"), False, False)
+    hbox.pack_end(gtk.Label(main_resource.get_mime_type()), False, False)
+    vbox.pack_start(hbox, False, False)
+    hbox2 = gtk.HBox()
+    hbox2.pack_start(gtk.Label("URI : "), False, False)
+    hbox2.pack_end(gtk.Label(main_resource.get_uri()), False, False)
+    vbox.pack_start(hbox2, False, False)
+    hbox3 = gtk.HBox()
+    hbox3.pack_start(gtk.Label("Encoding : "), False, False)
+    hbox3.pack_end(gtk.Label(main_resource.get_encoding()), False, False)
+    vbox.pack_start(hbox3, False, False)
+    window.add(vbox)
+    window.show_all()
+    window.present()
+  
+  
+def view_source_mode_requested_cb(widget, is_active, content_pane):
+    currentTab = content_pane.get_nth_page(content_pane.get_current_page())
+    childView = currentTab.get_child()
+    childView.set_view_source_mode(is_active)
+    childView.reload()
+    
+# context menu item callbacks
+def about_pywebkitgtk_cb(menu_item, web_view):
+    web_view.open("http://live.gnome.org/PyWebKitGtk")
