@@ -470,7 +470,7 @@ class GsongFinder(object):
             self.search_engine = getattr(self.engines_client,'%s' % self.engine)
             self.search_engine.load_gui()
 
-    def get_model(self,widget=None,path=None,column=None):
+    def get_model(self,widget=None,path=None,column=None,select=False):
         #if self.search_playlist_menu_active:
         #   return
         self.media_bitrate = ""
@@ -663,7 +663,7 @@ class GsongFinder(object):
             #thread.start_new_thread(self.search_engine.search,(self.user_search,page))
         self.add_thread(self.search_engine,self.user_search,page)
 
-    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None):
+    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None, select=None):
         orig_pixbuf = img
         if not img:
             img = gtk.gdk.pixbuf_new_from_file_at_scale(os.path.join(self.img_path,'video.png'), 64,64, 1)
@@ -683,8 +683,8 @@ class GsongFinder(object):
             
         if markup_src:
             markup = markup + markup_src
-        iter = self.model.append()
-        self.model.set(iter,
+        miter = self.model.append()
+        self.model.set(miter,
                         0, img,
                         1, markup,
                         2, media_link,
@@ -694,6 +694,11 @@ class GsongFinder(object):
                         6, synop,
                         7, orig_pixbuf,
                         )
+        if select:
+            self.selected_iter = miter
+            self.path = self.model.get_path(self.selected_iter)
+            gobject.idle_add(self.treeview.set_cursor,self.path)
+            gobject.idle_add(self.get_model)
 
     def stop_play(self,widget=None):
         self.active_link = None
@@ -869,7 +874,7 @@ class GsongFinder(object):
                     self.selected_iter = self.model.get_iter_first()
                     path = self.model.get_path(self.selected_iter)
                     self.treeview.set_cursor(path)
-                    self.get_model()
+                    gobject.idle_add(self.get_model)
                     self.change_page_request=False
                 except:
                     self.change_page_request=False
@@ -889,8 +894,8 @@ class GsongFinder(object):
         try:
             self.selected_iter = self.model.get_iter_first()
             path = self.model.get_path(self.selected_iter)
-            self.treeview.set_cursor(path)
-            self.get_model()
+            gobject.idle_add(self.treeview.set_cursor,path)
+            gobject.idle_add(self.get_model)
         except:
             return
     

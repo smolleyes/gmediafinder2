@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#-*- coding: UTF-8 -*-
+
 import sys
 import gtk
 import webkit
@@ -31,6 +33,10 @@ class Browser():
 	## update adress bar
 	self.view.connect("load_committed", self.update_buttons)
 	self.mainGui.browser_box.add(self.view)
+	
+	settings = webkit.WebSettings()
+	settings.set_property('enable-scripts', True)
+	settings.set_property('javascript-can-open-windows-automatically', False)
 	
 	## opt
 	self.homepage = 'http://www.google.com'
@@ -79,9 +85,34 @@ class Browser():
 	    gobject.idle_add(self.view.go_back)
 	elif 'youtube.com/videoplayback?sparams' in req:
 	    print "Youtube: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming Youtube...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
+	    
+	    ## hide/stop the flashplayer
+	    new = "<p>TA RACE FLASH</p>"
+	    script = "div_content = document.getElementById('movie_player');"
+	    script += "div_content.style.display='None';"
+	    script += "div_content.innerHTML='%s';" % new
+	    gobject.idle_add(self.view.execute_script,script)
+	    
+	    ## compare video ids
+	    reqid = None
+	    current_id = None
+	    url = self.url_bar.get_text()
+	    print url
+	    try:
+		reqid = re.search('\?v=(.*)&',url).group(1)
+	    except:
+		try:
+		    reqid = re.search('\?v=(.*)',url).group(1)
+		except:
+		    reqid = None
+	    try:
+		current_id = self.mainGui.media_link
+	    except:
+		curent_id = None
+	    ## if not match read new video
+	    if reqid != current_id:
+		self.mainGui.search_engine.on_paste(url=url)
+	    
 	elif 'http://trailers-ak.gametrailers.com' in req:
 	    print "Gametrailer: Link %s detected" % req
 	    self.mainGui.media_name = 'Streaming Gametrailer...'
@@ -125,4 +156,36 @@ class Browser():
         self.url_bar.set_text( widget.get_main_frame().get_uri() )
         self.back_button.set_sensitive(self.view.can_go_back())
         self.forward_button.set_sensitive(self.view.can_go_forward())
-
+	
+    def load_code(self,like_link=None,html=None):
+	if not html:
+	    html = '''
+	    <!DOCTYPE html>
+		<head>
+		<title>youtube page</title>
+		</head>
+		<body>
+		<div id="fb-root"></div>
+		    <script>
+			window.fbAsyncInit = function() {
+			  FB.init({
+			    appId      : '241809072559194',
+			    status     : true, 
+			    cookie     : true,
+			    xfbml      : true,
+			    oauth      : true,
+			  });
+			};
+			(function(d){
+			   var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+			   js = d.createElement('script'); js.id = id; js.async = true;
+			   js.src = "http://connect.facebook.net/fr_FR/all.js";
+			   d.getElementsByTagName('head')[0].appendChild(js);
+			 }(document));
+		      </script>
+			
+		    <div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1"></div>
+		    <div class="fb-like" data-send="true" data-width="450" data-href="http://www.youtube.com/watch?v=%s" data-show-faces="true" data-colorscheme="dark"></div>
+		</body>
+	    </html>''' % like_link
+	gobject.idle_add(self.view.load_html_string,html, "file:///")  
