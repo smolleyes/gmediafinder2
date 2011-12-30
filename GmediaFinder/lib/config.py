@@ -8,7 +8,7 @@ from xml.dom import minidom
 from xml.dom.minidom import Document
 import re
 
-VERSION = "0.9.9.1"
+VERSION = "1.0.1"
 APP_NAME = "gmediafinder"
 exec_path =  os.path.dirname(os.path.abspath(__file__))
 

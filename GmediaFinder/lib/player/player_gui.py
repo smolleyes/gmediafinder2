@@ -17,7 +17,9 @@ from lib.player.player_engine import *
 try:
     import lib.config as config
     from lib.player.player_engine import *
+    from lib.functions import *
 except:
+    from GmediaFinder.lib.functions import *
     from GmediaFinder.lib import config
     from GmediaFinder.lib.player.player_engine import *
 
@@ -98,6 +100,7 @@ class Player(object):
         "on_repeat_btn_toggled" : self.set_play_options,
         "on_vol_btn_value_changed" : self.on_volume_changed,
 	"on_media_notebook_switch_page" : self.refresh_screen,
+	"on_vis_chooser_changed" : self.change_visualisation,
         }
         self.gladeGui.signal_autoconnect(dic)
         #### load buttons and pixbufs
@@ -106,6 +109,21 @@ class Player(object):
         self.player = PlayerEngine(mainGui,self)
 	self.radio_mode = False
 	self.is_playing = False
+	
+	## visualisations
+        vis = 'goom'
+	try:
+            self.vis = self.mainGui.conf["visualisation"]
+        except:
+            self.mainGui.conf["visualisation"] = vis
+            self.vis = vis
+            self.mainGui.conf.write()
+        combo = self.gladeGui.get_widget("vis_chooser")
+        self.vis_selector = ComboBox(combo)
+	if self.vis:
+	    self.vis_selector.setIndexFromString(self.vis)
+	else:
+	    self.vis_selector.select(1)
 	
     @property
     def state(self):
@@ -214,23 +232,22 @@ class Player(object):
                 else:
                     self.stop()
 
+    def change_visualisation(self, widget=None):
+        vis = self.vis_selector.getSelected()
+        visi = self.vis_selector.getSelectedIndex()
+        if vis != "goom" and visi != 0 :
+            self.vis = "libvisual_"+vis
+        else:
+            self.vis = vis
+        self.mainGui.conf["visualisation"] = vis
+        self.mainGui.conf.write()
+        return self.vis
+    
     def start_play(self,url):
 	if self.state != 3:
 	    self.stop()
         self.active_link = url
         self.file_tags = {}
-        #if not sys.platform == "win32":
-            #if not self.vis_selector.getSelectedIndex() == 0 and not self.search_engine.engine_type == "video":
-                #self.player.set_property('flags', "Render visualisation when no video is present")
-                #self.vis = self.change_visualisation()
-                #self.visual = gst.element_factory_make(self.vis,'visual')
-                #self.player.set_property('vis-plugin', self.visual)
-            #else:
-                #if self.search_engine.engine_type == "video":
-                    #self.player.set_property('flags', "Render the video stream")
-                #else:
-                    #self.player.set_property('flags', "Render the audio stream")
-	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 	try:
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
 	except:
@@ -238,6 +255,15 @@ class Player(object):
 	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
 
     def play_thread(self,cache=None,length=None):
+	if not sys.platform == "win32":
+            if not self.vis_selector.getSelectedIndex() == 0 and not self.mainGui.search_engine.engine_type == "video" and not self.mainGui.search_engine.engine_type == "files":
+		self.player.engine.player._player.set_property('flags', 0x00000008|0x00000002)
+		self.vis = self.change_visualisation()
+                self.visual = gst.element_factory_make(self.vis,'visual')
+                self.player.engine.player._player.set_property('vis-plugin', self.visual)
+	    else:
+		self.player.engine.player._player.set_property('flags', 0x00000001|0x00000002)
+	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
 	self.is_playing = True
 	gobject.idle_add(self.seeker.set_sensitive,1)
@@ -285,7 +311,6 @@ class Player(object):
 	self.player.shutdown()
     
     def play_cache(self, data, size=None, name=None):
-	print 'play cache gui %s' % self.state
 	if self.state != 3:
 	    self.stop()
 	cache = None

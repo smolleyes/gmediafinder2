@@ -12,7 +12,7 @@ import checklinks as checkLink
 class Debrid(object):
     def __init__(self, gui):
         self.gui = gui
-        self.rapid_serveurs   = { 'megaupload'   : '4iidlag11',
+        self.rapid_serveurs   = { 'megaupload'   : '5adldc11',
                                   'rapidshare'   : '4iidlag11',
                                   'megavideo'    : '4iidlag11',
                                   'megaporn'     : '4iidlag11',

@@ -35,17 +35,6 @@ import pangocairo
 if sys.platform == "win32":
     import win32api
 ## custom lib
-import lib.debrid as debrider
-from lib.downloads import downloader
-from lib.player.player_gui import Player
-from lib.config import *
-from lib.engines.main import Engines
-from lib.functions import *
-from lib.playlist import Playlist
-if sys.platform != "win32":
-    from lib.pykey import send_string
-import lib.checklinks as checkLink
-from lib.get_stream import Browser as browser
 try:
     import lib.debrid as debrider
     from lib.downloads import downloader
@@ -148,16 +137,6 @@ class GsongFinder(object):
         ## info
         self.info_label = self.gladeGui.get_widget("info_label")
 
-        ## visualisations
-        try:
-            self.vis = self.conf["visualisation"]
-        except:
-            self.conf["visualisation"] = vis
-            self.vis = vis
-            self.conf.write()
-        combo = self.gladeGui.get_widget("vis_chooser")
-        self.vis_selector = ComboBox(combo)
-        self.vis_selector.setIndexFromString(self.vis)
 
         ##extras options
         self.downloads_check = self.gladeGui.get_widget("downloads_enabled")
@@ -180,7 +159,6 @@ class GsongFinder(object):
         "on_nextpage_btn_clicked" : self.change_page,
         "on_pageback_btn_clicked" : self.change_page,
         "on_search_entry_activate" : self.prepare_search,
-        "on_vis_chooser_changed" : self.change_visualisation,
         "on_about_menu_clicked" : self.on_about_btn_pressed,
         "on_settings_menu_clicked" : self.on_settings_btn_pressed,
         "on_main_window_configure_event" : self.save_position,
@@ -432,16 +410,6 @@ class GsongFinder(object):
                 iter = store.iter_next(iter)
                 treeview.set_size_request(0,-1)
 
-    def change_visualisation(self, widget=None):
-        vis = self.vis_selector.getSelected()
-        visi = self.vis_selector.getSelectedIndex()
-        if vis != "goom" and visi != 0 :
-            self.vis = "libvisual_"+vis
-        else:
-            self.vis = vis
-        self.conf["visualisation"] = vis
-        self.conf.write()
-        return self.vis
 
     def set_engine(self,widget=None,engine=None):
         self.quality_box.hide()
@@ -509,7 +477,12 @@ class GsongFinder(object):
             self.file_tags = {}
             self.media_markup = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
-            return self.Playlist.on_selected(self.Playlist.treeview)
+            self.Playlist.on_selected(self.Playlist.treeview)
+            try:
+                self.search_engine.on_paste(media_link)
+                return
+            except:
+                return
         ## play in engine
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)

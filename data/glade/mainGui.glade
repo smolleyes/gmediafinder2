@@ -1976,6 +1976,7 @@ audio-volume-medium</property>
                         </child>
                         <child>
                           <widget class="GtkFrame" id="frame6">
+                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
                             <child>
