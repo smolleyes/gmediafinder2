@@ -478,11 +478,13 @@ class GsongFinder(object):
             self.media_markup = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.Playlist.on_selected(self.Playlist.treeview)
-            try:
-                self.search_engine.on_paste(media_link)
-                return
-            except:
-                return
+            if not select:
+                try:
+                    self.search_engine.on_paste(media_link)
+                    return
+                except:
+                    return
+                
         ## play in engine
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)

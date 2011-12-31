@@ -256,7 +256,7 @@ class Player(object):
 
     def play_thread(self,cache=None,length=None):
 	if not sys.platform == "win32":
-            if not self.vis_selector.getSelectedIndex() == 0 and not self.mainGui.search_engine.engine_type == "video" and not self.mainGui.search_engine.engine_type == "files":
+            if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
 		self.player.engine.player._player.set_property('flags', 0x00000008|0x00000002)
 		self.vis = self.change_visualisation()
                 self.visual = gst.element_factory_make(self.vis,'visual')

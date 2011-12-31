@@ -238,12 +238,12 @@ class Youtube(object):
     def play(self,link):
         self.load_youtube_res(link)
         self.gui.media_link=link
-        link = 'http://www.youtube.com/watch?v=%s' % link
-        self.gui.browser.load_uri(link)
         active = self.youtube_video_rate.get_active()
         try:
             self.gui.start_play(self.media_link[active])
             self.media_codec = self.quality_list[active].split('|')[1]
+            link = 'http://www.youtube.com/watch?v=%s' % link
+            self.gui.browser.load_uri(link)
         except:
             self.gui.start_play('')
         gobject.idle_add(self.gui.quality_box.show)

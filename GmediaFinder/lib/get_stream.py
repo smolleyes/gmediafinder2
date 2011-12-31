@@ -164,7 +164,7 @@ class Browser():
 	    print "Youtube: Link %s detected" % req
 	    
 	    ## hide/stop the flashplayer
-	    new = "<p>TA RACE FLASH</p>"
+	    new = "<p>...</p>"
 	    script = "div_content = document.getElementById('movie_player');"
 	    script += "div_content.style.display='None';"
 	    script += "div_content.innerHTML='%s';" % new
