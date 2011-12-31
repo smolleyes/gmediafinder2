@@ -242,12 +242,14 @@ class Youtube(object):
         try:
             self.gui.start_play(self.media_link[active])
             self.media_codec = self.quality_list[active].split('|')[1]
-            link = 'http://www.youtube.com/watch?v=%s' % link
-            self.gui.browser.load_uri(link)
         except:
             self.gui.start_play('')
         gobject.idle_add(self.gui.quality_box.show)
 
+    def update_media_infos(self,link):
+        link = 'http://www.youtube.com/watch?v=%s' % link
+        self.gui.browser.load_uri(link)
+    
     def make_youtube_entry(self,video,read=None, select=None):
         duration = video.media.duration.seconds
         calc = divmod(int(duration),60)

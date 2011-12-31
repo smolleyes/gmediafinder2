@@ -268,6 +268,10 @@ class Player(object):
 	self.is_playing = True
 	gobject.idle_add(self.seeker.set_sensitive,1)
         play_thread_id = self.play_thread_id
+	
+	## update medias infos in the browser
+	self.update_browser_infos()
+	
 	if cache:
 	    self.player.play_cache(cache,length)
 	else:
@@ -277,6 +281,15 @@ class Player(object):
 		if not self.seekmove:
 		    self.player.update_info_section()
             time.sleep(1)
+    
+    def update_browser_infos(self):
+	try: 
+	    self.mainGui.search_engine.update_media_infos(self.mainGui.media_link)
+	except:
+	    "iciiiiiiiiiiiiiiiiiiiiiii"
+	    ## load default web page
+	    self.mainGui.browser.load_default_page()
+	    
     
     def stop(self,widget=None):
 	self.play_thread_id = None
@@ -549,4 +562,6 @@ class Player(object):
 		self.mainGui.window.window.set_cursor(None)
             except:
                 return
+		
+	
 		

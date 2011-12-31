@@ -12,6 +12,12 @@ import gobject
 from optparse import OptionParser
  
 warnings.filterwarnings('ignore')
+
+try:
+    import lib.config as config
+except:
+    from GmediaFinder.lib import config
+
  
 class WebView(webkit.WebView):
     def __init__(self):
@@ -265,6 +271,21 @@ class Browser():
 		</body>
 	    </html>''' % like_link
 	gobject.idle_add(self.view.load_html_string,html, "file:///")
+	
+    def load_default_page(self):
+	icon = config.img_path+"/gmediafinder.png"
+	html = '''
+	<!DOCTYPE html>
+	    <head>
+	    <title>Gmediafinder</title>
+	    </head>
+	    <body style="background-color:black;color: white; font-size:12px;">
+	    <div style="width:400px;position: absolute;left:%s ;margin-left:-150px;top:%s;">
+		<h1><img style="vertical-align:middle;" src="file://%s" /> Gmediafinder</h1>
+	    </div>
+	    </body>
+	</html>''' % ('50%','50%',icon)
+	gobject.idle_add(self.view.load_html_string,html, "file:///#")
  
 def zoom_in_cb(menu_item, web_view):
     """Zoom into the page"""
