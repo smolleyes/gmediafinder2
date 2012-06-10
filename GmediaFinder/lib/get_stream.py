@@ -127,7 +127,7 @@ class Browser():
         scrolled_window = view.get_parent()
         window.set_default_size(features.props.width, features.props.height)
 	window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
-	window.show_all()
+	gobject.idle_add(window.show_all)
         return True
 	
     
@@ -166,9 +166,12 @@ class Browser():
 	    self.mainGui.media_name = 'Streaming dailymotion...'
 	    self.mainGui.start_play(req)
 	    gobject.idle_add(self.view.go_back)
+	elif 'putlocker.com/download/' in req:
+		self.mainGui.media_name = 'Streaming putlocker...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.go_back)
 	elif 'youtube.com/videoplayback?sparams' in req:
 	    print "Youtube: Link %s detected" % req
-	    
 	    ## hide/stop the flashplayer
 	    new = "<p>...</p>"
 	    script = "div_content = document.getElementById('movie_player');"
@@ -200,6 +203,7 @@ class Browser():
 	    self.mainGui.media_name = 'Streaming Gametrailer...'
 	    self.mainGui.start_play(req)
 	    gobject.idle_add(self.view.go_back)
+	
 	    
     def on_active(self, widget, data=None):
         '''When the user enters an address in the bar, we check to make
