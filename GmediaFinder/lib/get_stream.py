@@ -170,12 +170,13 @@ class Browser():
 		self.mainGui.media_name = 'Streaming putlocker...'
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.go_back)
-	elif 'youtube.com/videoplayback?sparams' in req:
+	elif 'http://s.youtube.com/s?' in req:
 	    print "Youtube: Link %s detected" % req
 	    ## hide/stop the flashplayer
 	    new = "<p>...</p>"
-	    script = "div_content = document.getElementById('movie_player');"
+	    script = "div_content = document.getElementById('watch-player');"
 	    script += "div_content.style.display='None';"
+	    script += "div_content.id='truc';"
 	    script += "div_content.innerHTML='%s';" % new
 	    gobject.idle_add(self.view.execute_script,script)
 	    
