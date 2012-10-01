@@ -449,7 +449,7 @@ class GsongFinder(object):
             self.search_engine = getattr(self.engines_client,'%s' % self.engine)
             self.search_engine.load_gui()
 
-    def get_model(self,widget=None,path=None,column=None,select=False):
+    def get_model(self,widget=None,path=None,column=None):
         #if self.search_playlist_menu_active:
         #   return
         self.media_bitrate = ""
@@ -459,7 +459,7 @@ class GsongFinder(object):
             self.playlist_mode = True
         else:
             self.playlist_mode = False
-        if widget or select or not self.playlist_mode:
+        if widget or not self.playlist_mode:
             selected = self.treeview.get_selection()
             self.selected_iter = selected.get_selected()[1]
             self.path = self.model.get_path(self.selected_iter)
@@ -472,7 +472,6 @@ class GsongFinder(object):
             self.media_plugname = self.model.get_value(self.selected_iter, 5)
             ## for global search
             if not self.engine_selector.getSelected() == self.media_plugname:
-                print self.media_plugname
                 self.set_engine(None,self.media_plugname)
             ## return only theme name and description then extract infos from hash
             self.media_link = self.model.get_value(self.selected_iter, 2)
@@ -489,12 +488,9 @@ class GsongFinder(object):
             self.media_markup = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.Playlist.on_selected(self.Playlist.treeview)
-            if not select:
-                try:
-                    self.search_engine.on_paste(media_link)
-                    return
-                except:
-                    return
+            ## for youtube...
+            self.search_engine.updateBrowser=True
+            
                 
         ## play in engine
         thread.start_new_thread(self.search_engine.play,(self.media_link,))
@@ -649,7 +645,7 @@ class GsongFinder(object):
             #thread.start_new_thread(self.search_engine.search,(self.user_search,page))
         self.add_thread(self.search_engine,self.user_search,page)
 
-    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None, select=None):
+    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None, select=True):
         orig_pixbuf = img
         if not img:
             img = gtk.gdk.pixbuf_new_from_file_at_scale(os.path.join(self.img_path,'video.png'), 64,64, 1)
@@ -680,7 +676,7 @@ class GsongFinder(object):
                         6, synop,
                         7, orig_pixbuf,
                         )
-        if select:
+        if select is False:
             self.selected_iter = miter
             self.path = self.model.get_path(self.selected_iter)
             gobject.idle_add(self.treeview.set_cursor,self.path)

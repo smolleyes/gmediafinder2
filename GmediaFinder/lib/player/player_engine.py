@@ -469,6 +469,10 @@ class GstPlayer(object):
 	gobject.idle_add(self.playerGui.pause_btn_pb.set_from_pixbuf,self.playerGui.play_icon)
 	
     def stop(self):
+	self.playerGui.stop()
+
+	
+    def reset(self):
 	self.player.stop()
 	self.duration = None
 	self.state = STATE_READY

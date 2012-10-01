@@ -15,9 +15,10 @@ warnings.filterwarnings('ignore')
 
 try:
     import lib.config as config
+    import lib.debrid as debrider
 except:
     from GmediaFinder.lib import config
-
+    from GmediaFinder.lib import debrid as debrider
  
 class WebView(webkit.WebView):
     def __init__(self):
@@ -81,13 +82,18 @@ class Browser():
 	## update adress bar
 	self.view.connect("load_committed", self.update_buttons)
 	self.mainGui.browser_box.add(self.view)
+	## debrider
+	self.debrider = debrider.Debrid(self.mainGui)
 	
 	settings = webkit.WebSettings()
 	settings.set_property('enable-scripts', True)
 	settings.set_property('javascript-can-open-windows-automatically', True)
 	self.view.connect('create-web-view',self.on_new_window_cb)
 	self.view.connect("hovering-over-link", self._hovering_over_link_cb)
+	self.view.connect("load-finished", self.load_finished)
 	self._hovered_uri = None
+	self.isLoading=False
+	self.page_requests=[]
 	
 	## opt
 	self.homepage = 'http://www.google.com'
@@ -134,78 +140,115 @@ class Browser():
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 	
-    def load_uri(self,uri):
-	gobject.idle_add(self.view.load_uri,uri)  
+    def load_uri(self,uri,fromEngine=False):
+	if fromEngine is True:
+	    self.isLoading=True
+	else:
+	    self.isLoading=False
+	gobject.idle_add(self.view.load_uri,uri)
+	
+    def load_finished(self,v,r):
+	print "load finished...."
+	print self.page_requests
+	self.analyse_req()
+	self.stop_player()
     
     def resource_cb(self, view, frame, resource, request, response):
+	
 	req = request.get_uri()
+	self.page_requests.append(req)
 	#head = frame.get_network_response().get_property('message').get_property('response-headers')
 	#response = resource.get_property('message').get_property('response-headers')
-    	if 'megavideo.com/files/' in req:
-	    print "MEGAVIDEO: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming Megavideo...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	elif 'videobb.com/s?v=' in req:
-	    print "Videobb: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming Videobb...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	elif 'mixturecloud.com/streaming.php?key_stream=' in req and not 'player.mixturecloud' in req:
-	    print "Videobb: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming mixture video...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	elif 'http://av.vimeo.com' in req and '?token=' in req:
-	    print "Vimeo: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming Vimeo...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	elif 'dailymotion.com/video/' in req and 'proxy' in req:
-	    print "Dailymotion: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming dailymotion...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	elif 'putlocker.com/download/' in req:
-		self.mainGui.media_name = 'Streaming putlocker...'
+	#print req
+    
+    def analyse_req(self):
+	for req in self.page_requests:
+	    if 'megavideo.com/files/' in req:
+		print "MEGAVIDEO: Link detected"
+		self.mainGui.media_name = 'Streaming Megavideo...'
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.go_back)
-	elif 'http://s.youtube.com/s?' in req:
-	    print "Youtube: Link %s detected" % req
-	    ## hide/stop the flashplayer
-	    new = "<p>...</p>"
-	    script = "div_content = document.getElementById('watch-player');"
-	    script += "div_content.style.display='None';"
-	    script += "div_content.id='truc';"
-	    script += "div_content.innerHTML='%s';" % new
-	    gobject.idle_add(self.view.execute_script,script)
-	    
-	    ## compare video ids
-	    reqid = None
-	    current_id = None
-	    url = self.url_bar.get_text()
-	    try:
-		reqid = re.search('\?v=(.*)&',url).group(1)
-	    except:
+		break
+	    elif 'videobb.com/s?v=' in req:
+		print "Videobb: Link detected"
+		self.mainGui.media_name = 'Streaming Videobb...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.go_back)
+		break
+	    elif 'http://www.mixturecloud.com/media/' in req and 'player.mixturecloud' in req:
+		print "Mixture: Link detected"
+		self.mainGui.media_name = 'Streaming mixture video...'
+		vid=re.search('mixturecloud.com/media/(.*)&win',req).group(1)
+		self.debrider.debridMixture(vid)
+		break
+		##gobject.idle_add(self.view.go_back)
+	    elif 'http://av.vimeo.com' in req and '?token=' in req:
+		print "Vimeo: Link detected"
+		self.mainGui.media_name = 'Streaming Vimeo...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.go_back)
+		break
+	    elif 'dailymotion.com/video/' in req and 'proxy' in req:
+		print "Dailymotion: Link detected"
+		self.mainGui.media_name = 'Streaming dailymotion...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.go_back)
+		break
+	    elif 'putlocker.com/download/' in req:
+		    self.mainGui.media_name = 'Streaming putlocker...'
+		    self.mainGui.start_play(req)
+		    gobject.idle_add(self.view.go_back)
+		    break
+	    elif 'lscache' in req and "youtube.com" in req:
+		print "isLOADING : %s" % self.isLoading
+		if self.isLoading:
+		    self.stop_player()
+		    self.isLoading=False
+		    break
+		    return
+		## compare video ids
+		reqid = None
+		current_id = None
+		url = self.url_bar.get_text()
 		try:
-		    reqid = re.search('\?v=(.*)',url).group(1)
+		    reqid = re.search('\?v=(.*?)&',url).group(1)
 		except:
-		    reqid = None
-	    try:
-		current_id = self.mainGui.media_link
-	    except:
-		curent_id = None
-	    ## if not match read new video
-	    if reqid != current_id:
-		self.mainGui.search_engine.on_paste(url=url)
+		    try:
+			reqid = re.search('\?v=(.*)',url).group(1)
+		    except:
+			reqid = None
+		try:
+		    current_id = self.mainGui.media_link
+		except:
+		    curent_id = None
+		## if not match read new video
+		print "%s %s" % (current_id, reqid)
+		if reqid != current_id:
+		    self.mainGui.search_engine.on_paste(url=url)
+		    self.mainGui.search_engine.updateBrowser=False
+		break
+		self.stop_player()
+		    
+		
+	    elif 'http://trailers-ak.gametrailers.com' in req:
+		print "Gametrailer: Link detected"
+		self.mainGui.media_name = 'Streaming Gametrailer...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.go_back)
+		break
+	self.page_requests=[]
 	    
-	elif 'http://trailers-ak.gametrailers.com' in req:
-	    print "Gametrailer: Link %s detected" % req
-	    self.mainGui.media_name = 'Streaming Gametrailer...'
-	    self.mainGui.start_play(req)
-	    gobject.idle_add(self.view.go_back)
-	
-	    
+    def stop_player(self):
+	print "Youtube: stop player"
+	## hide/stop the flashplayer
+	try:
+	    script = "player = document.getElementById('movie_player');"
+	    script += "player.mute();"
+	    script += "player.stopVideo();"
+	    gobject.idle_add(self.view.execute_script,script)
+	except:
+	    print "no player loaded"
+    
     def on_active(self, widget, data=None):
         '''When the user enters an address in the bar, we check to make
            sure they added the http://, if not we add it for them.  Once

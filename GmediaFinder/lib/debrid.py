@@ -109,6 +109,26 @@ class Debrid(object):
 	self.print_info('')
         self.gui.download_file(self.gui, link, self.filename, self.ext.replace(';?=',''), response, 'files')
     
+def debridMixture(self,vid):
+    print "debridage du lien %s" % vid
+    url    = 'http://enstreaming.com/mixture/telecharger.php'
+    values = { 'link' : 'http://www.mixturecloud.com/media/download/%s' % vid }
+    data   = urllib.urlencode(values)
+    req    = urllib2.Request(url, data)
+    req.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30')
+    req.add_header('Origin','http://enstreaming.com/mixture/index.php')
+    req.add_header('Referer','http://enstreaming.com/mixture/index.php')
+    response = urllib2.urlopen(req, timeout=30)
+    txt = response.readlines()
+    print txt
+    for line in txt:
+	print line
+	if 'id="download_unlimited"' in line:
+	    link = urllib.unquote(re.search('href="(.*?)"',line).group(1))
+	    print link
+	    self.print_info('lien streaming %s, ouverture cours...' % link)
+	    self.gui.start_play(link)
+    
     def print_info(self,msg):
         gobject.idle_add(self.gui.info_label.set_text,msg)
 

@@ -28,6 +28,7 @@ class Youtube(object):
         self.thread_stop= False
         self.has_browser_mode = False
         self.vp8 = False
+        self.updateBrowser=True
         ## the gui box to show custom filters/options
         self.opt_box = self.gui.gladeGui.get_widget("search_options_box")
         ## options labels
@@ -216,7 +217,9 @@ class Youtube(object):
 
         if direct_link:
             gobject.idle_add(self.gui.model.clear)
-            self.make_youtube_entry(vquery, True, True)
+            self.make_youtube_entry(vquery, True, False)
+            self.thread_stop=True
+            return
         
         try:
             if len(vquery.entry) == 0:
@@ -233,24 +236,29 @@ class Youtube(object):
                 self.make_youtube_entry(entry)
             else:
                 return
-        self.thread_stop=True
+        self.thread_stop=True  
+                
 
     def play(self,link):
+        print "Youtube: play in youtube engine"
         self.load_youtube_res(link)
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
         try:
             self.gui.start_play(self.media_link[active])
             self.media_codec = self.quality_list[active].split('|')[1]
+            print "updateBrowser is %s" % self.updateBrowser
+            if self.updateBrowser:
+                self.update_media_infos(link)
+                self.gui.browser.stop_play()
         except:
             self.gui.start_play('')
-        gobject.idle_add(self.gui.quality_box.show)
 
     def update_media_infos(self,link):
         link = 'http://www.youtube.com/watch?v=%s' % link
-        self.gui.browser.load_uri(link)
+        self.gui.browser.load_uri(link, True)
     
-    def make_youtube_entry(self,video,read=None, select=None):
+    def make_youtube_entry(self,video,read=None, select=True):
         duration = video.media.duration.seconds
         calc = divmod(int(duration),60)
         seconds = int(calc[1])
@@ -330,12 +338,12 @@ class Youtube(object):
                     if codec == 'mp4' and '%s|webm' % rate in str(self.quality_list):
                         #qn += 1
                         continue
-                    print qn
                 gobject.idle_add(self.youtube_video_rate.set_active,qn)
             active = gobject.idle_add(self.youtube_video_rate.get_active)
         else:
             if self.quality_list:
                 active = self.youtube_video_rate.get_active()
+        gobject.idle_add(self.gui.quality_box.show)
 
     def on_youtube_video_rate_changed(self,widget):
         active = self.youtube_video_rate.get_active()
@@ -358,13 +366,13 @@ class Youtube(object):
                 contents = urllib.unquote(stream.read())
             ## links list
             try:
-                matches = re.search("url_encoded_fmt_stream_map=(.*?)fmt_list",contents).group(1)
+                matches = re.search("url_encoded_fmt_stream_map=(.*?)&allow_ratings",contents).group(1)
             except:
                 try:
                     matches = re.search("url_encoded_fmt_stream_map=(.*?)\">",contents).group(1)
                 except:
                     matches = re.search("url_encoded_fmt_stream_map=(.*)",contents).group(1)
-            fmt_arr = urllib.unquote(matches).split(',')
+            fmt_arr = urllib.unquote(matches).split('&quality')
             ## quality_list
             regexp1 = re.compile("fmt_list=([^&]+)&")
             matches = regexp1.search(contents).group(1)
@@ -374,8 +382,9 @@ class Youtube(object):
             link_list = []
             for link in fmt_arr:
                 try:
-                    res = re.search('url=(.*?)&type', link).group(1)
-                    link_list.append(urllib.unquote(res))
+                    res = re.search('url=(.*)', link).group(1)
+                    link=re.sub('sig','signature',res)
+                    link_list.append(link)
                 except:
                     continue
             ## remove flv links...

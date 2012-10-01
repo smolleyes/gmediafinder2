@@ -263,14 +263,13 @@ class Player(object):
                 self.player.engine.player._player.set_property('vis-plugin', self.visual)
 	    else:
 		self.player.engine.player._player.set_property('flags', 0x00000001|0x00000002)
+	#self.player.engine.player._player.set_property('flags',0x00000100)
 	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
 	self.is_playing = True
 	gobject.idle_add(self.seeker.set_sensitive,1)
         play_thread_id = self.play_thread_id
-	
-	## update medias infos in the browser
-	self.update_browser_infos()
+    
 	
 	if cache:
 	    self.player.play_cache(cache,length)
@@ -281,14 +280,6 @@ class Player(object):
 		if not self.seekmove:
 		    self.player.update_info_section()
             time.sleep(1)
-    
-    def update_browser_infos(self):
-	try: 
-	    self.mainGui.search_engine.update_media_infos(self.mainGui.media_link)
-	except:
-	    "iciiiiiiiiiiiiiiiiiiiiiii"
-	    ## load default web page
-	    self.mainGui.browser.load_default_page()
 	    
     
     def stop(self,widget=None):
@@ -296,7 +287,6 @@ class Player(object):
 	self.is_playing = False
 	self.radio_mode = False
 	self.active_link = None
-	self.player.stop()
         gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
         gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
         bit=_('Bitrate:')
@@ -308,6 +298,7 @@ class Player(object):
 	gobject.idle_add(self.seeker.set_value,0)
 	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
 	self.refresh_screen()
+	self.player.engine.reset()
     
     
     def on_volume_changed(self, widget, value=10):
