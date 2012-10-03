@@ -185,7 +185,7 @@ class GsongFinder(object):
         self.window.connect('destroy', self.exit)
 
         ## create main results treeview
-        self.model = gtk.ListStore(gtk.gdk.Pixbuf,str,object,object,object,str,str,gtk.gdk.Pixbuf)
+        self.model = gtk.ListStore(gtk.gdk.Pixbuf,str,object,object,object,str,str,gtk.gdk.Pixbuf,bool)
         self.treeview = gtk.TreeView()
         self.window.realize()
         self.odd = gtk.gdk.color_parse(str(self.window.style.bg[gtk.STATE_NORMAL]))
@@ -473,6 +473,10 @@ class GsongFinder(object):
             ## for global search
             if not self.engine_selector.getSelected() == self.media_plugname:
                 self.set_engine(None,self.media_plugname)
+            try:
+                self.search_engine.updateBrowser=self.model.get_value(self.selected_iter, 8)
+            except:
+                self.search_engine.updateBrowser=False
             ## return only theme name and description then extract infos from hash
             self.media_link = self.model.get_value(self.selected_iter, 2)
             self.media_img = self.model.get_value(self.selected_iter, 0)
@@ -675,6 +679,7 @@ class GsongFinder(object):
                         5, plugname,
                         6, synop,
                         7, orig_pixbuf,
+                        8, select
                         )
         if select is False:
             self.selected_iter = miter

@@ -91,6 +91,7 @@ class Browser():
 	self.view.connect('create-web-view',self.on_new_window_cb)
 	self.view.connect("hovering-over-link", self._hovering_over_link_cb)
 	self.view.connect("load-finished", self.load_finished)
+	self.view.connect("navigation-requested", self.on_click_link)
 	self._hovered_uri = None
 	self.isLoading=False
 	self.page_requests=[]
@@ -140,26 +141,30 @@ class Browser():
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 	
-    def load_uri(self,uri,fromEngine=False):
-	if fromEngine is True:
-	    self.isLoading=True
-	else:
-	    self.isLoading=False
+    def load_uri(self,uri):
 	gobject.idle_add(self.view.load_uri,uri)
 	
     def load_finished(self,v,r):
-	print "load finished...."
-	print self.page_requests
 	self.analyse_req()
-	self.stop_player()
+	
+    def on_click_link(self, view, frame, req, data=None):
+        """Describes what to do when a href link is clicked"""
+        # As Ryan Paul stated he likes to use the prefix program:/ if the
+        # link is being used like a button, the else will catch true links
+        # and open them in the webbrowser
+        uri = req.get_uri()
+        if 'youtube.com/watch?' in uri:
+	    self.isLoading=True
     
     def resource_cb(self, view, frame, resource, request, response):
-	
 	req = request.get_uri()
 	self.page_requests.append(req)
+	try:
+	    self.stop_player()
+	except:
+	    pass
 	#head = frame.get_network_response().get_property('message').get_property('response-headers')
 	#response = resource.get_property('message').get_property('response-headers')
-	#print req
     
     def analyse_req(self):
 	for req in self.page_requests:
@@ -199,12 +204,20 @@ class Browser():
 		    self.mainGui.start_play(req)
 		    gobject.idle_add(self.view.go_back)
 		    break
+	    elif 'grooveshark.com/stream.php?streamKey' in req:
+		self.mainGui.media_name = 'Streaming putlocker...'
+		self.mainGui.start_play(req)
+		gobject.idle_add(self.view.stop_loading)
+		break
 	    elif 'lscache' in req and "youtube.com" in req:
-		print "isLOADING : %s" % self.isLoading
-		if self.isLoading:
-		    self.stop_player()
-		    self.isLoading=False
-		    break
+		try:
+		    selected = self.mainGui.treeview.get_selection()
+		    self.selected_iter = selected.get_selected()[1]
+		    self.path = self.mainGui.model.get_path(self.selected_iter)
+		    updateBrowser = self.mainGui.model.get_value(self.selected_iter, 8)
+		except:
+		    updateBrowser = False
+		if updateBrowser is True and self.isLoading is False:
 		    return
 		## compare video ids
 		reqid = None
@@ -222,12 +235,11 @@ class Browser():
 		except:
 		    curent_id = None
 		## if not match read new video
-		print "%s %s" % (current_id, reqid)
 		if reqid != current_id:
+		    gobject.idle_add(self.mainGui.search_entry.set_text,'')
+		    self.isLoading=False
 		    self.mainGui.search_engine.on_paste(url=url)
-		    self.mainGui.search_engine.updateBrowser=False
 		break
-		self.stop_player()
 		    
 		
 	    elif 'http://trailers-ak.gametrailers.com' in req:
@@ -239,7 +251,6 @@ class Browser():
 	self.page_requests=[]
 	    
     def stop_player(self):
-	print "Youtube: stop player"
 	## hide/stop the flashplayer
 	try:
 	    script = "player = document.getElementById('movie_player');"

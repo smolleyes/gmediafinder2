@@ -216,7 +216,7 @@ class Youtube(object):
             self.thread_stop=True
 
         if direct_link:
-            gobject.idle_add(self.gui.model.clear)
+            #gobject.idle_add(self.gui.model.clear)
             self.make_youtube_entry(vquery, True, False)
             self.thread_stop=True
             return
@@ -247,16 +247,13 @@ class Youtube(object):
         try:
             self.gui.start_play(self.media_link[active])
             self.media_codec = self.quality_list[active].split('|')[1]
-            print "updateBrowser is %s" % self.updateBrowser
-            if self.updateBrowser:
-                self.update_media_infos(link)
-                self.gui.browser.stop_play()
+            self.update_media_infos(link)
         except:
             self.gui.start_play('')
 
     def update_media_infos(self,link):
         link = 'http://www.youtube.com/watch?v=%s' % link
-        self.gui.browser.load_uri(link, True)
+        gobject.idle_add(self.gui.browser.load_uri,link)
     
     def make_youtube_entry(self,video,read=None, select=True):
         duration = video.media.duration.seconds
@@ -317,7 +314,7 @@ class Youtube(object):
             self.youtube_quality_model.set(new_iter,
                             0, rate,
                             )
-        self.set_default_youtube_video_rate()
+        gobject.idle_add(self.set_default_youtube_video_rate)
 
     def set_default_youtube_video_rate(self,widget=None):
         active = self.youtube_video_rate.get_active()
@@ -325,7 +322,7 @@ class Youtube(object):
         ## if there s only one quality available, read it...
         if active == -1:
             if len(self.quality_list) == 1:
-                gobject.idle_add(self.youtube_video_rate.set_active,0)
+                self.youtube_video_rate.set_active(0)
             for frate in self.quality_list:
                 rate = frate.split('|')[0]
                 codec = frate.split('|')[1]
