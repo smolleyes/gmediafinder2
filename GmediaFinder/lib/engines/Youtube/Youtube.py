@@ -334,18 +334,21 @@ class Youtube(object):
             if len(self.quality_list) == 1:
                 self.youtube_video_rate.set_active(0)
             for frate in self.quality_list:
-                rate = frate.split('|')[0]
-                codec = frate.split('|')[1]
-                h = int(rate.split('x')[0])
-                dh = int(self.youtube_max_res.split('x')[0])
-                if h > dh:
-                    qn += 1
-                    continue
-                else:
-                    if codec == 'mp4' and '%s|webm' % rate in str(self.quality_list):
-                        #qn += 1
+                try:
+                    rate = frate.split('|')[0]
+                    codec = frate.split('|')[1]
+                    h = int(rate.split('x')[0])
+                    dh = int(self.youtube_max_res.split('x')[0])
+                    if h > dh:
+                        qn += 1
                         continue
-                gobject.idle_add(self.youtube_video_rate.set_active,qn)
+                    else:
+                        if codec == 'mp4' and '%s|webm' % rate in str(self.quality_list):
+                            #qn += 1
+                            continue
+                    gobject.idle_add(self.youtube_video_rate.set_active,qn)
+                except:
+                    continue
             active = gobject.idle_add(self.youtube_video_rate.get_active)
         else:
             if self.quality_list:
