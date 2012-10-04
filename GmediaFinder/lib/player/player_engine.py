@@ -540,6 +540,8 @@ class GstPlayer(object):
             percent = (float(self.current_position)/float(self.length))*100.0
             adjustment = gtk.Adjustment(percent, 0.00, 100.0, 0.1, 1.0, 1.0)
             self.playerGui.seeker.set_adjustment(adjustment)
+	    if percent == 100:
+		gobject.idle_add(self.player.emit, 'finished')
         
         return True
 	

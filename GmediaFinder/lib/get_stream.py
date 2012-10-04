@@ -223,7 +223,7 @@ class Browser():
 		    updateBrowser = self.mainGui.model.get_value(self.selected_iter, 8)
 		except:
 		    updateBrowser = False
-		if updateBrowser is True and self.isLoading is False:
+		if updateBrowser is True and self.isLoading is False or self.mainGui.playlist_mode is True:
 		    return
 		## compare video ids
 		reqid = None
