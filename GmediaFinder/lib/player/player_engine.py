@@ -554,7 +554,6 @@ class GstPlayer(object):
             self.play_thread_id = None
             self.playerGui.pause_btn_pb.set_from_pixbuf(self.playerGui.pause_icon)
             self.playerGui.play_btn_pb.set_from_pixbuf(self.playerGui.stop_icon)
-	    gobject.idle_add(self.player.emit, 'finished')
         elif t == gst.MESSAGE_ERROR:
             err, debug = message.parse_error()
             print "Error Gstreamer: %s" % err, debug
