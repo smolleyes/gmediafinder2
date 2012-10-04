@@ -725,7 +725,6 @@ class GsongFinder(object):
                     codec = data.split(':::')[2]
                     engine_type = data.split(':::')[3]
                     engine_name = data.split(':::')[4]
-                    print engine_type
                     if str(engine_type) == 'files':
                         self.download_debrid(link)
                     else:
@@ -877,7 +876,6 @@ class GsongFinder(object):
     
     def select_first_media(self):
         ## wait for 10 seconds or exit
-        print len(self.model)
         try:
             self.selected_iter = self.model.get_iter_first()
             path = self.model.get_path(self.selected_iter)

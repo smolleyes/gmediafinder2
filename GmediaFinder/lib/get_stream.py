@@ -11,7 +11,7 @@ from time import sleep
 import gobject
 from optparse import OptionParser
  
-warnings.filterwarnings('ignore')
+#warnings.filterwarnings('ignore')
 
 try:
     import lib.config as config
@@ -92,6 +92,7 @@ class Browser():
 	self.view.connect("hovering-over-link", self._hovering_over_link_cb)
 	self.view.connect("load-finished", self.load_finished)
 	self.view.connect("navigation-requested", self.on_click_link)
+	self.console_response = self.view.connect('console-message', self.on_console_message)
 	self._hovered_uri = None
 	self.isLoading=False
 	self.page_requests=[]
@@ -109,6 +110,11 @@ class Browser():
 	}
 	self.mainGui.gladeGui.signal_autoconnect(dic)
 	
+    def on_console_message(self, *args):
+        """ callback on 'console-message' webkit.WebView signal """
+        #print ('Myconsole:' + str(args))
+        self.view.stop_emission('console-message')
+    
     def on_new_window_cb(self, web_view, frame, data=None):
 	scrolled_window = gtk.ScrolledWindow()
         scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC

@@ -156,22 +156,27 @@ class Youtube(object):
         else:
             text = url
         if text != '':
-            vid=None
-            try:
-                vid = re.search('watch\?v=(.*?)&(.*)',text).group(1)
-            except:
-                try:
-                    vid = re.search('watch\?v=(.*)',text).group(1)
-                except:
-                    if not url:
-                        error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
-                    return
+            vid=self.get_videoId(text)
+            print "ONPASTE VID ET URL : %s %s" % (vid, text)
             yt = yt_service.YouTubeService()
             entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
             self.filter(entry, '', 1)
         else:
             return
 
+    def get_videoId(self,text):
+        vid=None
+        try:
+            vid = re.search('watch\?v=(.*?)&',text).group(1)
+        except:
+            try:
+                vid = re.search('watch\?v=(.*)',text).group(1)
+            except:
+                if not vid:
+                    error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
+                return
+        return vid
+        
     def set_max_youtube_res(self, widget):
         if widget.get_active():
             self.youtube_max_res = widget.get_child().get_label()
@@ -240,10 +245,11 @@ class Youtube(object):
                 
 
     def play(self,link):
-        print "Youtube: play in youtube engine"
+        print "Youtube: play in youtube engine, link : %s" % link
         self.load_youtube_res(link)
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
+        print "YOUTUBE LINK: %s" % self.media_link[active]
         try:
             self.gui.start_play(self.media_link[active])
             self.media_codec = self.quality_list[active].split('|')[1]
@@ -269,7 +275,7 @@ class Youtube(object):
             count = video.statistics.view_count
         except:
             pass
-        vid_id = os.path.basename(os.path.dirname(url))
+        vid_id=self.get_videoId(url)
         try:
             vid_pic = download_photo(thumb)
         except:
@@ -303,10 +309,10 @@ class Youtube(object):
         gobject.idle_add(self.youtube_video_rate.show)
         self.media_link = None
         self.quality_list = None
-        try:
-            self.media_link,self.quality_list = self.get_quality_list(link)
-        except:
-            return
+        #try:
+        self.media_link,self.quality_list =self.get_quality_list(link)
+        #except:
+        #    return
         if not self.quality_list:
             return
         for rate in self.quality_list:
@@ -353,64 +359,65 @@ class Youtube(object):
     def get_quality_list(self,vid_id):
         links_arr = []
         quality_arr = []
-        try:
-            req = urllib2.Request("http://www.youtube.com/get_video_info?video_id=" + urllib2.quote('%s' % vid_id))
+        #try:
+        print "http://www.youtube.com/get_video_info?video_id=%s" % vid_id
+        req = urllib2.Request("http://www.youtube.com/get_video_info?video_id=%s" % vid_id)
+        stream = urllib2.urlopen(req)
+        contents = urllib.unquote(stream.read())
+        if re.search('status=fail',contents):
+            req = urllib2.Request("http://www.youtube.com/watch?v=%s" % vid_id)
             stream = urllib2.urlopen(req)
             contents = urllib.unquote(stream.read())
-            if re.search('status=fail',contents):
-                req = urllib2.Request("http://www.youtube.com/watch?v=" + urllib2.quote('%s' % vid_id))
-                stream = urllib2.urlopen(req)
-                contents = urllib.unquote(stream.read())
-            ## links list
-            try:
-                matches = re.search("url_encoded_fmt_stream_map=(.*?)&allow_ratings",contents).group(1)
-            except:
-                try:
-                    matches = re.search("url_encoded_fmt_stream_map=(.*?)\">",contents).group(1)
-                except:
-                    matches = re.search("url_encoded_fmt_stream_map=(.*)",contents).group(1)
-            fmt_arr = urllib.unquote(matches).split('&quality')
-            ## quality_list
-            regexp1 = re.compile("fmt_list=([^&]+)&")
-            matches = regexp1.search(contents).group(1)
-            quality_list = urllib.unquote(matches).split(',')
-            stream.close()
-            ##
-            link_list = []
-            for link in fmt_arr:
-                try:
-                    res = re.search('url=(.*)', link).group(1)
-                    link=re.sub('sig','signature',res)
-                    link_list.append(link)
-                except:
-                    continue
-            ## remove flv links...
-            i = 0
-            if quality_list[0] == quality_list[1]:
-                quality_list.remove(quality_list[0])
-                fmt_arr.remove(fmt_arr[0])
-            for quality in quality_list:
-                #print quality
-                codec = self.get_codec(quality)
-                if codec == 'webm' and not self.vp8:
-                    i+=1
-                    continue
-                if codec == "flv" and quality.split("/")[1] == "320x240" and re.search("18/320x240",str(quality_list)):
-                    i+=1
-                    continue
-                elif codec == "flv" and quality.split("/")[1] != "320x240":
-                    i+=1
-                    continue
-                elif quality == '18/640x360/9/0/115' and re.search("34/640x360/9/0/115",str(quality_list)):
-                    i+=1
-                    continue
-                else:
-                    links_arr.append(link_list[i])
-                    q = quality.split("/")[1] + "|%s" % codec
-                    quality_arr.append(quality.split("/")[1] + "|%s" % codec)
-                    i+=1
+        ## links list
+        try:
+            matches = re.search("url_encoded_fmt_stream_map=(.*?)&length_seconds",contents).group(1)
         except:
-            return
+            try:
+                matches = re.search("url_encoded_fmt_stream_map=(.*?)\">",contents).group(1)
+            except:
+                matches = re.search("url_encoded_fmt_stream_map=(.*)",contents).group(1)
+        fmt_arr = urllib.unquote(matches).split('&quality')
+        ## quality_list
+        regexp1 = re.compile("fmt_list=([^&]+)&")
+        matches = regexp1.search(contents).group(1)
+        quality_list = urllib.unquote(matches).split(',')
+        stream.close()
+        ##
+        link_list = []
+        for link in fmt_arr:
+            try:
+                res = re.search('url=(.*)', link).group(1)
+                link=re.sub('sig','signature',res)
+                link_list.append(link)
+            except:
+                continue
+        ## remove flv links...
+        i = 0
+        if quality_list[0] == quality_list[1]:
+            quality_list.remove(quality_list[0])
+            fmt_arr.remove(fmt_arr[0])
+        for quality in quality_list:
+            #print quality
+            codec = self.get_codec(quality)
+            if codec == 'webm' and not self.vp8:
+                i+=1
+                continue
+            if codec == "flv" and quality.split("/")[1] == "320x240" and re.search("18/320x240",str(quality_list)):
+                i+=1
+                continue
+            elif codec == "flv" and quality.split("/")[1] != "320x240":
+                i+=1
+                continue
+            elif quality == '18/640x360/9/0/115' and re.search("34/640x360/9/0/115",str(quality_list)):
+                i+=1
+                continue
+            else:
+                links_arr.append(link_list[i])
+                q = quality.split("/")[1] + "|%s" % codec
+                quality_arr.append(quality.split("/")[1] + "|%s" % codec)
+                i+=1
+        #except:
+        #    return
         return links_arr, quality_arr
     
     def get_comments(self,vid):

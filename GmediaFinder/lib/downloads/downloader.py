@@ -575,6 +575,7 @@ class FileDownloader(threading.Thread, Downloader):
         self.print_info(_('Extracting audio...'))
         try:
             self.gui.throbber.show()
+            #print str(ffmpeg_path), '-i', str(src), '-f', 'mp3', '-ab', '192k', str(target)
             (pid,t,r,s) = gobject.spawn_async([str(ffmpeg_path), '-i', str(src), '-f', 'mp3', '-ab', '192k', str(target)],flags=gobject.SPAWN_DO_NOT_REAP_CHILD,standard_output = True, standard_error = True)
             gobject.child_watch_add(pid, self.task_done)
         except:
