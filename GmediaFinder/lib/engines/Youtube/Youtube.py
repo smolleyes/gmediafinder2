@@ -401,25 +401,28 @@ class Youtube(object):
             quality_list.remove(quality_list[0])
             fmt_arr.remove(fmt_arr[0])
         for quality in quality_list:
-            #print quality
-            codec = self.get_codec(quality)
-            if codec == 'webm' and not self.vp8:
-                i+=1
+            try:
+                #print quality
+                codec = self.get_codec(quality)
+                if codec == 'webm' and not self.vp8:
+                    i+=1
+                    continue
+                if codec == "flv" and quality.split("/")[1] == "320x240" and re.search("18/320x240",str(quality_list)):
+                    i+=1
+                    continue
+                elif codec == "flv" and quality.split("/")[1] != "320x240":
+                    i+=1
+                    continue
+                elif quality == '18/640x360/9/0/115' and re.search("34/640x360/9/0/115",str(quality_list)):
+                    i+=1
+                    continue
+                else:
+                    links_arr.append(link_list[i])
+                    q = quality.split("/")[1] + "|%s" % codec
+                    quality_arr.append(quality.split("/")[1] + "|%s" % codec)
+                    i+=1
+            except:
                 continue
-            if codec == "flv" and quality.split("/")[1] == "320x240" and re.search("18/320x240",str(quality_list)):
-                i+=1
-                continue
-            elif codec == "flv" and quality.split("/")[1] != "320x240":
-                i+=1
-                continue
-            elif quality == '18/640x360/9/0/115' and re.search("34/640x360/9/0/115",str(quality_list)):
-                i+=1
-                continue
-            else:
-                links_arr.append(link_list[i])
-                q = quality.split("/")[1] + "|%s" % codec
-                quality_arr.append(quality.split("/")[1] + "|%s" % codec)
-                i+=1
         #except:
         #    return
         return links_arr, quality_arr
