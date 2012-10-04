@@ -157,7 +157,6 @@ class Youtube(object):
             text = url
         if text != '':
             vid=self.get_videoId(text)
-            print "ONPASTE VID ET URL : %s %s" % (vid, text)
             yt = yt_service.YouTubeService()
             entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
             self.filter(entry, '', 1)
@@ -166,15 +165,20 @@ class Youtube(object):
 
     def get_videoId(self,text):
         vid=None
+        print "getvideoId URL : %s" %  text
         try:
             vid = re.search('watch\?v=(.*?)&',text).group(1)
         except:
             try:
                 vid = re.search('watch\?v=(.*)',text).group(1)
             except:
-                if not vid:
-                    error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
-                return
+                try:
+                    vid = os.path.basename(os.path.dirname(text))
+                except:
+                    if not vid:
+                        error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
+                    return
+        print "getvideoId ID : %s" %  vid
         return vid
         
     def set_max_youtube_res(self, widget):
