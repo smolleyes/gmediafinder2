@@ -803,7 +803,7 @@ class GsongFinder(object):
         if not name:
             name = self.media_name
         if not codec:
-            codec = self.player.media_codec
+            codec = self.player.player.media_codec
         print link, name, codec, data, engine_name, engine_type
         download = downloader.FileDownloader(self, link, name, codec, data, engine_name, engine_type)
         download.start()

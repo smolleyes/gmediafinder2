@@ -45,7 +45,7 @@ class Player(gobject.GObject):
         self.media_link = ""
         self.mainGui = mainGui
 	self.xsink = False
-	self.media_codec = None
+	self.media_codec = ""
 	self.old_link = None
 	self.play_thread_id = None
 	## play mode options

@@ -5,8 +5,10 @@ import json
 
 try:
     from lib.functions import *
+    from lib.get_stream import Browser
 except:
     from GmediaFinder.lib.functions import *
+    from GmediaFinder.lib.get_stream import Browser
 
 class DailyMotion(object):
     def __init__(self,gui):
@@ -18,6 +20,7 @@ class DailyMotion(object):
         self.main_start_page = 1
         self.thread_stop=False
         self.has_browser_mode = False
+        self.browser=Browser(gui)
         ## options labels
         self.order_label = _("Order by: ")
         self.filters_label = _("Filters: ")
@@ -29,10 +32,11 @@ class DailyMotion(object):
         self.gui.engine_list[self.name] = ''
     
     def load_gui(self):
-        self.order_list = {self.order_label:{_("Most relevant"):"relevance",_("Most recent"):"recent",_("Most viewed"):"visited",_("Most rated"):"rated"}}
+        self.order_list = {self.order_label:{_("Most recent"):"recent",_("Most viewed"):"visited",_("Most rated"):"rated",_("Most relevant"):"relevance"}}
         self.orderby = create_comboBox(self.gui, self.order_list)
         self.filters_list = {self.filters_label:{"":"",_("HD"):"hd"}}
         self.filters = create_comboBox(self.gui, self.filters_list)
+        self.orderby.setIndexFromString(_("Most relevant"))
         
     def get_search_url(self,query,page):
         choice = self.orderby.getSelected()
@@ -46,13 +50,19 @@ class DailyMotion(object):
     
     def play(self,link):
         try:
-            data = get_url_data(link)
-            data = urllib2.urlopen(link)
-            j_data = data.read().split('info =')[1].split(';')[0]
-            js = json.loads(j_data)
-            link = js['stream_url']
-            self.gui.media_link = link
-            return self.gui.start_play(link)
+            data = self.browser.load_uri(link)
+            #j_data = data.read().split('info =')[1].split(';')[0]
+            #js = json.loads(j_data)
+            #print js
+            #try:
+                #link = js['stream_h264_url']
+            #except:
+                #try:
+                    #link = js['stream_h264_ld_url']
+                #except:
+                    #return self.gui.start_play('')
+            #self.gui.media_link = link
+            #return self.gui.start_play(link)
         except:
             return
         

@@ -153,7 +153,7 @@ class Browser():
 	
     def load_uri(self,uri):
 	gobject.idle_add(self.view.load_uri,uri)
-	
+    
     def load_finished(self,v,r):
 	print "load finished"
 	self.analyse_req()
@@ -204,17 +204,27 @@ class Browser():
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.go_back)
 		break
-	    elif 'dailymotion.com/video/' in req and 'proxy' in req:
+	    elif 'http://www.dailymotion.com/embed/video/' in req:
 		print "Dailymotion: Link detected"
-		self.mainGui.media_name = 'Streaming dailymotion...'
-		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.go_back)
+		code = self.view.get_html()
+		link=None
+		title=None
+		## get tile
+		try:
+		    title=urllib.unquote(re.search('(;*)title":"(.*?)",', code).group(2)).replace('\\','').replace('\'','')
+		except:
+		    title='Streaming dailymotion video...'
+		self.mainGui.media_name=title
+		try:
+		    link = urllib.unquote(re.search('(;*)stream_h264_url\":\"(.*?)",', code).group(2)).replace('\\','')
+		except:
+		    try:
+			link = urllib.unquote(re.search('(;*)stream_h264_ld_url\":\"(.*?)",', code).group(2)).replace('\\','')
+		    except:
+			print 'can t find video url...'
+			link=''
+		self.mainGui.start_play(link)
 		break
-	    elif 'putlocker.com/download/' in req:
-		    self.mainGui.media_name = 'Streaming putlocker...'
-		    self.mainGui.start_play(req)
-		    gobject.idle_add(self.view.go_back)
-		    break
 	    elif 'grooveshark.com/stream.php?streamKey' in req:
 		self.mainGui.media_name = 'Streaming putlocker...'
 		self.mainGui.start_play(req)
