@@ -287,7 +287,7 @@ class Player(gobject.GObject):
 	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
 	gobject.idle_add(self.refresh_screen)
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
-	self.seeker.set_fill_level(0.0)
+	gobject.idle_add(self.seeker.set_fill_level,0.0)
     
 
     def pause_resume(self,widget=None):
@@ -329,7 +329,7 @@ class Player(gobject.GObject):
         if self.player.get_state == gst.STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
             return
         x , y, self.area_width, self.area_height = event.area
-        widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
+        gobject.idle_add(widget.window.draw_drawable,widget.get_style().fg_gc[gtk.STATE_NORMAL],
                                       pixmap, x, y, x, y, self.area_width, self.area_height)
 	if self.mainGui.draw_text:
             try:
@@ -342,7 +342,7 @@ class Player(gobject.GObject):
 		global pixmap
 		x, y, width, height = widget.get_allocation()
 		pixmap = gtk.gdk.Pixmap(widget.window, width, height)
-		pixmap.draw_rectangle(widget.get_style().black_gc,
+		gobject.idle_add(pixmap.draw_rectangle,widget.get_style().black_gc,
 								True, 0, 0, width, height)
 		
 		return True
@@ -359,10 +359,11 @@ class Player(gobject.GObject):
 	    
     def on_finished(self,widget):
 	print 'file finished'
+	self.stop()
 	try:
 	    self.check_play_options()
 	except:
-	    self.stop()
+	    return
     
     def set_play_options(self,widget):
 	wname = widget.name
@@ -519,13 +520,22 @@ class Player(gobject.GObject):
 		
     def start_play(self, location):
 	print "LOCATIONNNNNNN : %s" % location
+	#if not sys.platform == "win32":
+            #if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
+		#self.player.player.set_property('flags', 0x00000008|0x00000002)
+		#self.vis = self.change_visualisation()
+                #self.visual = gst.element_factory_make(self.vis,'visual')
+                #self.player.player.set_property('vis-plugin', self.visual)
+	    #else:
+		#self.player.player.set_property('flags', 0x00000001|0x00000002)
 	self.player.file_tags = {}
 	self.active_link = location
+	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
+	#gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
+
 	if self.update_id == -1:
 	    self.update_id = gobject.timeout_add(self.UPDATE_INTERVAL,
                                                      self.update_scale_cb)
-	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
-	    
 	try:
 	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
 	except:

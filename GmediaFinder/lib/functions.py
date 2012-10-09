@@ -250,7 +250,7 @@ class Abort(Exception):
 
 class urlFetch(Thread):
     def __init__(self, engine, url, query, page, local=tempfile.NamedTemporaryFile().name):
-        print engine, url, query, page, local
+        #print engine, url, query, page, local
         Thread.__init__(self)
         self.url = url
         self.stop = False
@@ -267,7 +267,6 @@ class urlFetch(Thread):
 
     def run(self):
         if not isinstance(self.url, str):
-            print "pas instance"
             try:
                 self.engine.filter(self.url,self.query)
             except:
@@ -287,7 +286,6 @@ class urlFetch(Thread):
             except:
                 try:
                     t = get_url_data(self.url)
-                    print t
                     self.engine.filter(t, self.query)
                 except:
                     self.stop = True

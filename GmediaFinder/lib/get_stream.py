@@ -226,7 +226,8 @@ class Browser():
 		link=None
 		code = get_url_data(req)
 		link = re.search('<video_file>(.*?)</video_file>',code.read()).group(1)
-		return self.mainGui.start_play(link)
+		self.mainGui.start_play(link)
+		break
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:
 		    selected = self.mainGui.treeview.get_selection()
@@ -235,8 +236,7 @@ class Browser():
 		    updateBrowser = self.mainGui.model.get_value(self.selected_iter, 8)
 		except:
 		    updateBrowser = False
-		    break
-		if updateBrowser is True and self.isLoading is False or self.mainGui.playlist_mode is True:
+		if updateBrowser and self.isLoading is False or self.mainGui.playlist_mode is True:
 		    self.page_requests=[]
 		    self.isLoading=False
 		    break
@@ -271,6 +271,7 @@ class Browser():
 		gobject.idle_add(self.view.go_back)
 		break
 	self.page_requests=[]
+	return True
 	    
     def stop_player(self):
 	## hide/stop the flashplayer
