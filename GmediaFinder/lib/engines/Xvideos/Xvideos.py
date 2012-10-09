@@ -39,7 +39,7 @@ class Xvideos(object):
         return self.search_url % (query,orderby,page)
     
     def play(self, link):
-        data = get_url_data(link)
+        data = get_url_data('http://www.xvideos.com'+link)
         for line in data.readlines():
             if 'flv_url=' in line:
                 link = urllib.unquote(re.search('flv_url=([^&]*)', line).group(1))
@@ -53,15 +53,15 @@ class Xvideos(object):
             if self.thread_stop == True:
                 break
             ## search link
-            if '"miniature"' in line:
-                link = re.search('href=\"(.*?)\"', line).group(1)
+            if 'id="pic_' in line:
                 img = re.search('src=\"(.*?)\"', line).group(1)
                 img = download_photo(img)
                 continue
-            if 'underline;">' in line:
-                title = line.split('>')[1].split('<')[0]
+            if '<a href="/video' in line:
+                link = re.search('href=\"(.*?)\"', line).group(1)
+                title = line.split('>')[2].split('<')[0]
                 continue
-            if 'ng>(' in line:
+            if 'class="duration"' in line:
                 duration = '    <small>%s</small>' % line.split('>')[1].split('<')[0]
                 gobject.idle_add(self.gui.add_sound, title, link, img, None, self.name, duration)
                 flag_found = True

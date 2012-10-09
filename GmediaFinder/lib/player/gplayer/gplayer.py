@@ -23,6 +23,7 @@ import sys
 import gobject
 import gst
 import tempfile
+import urllib2
 
 if sys.platform == "win32":
     import win32api
@@ -143,6 +144,10 @@ class Gplayer(gobject.GObject):
     | finished   | Playing of the current file, file object or :class:`Cache` object finished     |
     +------------+--------------------------------------------------------------------------------+
     '''
+    __gsignals__ = { 'fill-status-changed': (gobject.SIGNAL_RUN_FIRST,
+                                             gobject.TYPE_NONE,
+                                             (float,)) }
+
     def __init__(self, engine):
         self._mainGui = engine.mainGui
         self._gui = engine.playerGui
@@ -153,10 +158,10 @@ class Gplayer(gobject.GObject):
             self.videosink = gst.element_factory_make('dshowvideosink')
         else:
             self.videosink = gst.element_factory_make('xvimagesink')
-        #self.videosink.set_property('async', False)
+
         self._player.set_property("audio-sink", audiosink)
         self._player.set_property('video-sink', self.videosink)
-        self._player.set_property('buffer-size', 1024000)
+        self._player.set_property('buffer-size', 204800000)
         self._bus = self._player.get_bus()
         self._bus.add_signal_watch()
         self._bus.enable_sync_message_emission()
@@ -171,8 +176,48 @@ class Gplayer(gobject.GObject):
         self._cache = None
         self.timer= 0 
         self.isStreaming = False
+        self._temp_location = None
+        self.started_buffering = False
+        self.fill_timeout_id = 0
+        self._player.props.flags |= 0x80
+        self._player.connect("deep-notify::temp-location", self.on_temp_location)
         gobject.GObject.__init__(self)
         
+    @gobject.property
+    def download_filename(self):
+        return self._temp_location
+        
+    def on_temp_location(self, playbin, queue, prop):
+        self._temp_location = queue.props.temp_location
+
+    def set_location(self, location):
+        self._player.set_property('uri', location)
+        
+    def process_buffering_stats(self, message):
+        if not self.started_buffering:
+            self.started_buffering = True
+            if self.fill_timeout_id:
+                gobject.source_remove(self.fill_timeout_id)
+            self.fill_timeout_id = gobject.timeout_add(200,
+                                                       self.buffering_timeout)
+
+    def buffering_timeout(self):
+        query = gst.query_new_buffering(gst.FORMAT_PERCENT)
+        if self._player.query(query):
+            fmt, start, stop, total = query.parse_buffering_range()
+            if stop != -1:
+                fill_status = stop / 10000.
+            else:
+                fill_status = 100.
+
+            self.emit("fill-status-changed", fill_status)
+
+            if fill_status == 100.:
+                # notify::download_filename value
+                self.notify("download_filename")
+                return False
+        return True
+    
     def play_file(self, filename):
         '''
         Play a file by filename.
@@ -217,36 +262,45 @@ class Gplayer(gobject.GObject):
         '''
         Set state to playing.
         '''
+        gst.info("playing player")
         self._player.set_state(gst.STATE_PLAYING)
+        self.playing = True
 	
     
     def pause(self):
         '''
         Set state to paused.
         '''
+        gst.info("pausing player")
         self._player.set_state(gst.STATE_PAUSED)
+        self.playing = False
         
-    def stop(self, widget=None):
-        self._reset()
+    def stop(self):
+        self._player.set_state(gst.STATE_NULL)
+        gst.info("stopped player")
+        if self._temp_location:
+            try:
+                os.unlink(self._temp_location)
+            except OSError:
+                pass
+            self._temp_location = ''
+        
+    def seek(self, location):
+        """
+        @param location: time to seek to, in nanoseconds
+        """
+        gst.debug("seeking to %r" % location)
+        event = gst.event_new_seek(1.0, gst.FORMAT_TIME,
+            gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_ACCURATE,
+            gst.SEEK_TYPE_SET, location,
+            gst.SEEK_TYPE_NONE, 0)
     
-    def stream(self,d):
-        self.isStreaming = True
-        output = tempfile.NamedTemporaryFile(suffix='.stream', prefix='tmp_')
-        try:
-            output.write(d.read(1048576))
-            self.play_file(output.name)
-            data = d.read(2048)
-            while data and self.isStreaming:
-                output.write(data)
-                data = d.read(2048)
-        except:
-            sleep(1)
-        output.close()
-        self.isStreaming = False
-        
-    def stop_stream(self):
-        self.timer = 0 
-        self.isStreaming = False
+        res = self._player.send_event(event)
+        if res:
+            gst.info("setting new stream time to 0")
+            self._player.set_new_stream_time(0L)
+        else:
+            gst.error("seek to %r failed" % location)
     
     
     @property
@@ -294,6 +348,20 @@ class Gplayer(gobject.GObject):
         minutes, seconds = divmod(seconds, 60)
         return minutes, seconds, nanoseconds, total_nanoseconds
     
+    def query_position(self):
+        "Returns a (position, duration) tuple"
+        try:
+            position, format = self.player.query_position(gst.FORMAT_TIME)
+        except:
+            position = gst.CLOCK_TIME_NONE
+
+        try:
+            duration, format = self.player.query_duration(gst.FORMAT_TIME)
+        except:
+            duration = gst.CLOCK_TIME_NONE
+
+        return (position, duration)
+    
     @position.setter
     def position(self, nanoseconds):
         self._player.seek_simple(gst.FORMAT_TIME, gst.SEEK_FLAG_ACCURATE, int(round(nanoseconds)))
@@ -337,6 +405,12 @@ class Gplayer(gobject.GObject):
         self.play()
     
     def _reset(self):
+        if self._temp_location:
+            try:
+                os.unlink(self._temp_location)
+            except OSError:
+                pass
+            self._temp_location = ''
         if self._cache:
             self._cache.cancel()
             self._cache = None
@@ -347,6 +421,12 @@ class Gplayer(gobject.GObject):
             self._reset()
         elif message.type == gst.MESSAGE_ERROR:
             print('Error: %s' % (str(message.parse_error())))
+    
+    def get_state(self, timeout=1):
+        return self._player.get_state(timeout=timeout)
+
+    def is_playing(self):
+        return self.playing
             
     def on_finished(self):
         self.stop()

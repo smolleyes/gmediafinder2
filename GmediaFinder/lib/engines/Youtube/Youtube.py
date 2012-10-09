@@ -1,7 +1,7 @@
 import re
 import urllib
 import gdata.youtube.service as yt_service
-import gobject
+import gobject, thread
 import os
 import sys
 from subprocess import Popen,PIPE,STDOUT
@@ -145,6 +145,7 @@ class Youtube(object):
         
     def on_paste(self,widget=None,url=None):
         text = ''
+        update=True
         if not url:
             clipboard = gtk.Clipboard(gtk.gdk.display_get_default(), "CLIPBOARD")
             data = clipboard.wait_for_contents('UTF8_STRING')
@@ -159,13 +160,12 @@ class Youtube(object):
             vid=self.get_videoId(text)
             yt = yt_service.YouTubeService()
             entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
-            self.filter(entry, '', 1)
+            self.filter(entry, '', update)
         else:
             return
 
     def get_videoId(self,text):
         vid=None
-        print "getvideoId URL : %s" %  text
         try:
             vid = re.search('watch\?v=(.*?)&',text).group(1)
         except:
@@ -178,7 +178,6 @@ class Youtube(object):
                     if not vid:
                         error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
                     return
-        print "getvideoId ID : %s" %  vid
         return vid
         
     def set_max_youtube_res(self, widget):
@@ -224,11 +223,10 @@ class Youtube(object):
             time.sleep(5)
             self.thread_stop=True
 
-        if direct_link:
+        if direct_link is not None:
             #gobject.idle_add(self.gui.model.clear)
-            self.make_youtube_entry(vquery, True, False)
             self.thread_stop=True
-            return
+            self.make_youtube_entry(vquery, True, direct_link)
         
         try:
             if len(vquery.entry) == 0:
@@ -249,21 +247,21 @@ class Youtube(object):
                 
 
     def play(self,link):
-        print "Youtube: play in youtube engine, link : %s" % link
         self.load_youtube_res(link)
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
-        print "YOUTUBE LINK: %s" % self.media_link[active]
         try:
-            self.gui.start_play(self.media_link[active])
+            if self.updateBrowser:
+                print "updating browser"
+                #self.update_media_infos(link)
             self.media_codec = self.quality_list[active].split('|')[1]
-            self.update_media_infos(link)
+            self.gui.start_play(self.media_link[active])
         except:
             self.gui.start_play('')
 
     def update_media_infos(self,link):
         link = 'http://www.youtube.com/watch?v=%s' % link
-        gobject.idle_add(self.gui.browser.load_uri,link)
+        self.gui.browser.load_uri(link)
     
     def make_youtube_entry(self,video,read=None, select=True):
         duration = video.media.duration.seconds
@@ -320,11 +318,14 @@ class Youtube(object):
         if not self.quality_list:
             return
         for rate in self.quality_list:
-            new_iter = self.youtube_quality_model.append()
-            self.youtube_quality_model.set(new_iter,
-                            0, rate,
-                            )
-        gobject.idle_add(self.set_default_youtube_video_rate)
+            try:
+                new_iter = self.youtube_quality_model.append()
+                self.youtube_quality_model.set(new_iter,
+                                0, rate,
+                                )
+            except:
+                continue
+        self.set_default_youtube_video_rate()
 
     def set_default_youtube_video_rate(self,widget=None):
         active = self.youtube_video_rate.get_active()
@@ -346,10 +347,10 @@ class Youtube(object):
                         if codec == 'mp4' and '%s|webm' % rate in str(self.quality_list):
                             #qn += 1
                             continue
-                    gobject.idle_add(self.youtube_video_rate.set_active,qn)
+                    self.youtube_video_rate.set_active(qn)
                 except:
                     continue
-            active = gobject.idle_add(self.youtube_video_rate.get_active)
+            active = self.youtube_video_rate.get_active()
         else:
             if self.quality_list:
                 active = self.youtube_video_rate.get_active()
@@ -357,6 +358,7 @@ class Youtube(object):
 
     def on_youtube_video_rate_changed(self,widget):
         active = self.youtube_video_rate.get_active()
+        print "Youtube: video rate changed -> %s" % active
         try:
             self.media_codec = self.quality_list[active].split('|')[1]
             self.gui.start_play(self.media_link[active])
@@ -367,7 +369,6 @@ class Youtube(object):
         links_arr = []
         quality_arr = []
         #try:
-        print "http://www.youtube.com/get_video_info?video_id=%s" % vid_id
         req = urllib2.Request("http://www.youtube.com/get_video_info?video_id=%s" % vid_id)
         stream = urllib2.urlopen(req)
         contents = urllib.unquote(stream.read())
@@ -429,45 +430,3 @@ class Youtube(object):
         #except:
         #    return
         return links_arr, quality_arr
-    
-    def get_comments(self,vid):
-        print "get commnts"
-        #comment_feed = self.client.GetYouTubeVideoCommentFeed(video_id=vid)
-        #img = img_path+"/yt_icone.jpg"
-        #html = '''<!DOCTYPE html>
-                  #<head>
-                      #<title>youtube page</title>
-                  #</head>
-                        #<body style="margin:0;padding:0;">
-                            #<div id="fb-root"></div>
-                                #<script>
-                                #window.fbAsyncInit = function() {
-                                  #FB.init({
-                                    #appId      : '241809072559194',
-                                    #status     : true, 
-                                    #cookie     : true,
-                                    #xfbml      : true,
-                                    #oauth      : true,
-                                  #});
-                                #};
-                                #(function(d){
-                                   #var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-                                   #js = d.createElement('script'); js.id = id; js.async = true;
-                                   #js.src = "http://connect.facebook.net/fr_FR/all.js";
-                                   #d.getElementsByTagName('head')[0].appendChild(js);
-                                 #}(document));
-                                  #</script>
-                                
-                                #<div class="fb-login-button" data-show-faces="true" data-width="200" data-max-rows="1"></div>
-                                #<div class="fb-like" data-send="true" data-width="450" data-href="http://www.youtube.com/watch?v=" data-show-faces="true" data-colorscheme="dark">
-                            #</div>
-                            #<div><img src="file://%s"/></div>
-                            #<div style="width:500px;">''' % img
-        #for comment_entry in comment_feed.entry:
-            #html += '<div style="border:margin:10px;padding: 0 5px;font-size:12px;"><p>%s<br /><span style="color:#1C62B9;">By %s</span></p></div>' % (comment_entry.content, comment_entry.author[0].name)
-        #html += '</div></body></html>'
-        #print html
-        #self.gui.browser.load_code(html=html)
-        link = 'http://www.youtube.com/watch?v=%s' % vid
-        print link
-        self.gui.browser.load_uri(link)

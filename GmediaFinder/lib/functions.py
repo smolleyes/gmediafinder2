@@ -33,19 +33,18 @@ except:
 HTMLParser.attrfind = re.compile(r'\s*([a-zA-Z_][-.:a-zA-Z_0-9]*)(\s*=\s*'r'(\'[^\']*\'|"[^"]*"|[^\s>^\[\]{}\|\'\"]*))?')
 
 def get_url_data(url):
-        user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.15 (KHTML, like Gecko) Ubuntu/10.10 Chromium/10.0.608.0 Chrome/10.0.608.0 Safari/534.15'
-        headers =  { 'User-Agent' : user_agent , 'Accept-Language' : 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' }
-        ## start the request
-        try:
-            req = urllib2.Request(url,None,headers)
-        except:
-            return
-        try:
-            data = urllib2.urlopen(req)
-        except:
-            return
-
-        return data
+    user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.15 (KHTML, like Gecko) Ubuntu/10.10 Chromium/10.0.608.0 Chrome/10.0.608.0 Safari/534.15'
+    headers =  { 'User-Agent' : user_agent , 'Accept-Language' : 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' }
+    ## start the request
+    try:
+        req = urllib2.Request(url,None,headers)
+    except:
+        return
+    try:
+        data = urllib2.urlopen(req)
+    except:
+        return
+    return data
         
 def download_photo(img_url):
     try:
@@ -251,6 +250,7 @@ class Abort(Exception):
 
 class urlFetch(Thread):
     def __init__(self, engine, url, query, page, local=tempfile.NamedTemporaryFile().name):
+        print engine, url, query, page, local
         Thread.__init__(self)
         self.url = url
         self.stop = False
@@ -267,12 +267,14 @@ class urlFetch(Thread):
 
     def run(self):
         if not isinstance(self.url, str):
+            print "pas instance"
             try:
                 self.engine.filter(self.url,self.query)
             except:
                 self.stop = True
                 self.abort()
         else:
+            print "instance"
             try:
                 t = urlretrieve(self.url, self.local, self._hook)
                 f = open(self.local)
@@ -284,7 +286,8 @@ class urlFetch(Thread):
                 print 'Aborted'
             except:
                 try:
-                    t = urllib2.urlopen(self.url)
+                    t = get_url_data(self.url)
+                    print t
                     self.engine.filter(t, self.query)
                 except:
                     self.stop = True

@@ -11,6 +11,7 @@ from glib import markup_escape_text
 import random
 import time
 import gobject
+gobject.threads_init()
 import thread
 from lib.player.player_engine import *
 ## custom lib
@@ -18,12 +19,24 @@ try:
     import lib.config as config
     from lib.player.player_engine import *
     from lib.functions import *
+    from lib.pykey import send_string
 except:
     from GmediaFinder.lib.functions import *
     from GmediaFinder.lib import config
     from GmediaFinder.lib.player.player_engine import *
+    from GmediaFinder.lib.pykey import send_string
+    
+GST_STATE_VOID_PENDING        = 0
+GST_STATE_NULL                = 1
+GST_STATE_READY               = 2
+GST_STATE_PAUSED              = 3
+GST_STATE_PLAYING             = 4
 
-class Player(object):
+gtk.gdk.threads_init()
+
+class Player(gobject.GObject):
+    UPDATE_INTERVAL = 500
+    
     def __init__(self,mainGui):
 	self.timer = 0
         self.gladeGui = mainGui.gladeGui
@@ -59,9 +72,12 @@ class Player(object):
         self.seeker = gtk.HScale(self.adjustment)
         self.seeker.set_draw_value(False)
         self.seeker.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
+	#self.seeker.set_digits(2)
+        #self.seeker.set_update_policy(gtk.UPDATE_CONTINUOUS)
         self.seekbox.add(self.seeker)
-        self.seeker.connect("button-release-event", self.on_seeker_release)
-        self.seeker.connect("button-press-event", self.on_seeker_move)
+        self.seeker.connect("button-release-event", self.scale_button_release_cb)
+        self.seeker.connect("button-press-event", self.scale_button_press_cb)
+	self.seeker.connect('format-value', self.scale_format_value_cb)
 	self.seekmove = None
         #timer
         self.timerbox = self.gladeGui.get_widget("timer_box")
@@ -106,9 +122,9 @@ class Player(object):
         #### load buttons and pixbufs
         self.load_gui_icons()
         #### init gst gplayer engine
-        self.player = PlayerEngine(mainGui,self)
+        self.player = GstPlayer(mainGui,self)
 	self.radio_mode = False
-	self.is_playing = False
+	self.media_codec = None
 	
 	## visualisations
         vis = 'goom'
@@ -124,10 +140,27 @@ class Player(object):
 	    self.vis_selector.setIndexFromString(self.vis)
 	else:
 	    self.vis_selector.select(1)
+	    
+	##gplayer
+	self.active_link=None
+	def on_eos():
+            self.player.seek(0L)
+            self.play_toggled()
+        self.player.on_eos = lambda *x: on_eos()
+        
+        self.update_id = -1
+        self.changed_id = -1
+        self.seek_timeout_id = -1
+
+        self.p_position = gst.CLOCK_TIME_NONE
+        self.p_duration = gst.CLOCK_TIME_NONE
+	
+	self.player.connect("fill-status-changed", self._fill_status_changed)
+	self.player.connect('finished', self.on_finished)
 	
     @property
     def state(self):
-	return self.player.state
+	return self.player.get_state()
     
     def load_gui_icons(self):
         ## try to load and use the current gtk icon theme,
@@ -175,7 +208,10 @@ class Player(object):
         self.play_btn = self.gladeGui.get_widget("play_btn")
         self.play_btn_pb = self.gladeGui.get_widget("play_btn_img")
         self.play_btn_pb.set_from_pixbuf(self.play_icon)
-        self.play_btn.connect('clicked', self.start_stop)
+        self.play_btn.set_property('can-default', True)
+        self.play_btn.set_focus_on_click(False)
+        self.play_btn.set_property('has-default', True)
+        self.play_btn.connect('clicked', lambda *args: self.play_toggled())
         ## pause
         self.pause_btn = self.gladeGui.get_widget("pause_btn")
         self.pause_btn_pb = self.gladeGui.get_widget("pause_btn_img")
@@ -215,22 +251,7 @@ class Player(object):
         self.codec_label =_('Encoding:')
         self.play_label =_('Playing:')
 	self.seekmove= False
-         
-    def start_stop(self,widget=None):
-        if widget:
-            if self.player.state == 3:
-		try:
-		    self.mainGui.get_model()
-		except:
-		    self.stop()
-	    else:
-		self.stop()
-        else:
-            if self.active_link:
-                if self.player.state == 3:
-                    self.start_play(self.active_link)
-                else:
-                    self.stop()
+	
 
     def change_visualisation(self, widget=None):
         vis = self.vis_selector.getSelected()
@@ -243,50 +264,17 @@ class Player(object):
         self.mainGui.conf.write()
         return self.vis
     
-    def start_play(self,url):
-	if self.state != 3:
-	    self.stop()
-        self.active_link = url
-        self.file_tags = {}
-	try:
-	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
-	except:
-	    print ''
-	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
-
-    def play_thread(self,cache=None,length=None):
-	if not sys.platform == "win32":
-            if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
-		self.player.engine.player._player.set_property('flags', 0x00000008|0x00000002)
-		self.vis = self.change_visualisation()
-                self.visual = gst.element_factory_make(self.vis,'visual')
-                self.player.engine.player._player.set_property('vis-plugin', self.visual)
-	    else:
-		self.player.engine.player._player.set_property('flags', 0x00000001|0x00000002)
-	#self.player.engine.player._player.set_property('flags',0x00000100)
-	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
-	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
-	self.is_playing = True
-	gobject.idle_add(self.seeker.set_sensitive,1)
-        play_thread_id = self.play_thread_id
-    
-	
-	if cache:
-	    self.player.play_cache(cache,length)
-	else:
-	    self.player.play_url(self.active_link)
-        while play_thread_id == self.play_thread_id and self.is_playing:
-            if play_thread_id == self.play_thread_id:
-		if not self.seekmove:
-		    self.player.update_info_section()
-            time.sleep(1)
-	    
+    def play_toggled(self,url=None):
+        if self.player.is_playing():
+            self.stop()
+        else:
+            self.start_play(url)
     
     def stop(self,widget=None):
 	self.play_thread_id = None
-	self.is_playing = False
 	self.radio_mode = False
 	self.active_link = None
+	self.player.stop()
         gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
         gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
         bit=_('Bitrate:')
@@ -297,43 +285,21 @@ class Player(object):
         gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b></small>' % self.codec_label)
 	gobject.idle_add(self.seeker.set_value,0)
 	gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
-	self.refresh_screen()
-	self.player.engine.reset()
+	gobject.idle_add(self.refresh_screen)
+	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
+	self.seeker.set_fill_level(0.0)
     
-    
-    def on_volume_changed(self, widget, value=10):
-        self.player.set_volume(value)
-    
+
     def pause_resume(self,widget=None):
-        if not self.state == 2:
-            self.pause_btn_pb.set_from_pixbuf(self.play_icon)
-            self.player.pause()
+        if self.player.get_state() == GST_STATE_PLAYING:
+	    self.player.pause()
+            gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.play_icon)
         else:
             self.player.play()
+	    gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
         
     def shutdown(self):
 	self.player.shutdown()
-    
-    def play_cache(self, data, size=None, name=None):
-	if self.state != 3:
-	    self.stop()
-	cache = None
-	markup = None
-	if name is None:
-	    try:
-		markup = '<small><b>%s %s - %s </b></small>' % (self.play_label,data.artist.name, data.name)
-	    except:
-		markup = '<small><b>%s </b></small>' % (self.play_label)
-	else:
-	    markup = '<small><b>%s %s </b></small>' % (self.play_label, name)
-	self.play_btn_pb.set_from_pixbuf(self.stop_icon)
-	try:
-	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
-	except:
-	    gobject.idle_add(self.media_name_label.set_markup,markup)
-        gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s %s</b></small>' % (self.bitrate_label, ''))
-        gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s %s</b></small>' % (self.codec_label, ''))
-	self.play_thread_id = thread.start_new_thread(self.play_thread, (data,))
     
     
     def on_drawingarea_realized(self, sender):
@@ -360,7 +326,7 @@ class Player(object):
 	    return
     
     def on_expose_event(self, widget, event):
-        if self.player.state == STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
+        if self.player.get_state == gst.STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
             return
         x , y, self.area_width, self.area_height = event.area
         widget.window.draw_drawable(widget.get_style().fg_gc[gtk.STATE_NORMAL],
@@ -391,6 +357,13 @@ class Player(object):
         if event.type == gtk.gdk._2BUTTON_PRESS:
             self.set_fullscreen()
 	    
+    def on_finished(self,widget):
+	print 'file finished'
+	try:
+	    self.check_play_options()
+	except:
+	    self.stop()
+    
     def set_play_options(self,widget):
 	wname = widget.name
 	wstate = widget.get_active()
@@ -482,21 +455,11 @@ class Player(object):
 	    path = model.get_path(self.selected_iter)
 	    treeview.set_cursor(path)
 	    self.mainGui.get_model()
-	    
-    def on_seeker_release(self, widget, event):
-	self.seekmove = False
-	value = widget.get_value()
-	self.player.on_seeker_release(value)
-	
-    def on_seeker_move(self, widget, event):
-	self.seekmove = True
-	if not self.state == STATE_PAUSED:
-            self.pause_resume()
 	
     def set_fullscreen(self,widget=None):
         self.timer = 0
         if self.fullscreen :
-            self.miniPlayer.hide()
+            gobject.idle_add(self.miniPlayer.hide)
             self.btn_box.reparent(self.btn_box_cont)
             self.infobox.reparent(self.infobox_cont)
             gobject.idle_add(self.mainGui.search_box.show)
@@ -554,5 +517,157 @@ class Player(object):
             except:
                 return
 		
+    def start_play(self, location):
+	print "LOCATIONNNNNNN : %s" % location
+	self.player.file_tags = {}
+	self.active_link = location
+	if self.update_id == -1:
+	    self.update_id = gobject.timeout_add(self.UPDATE_INTERVAL,
+                                                     self.update_scale_cb)
+	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
+	    
+	try:
+	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b> %s</small>' % (self.play_label,self.mainGui.media_name))
+	except:
+	    print ''
+	try:
+	    self.play_thread.stop()
+	except:
+	    print ''
+	self.player.set_location(location)
+	self.player.play()
+	self.play_thread_id = thread.start_new_thread(self.play_thread, ())
+    
+    def play_thread(self):
+	play_thread_id = self.play_thread_id
+	while play_thread_id == self.play_thread_id:
+	    if play_thread_id == self.play_thread_id:
+		if not self.seekmove:
+			self.update_infos()
+	    time.sleep(1)
+	    
+    def update_infos(self):
+        """
+        Update the time_label to display the current location
+        in the media file as well as update the seek bar
+        """
+	#print "---------------update_info-----------------"
+	#print "state : %s" % self.state
+	if self.player.get_state() != GST_STATE_PLAYING:
+	    return
+	    
+        if self.player.get_state() == GST_STATE_READY:
+            adjustment = gtk.Adjustment(0, 0.00, 100.0, 0.1, 1.0, 1.0)
+            self.seeker.set_adjustment(adjustment)
+            gobject.idle_add(self.time_label.set_text,"00:00 / 00:00")
+            return False
+	    
+	try:
+	    self.media_codec = self.media_codec
+	    gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b> %s</small>' % (self.bitrate_label,self.player.media_bitrate))
+	    gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b> %s</small>' % (self.codec_label,self.player.media_codec))
+	except:
+	    gobject.idle_add(self.media_bitrate_label.set_markup,'<small><b>%s </b> %s</small>' % (self.bitrate_label,'unknown'))
+	    gobject.idle_add(self.media_codec_label.set_markup,'<small><b>%s </b> %s</small>' % (self.codec_label,'unknown'))
+
+        ## update timer for mini_player and hide it if more than 5 sec
+        ## without mouse movements
+        self.timer += 1
+        if self.fullscreen and self.mini_player and self.timer > 4:
+            self.show_mini_player()
+        
+        ## disable screensaver
+        if self.fullscreen == True and self.mini_player == False and self.timer > 55:
+            if sys.platform == "win32":
+                win32api.keybd_event(7,0,0,0)
+            else:
+                send_string('a')
+            self.timer = 0
+	## update seekbar timer label
+	f_duration = self.convert_ns(self.p_duration)
+	f_position = self.convert_ns(self.p_position)
+	gobject.idle_add(self.time_label.set_text,f_position + "/" + f_duration)
+    
+	return True
+    
+    def convert_ns(self, t):
+        # This method was submitted by Sam Mason.
+        # It's much shorter than the original one.
+        s,ns = divmod(t, 1000000000)
+        m,s = divmod(s, 60)
+        if m < 60:
+            return "%02i:%02i" %(m,s)
+        else:
+            h,m = divmod(m, 60)
+            return "%i:%02i:%02i" %(h,m,s)
+    
+    def scale_format_value_cb(self, scale, value):
+        if self.p_duration == -1:
+            real = 0
+        else:
+            real = value * self.p_duration / 100
+        
+        seconds = real / gst.SECOND
+	return "%02d:%02d" % (seconds / 60, seconds % 60)
+
+    def scale_button_press_cb(self, widget, event):
+        # see seek.c:start_seek
+        gst.debug('starting seek')
+        self.seekmove = True
+        self.was_playing = self.player.is_playing()
+        if self.was_playing:
+            self.pause_resume()
+
+        # don't timeout-update position during seek
+        if self.update_id != -1:
+            gobject.source_remove(self.update_id)
+            self.update_id = -1
+
+        # make sure we get changed notifies
+        if self.changed_id == -1:
+            self.changed_id = self.seeker.connect('value-changed',
+                self.scale_value_changed_cb)
+            
+    def scale_value_changed_cb(self, scale):
+        # see seek.c:seek_cb
+        real = long(scale.get_value() * self.p_duration / 100) # in ns
+        gst.debug('value changed, perform seek to %r' % real)
+        self.player.seek(real)
+        # allow for a preroll
+        self.player.get_state(timeout=50*gst.MSECOND) # 50 ms
+
+    def scale_button_release_cb(self, widget, event):
+        # see seek.cstop_seek
+        widget.disconnect(self.changed_id)
+        self.changed_id = -1
+	self.seekmove = False
+        if self.seek_timeout_id != -1:
+            gobject.source_remove(self.seek_timeout_id)
+            self.seek_timeout_id = -1
+        else:
+            gst.debug('released slider, setting back to playing')
+            if self.was_playing:
+                self.pause_resume()
+
+        if self.update_id != -1:
+            self.error('Had a previous update timeout id')
+        else:
+            self.update_id = gobject.timeout_add(self.UPDATE_INTERVAL,
+                self.update_scale_cb)
+
+    def update_scale_cb(self):
+        self.p_position, self.p_duration = self.player.query_position()
+        if self.p_position != gst.CLOCK_TIME_NONE:
+            value = self.p_position * 100.0 / self.p_duration
+            self.adjustment.set_value(value)
 	
+        return True
+
+
+    def on_volume_changed(self,widget,value):
+	self.player.player.set_property("volume", float(value))
+    
+    def _fill_status_changed(self, player, fill_value):
+        self.seeker.set_fill_level(fill_value)
+        self.seeker.set_show_fill_level(True)
 		

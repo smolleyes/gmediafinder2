@@ -7,6 +7,7 @@ import webkit
 import warnings
 import urllib
 import re
+import threading
 from time import sleep
 import gobject
 from optparse import OptionParser
@@ -16,15 +17,16 @@ from optparse import OptionParser
 try:
     import lib.config as config
     import lib.debrid as debrider
+    from lib.functions import * 
 except:
     from GmediaFinder.lib import config
     from GmediaFinder.lib import debrid as debrider
+    from GmediaFinder.lib.functions import * 
  
 class WebView(webkit.WebView):
     def __init__(self):
         webkit.WebView.__init__(self)
 	settings = self.get_settings()
-	settings.set_property("enable-developer-extras", True)
 	
 	# scale other content besides from text as well
 	self.set_full_content_zoom(True)
@@ -66,7 +68,7 @@ class WebView(webkit.WebView):
     def get_html(self):
 	    self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
 	    html = self.get_main_frame().get_title()
-	    self.execute_script('document.title=oldtitle;')
+	    gobject.idle_add(self.execute_script,'document.title=oldtitle;')
 	    return html
 
 class Browser():
@@ -96,6 +98,7 @@ class Browser():
 	self._hovered_uri = None
 	self.isLoading=False
 	self.page_requests=[]
+	self.source_code = None
 	
 	## opt
 	self.homepage = 'http://www.google.com'
@@ -114,7 +117,8 @@ class Browser():
         """ callback on 'console-message' webkit.WebView signal """
         #print ('Myconsole:' + str(args))
         self.view.stop_emission('console-message')
-    
+	return True
+	
     def on_new_window_cb(self, web_view, frame, data=None):
 	scrolled_window = gtk.ScrolledWindow()
         scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -151,6 +155,7 @@ class Browser():
 	gobject.idle_add(self.view.load_uri,uri)
 	
     def load_finished(self,v,r):
+	print "load finished"
 	self.analyse_req()
 	
     def on_click_link(self, view, frame, req, data=None):
@@ -215,6 +220,13 @@ class Browser():
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.stop_loading)
 		break
+	    elif 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
+		print req
+		code=None
+		link=None
+		code = get_url_data(req)
+		link = re.search('<video_file>(.*?)</video_file>',code.read()).group(1)
+		return self.mainGui.start_play(link)
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:
 		    selected = self.mainGui.treeview.get_selection()
@@ -223,8 +235,11 @@ class Browser():
 		    updateBrowser = self.mainGui.model.get_value(self.selected_iter, 8)
 		except:
 		    updateBrowser = False
+		    break
 		if updateBrowser is True and self.isLoading is False or self.mainGui.playlist_mode is True:
-		    return
+		    self.page_requests=[]
+		    self.isLoading=False
+		    break
 		## compare video ids
 		reqid = None
 		current_id = None
@@ -244,6 +259,7 @@ class Browser():
 		if reqid != current_id:
 		    gobject.idle_add(self.mainGui.search_entry.set_text,'')
 		    self.isLoading=False
+		    self.page_requests=[]
 		    self.mainGui.search_engine.on_paste(url=url)
 		break
 		    
@@ -279,21 +295,21 @@ class Browser():
         self.view.open(url)
 
     def go_home(self,widget):
-	self.view.open(self.homepage)
+	gobject.idle_add(self.view.open,self.homepage)
     
     def go_back(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            backwards.'''
-        self.view.go_back()
+        gobject.idle_add(self.view.go_back)
 
     def go_forward(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            forwards.'''
-        self.view.go_forward()
+        gobject.idle_add(self.view.go_forward)
 
     def refresh(self, widget, data=None):
         '''Simple makes webkit reload the current back.'''
-        self.view.reload()
+        gobject.idle_add(self.view.reload)
 
     def update_buttons(self, widget, data=None):
         '''Gets the current url entry and puts that into the url bar.

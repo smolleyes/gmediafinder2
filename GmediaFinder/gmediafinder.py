@@ -10,6 +10,7 @@ import threading
 import random
 import time
 import gobject
+gobject.threads_init()
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -70,6 +71,8 @@ except:
     from GmediaFinder.lib.player.player_gui import Player
     from GmediaFinder.lib.downloads import downloader
 
+gtk.gdk.threads_init()
+
 class GsongFinder(object):
     def __init__(self):
         ## default search options
@@ -96,6 +99,7 @@ class GsongFinder(object):
         self.draw_text = False
         self.url_checker = checkLink.CheckLinkIntegrity()
         self.url_debrid = debrider.Debrid(self)
+        self.player_thread=None
         
         ## main gui
         self.gladeGui = gtk.glade.XML(glade_file, None ,APP_NAME)
@@ -312,15 +316,12 @@ class GsongFinder(object):
         ## hide some icons by default
         self.stop_search_btn.set_sensitive(0)
             
-        ## start main loop
-        gobject.threads_init()
         #THE ACTUAL THREAD BIT
         self.manager = FooThreadManager(20)
         self.resume_downloads()
         self.mainloop = gobject.MainLoop(is_running=True)
     
-    
-    
+   
     def set_window_position(self):
         self.window.set_default_size(int(self.conf['window_state'][0]),int(self.conf['window_state'][1]))
         try:
@@ -451,7 +452,7 @@ class GsongFinder(object):
 
     def get_model(self,widget=None,path=None,column=None):
         #if self.search_playlist_menu_active:
-        #   return
+        #return
         self.media_bitrate = ""
         self.media_codec = ""
         current_page = self.results_notebook.get_current_page()
@@ -472,7 +473,7 @@ class GsongFinder(object):
             self.media_plugname = self.model.get_value(self.selected_iter, 5)
             ## for global search
             if not self.engine_selector.getSelected() == self.media_plugname:
-                self.set_engine(None,self.media_plugname)
+                gobject.idle_add(self.set_engine,None,self.media_plugname)
             try:
                 self.search_engine.updateBrowser=self.model.get_value(self.selected_iter, 8)
             except:
@@ -495,9 +496,25 @@ class GsongFinder(object):
             ## for youtube...
             self.search_engine.updateBrowser=True
             
+        selected = self.treeview.get_selection()
+        self.selected_iter = selected.get_selected()[1]
+        self.path = self.model.get_path(self.selected_iter)
+        print self.model.get_value(self.selected_iter, 0)
+        print self.model.get_value(self.selected_iter, 1)
+        print self.model.get_value(self.selected_iter, 2)
+        print self.model.get_value(self.selected_iter, 3)
+        print self.model.get_value(self.selected_iter, 4)
+        print self.model.get_value(self.selected_iter, 5)
+        print self.model.get_value(self.selected_iter, 6)
+        print self.model.get_value(self.selected_iter, 7)
+        print self.model.get_value(self.selected_iter, 8)
                 
-        ## play in engine
-        thread.start_new_thread(self.search_engine.play,(self.media_link,))
+        ## play in engines
+        try:
+            self.player_thread.stop()
+        except:
+            print ""
+        self.player_thread = thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
     def prepare_search(self,widget=None):
@@ -681,20 +698,24 @@ class GsongFinder(object):
                         7, orig_pixbuf,
                         8, select
                         )
-        if select is False:
-            self.selected_iter = miter
-            self.path = self.model.get_path(self.selected_iter)
-            gobject.idle_add(self.treeview.set_cursor,self.path)
-            gobject.idle_add(self.get_model)
+        #if select:
+            #self.selected_iter = miter
+            #self.path = self.model.get_path(self.selected_iter)
+            #gobject.idle_add(self.treeview.set_cursor,self.path)
+            #gobject.idle_add(self.get_model)
 
     def stop_play(self,widget=None):
         self.active_link = None
         self.player.stop()
     
     def start_play(self,url):
+        try:
+            self.stop_play()
+        except:
+            print ""
         gobject.idle_add(self.media_notebook.set_current_page,1)
         self.active_link = url
-        self.player.start_play(url)
+        self.player.play_toggled(url)
 		
     def load_new_page(self):
         self.change_page_request=True
@@ -983,6 +1004,9 @@ class GsongFinder(object):
         else:
             self.quit(widget)
         return True
+        
+    def run(self):
+        gtk.main
 
 
 class _IdleObject(gobject.GObject):
