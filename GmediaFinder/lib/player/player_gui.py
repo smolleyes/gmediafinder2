@@ -531,7 +531,7 @@ class Player(gobject.GObject):
 	self.player.file_tags = {}
 	self.active_link = location
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
-	#gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
+	gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
 
 	if self.update_id == -1:
 	    self.update_id = gobject.timeout_add(self.UPDATE_INTERVAL,
