@@ -150,6 +150,7 @@ class GstPlayer(gobject.GObject):
         self._temp_location = queue.props.temp_location
 
     def set_location(self, location):
+	self.started_buffering = False
         self.player.set_property('uri', location)
 
     def attach_drawingarea(self,window_id):
@@ -278,9 +279,12 @@ class GstPlayer(gobject.GObject):
                 pass
             self._temp_location = ''
 
-    def get_state(self, timeout=1):
-	success, state, pending = self.player.get_state(1)
-        return state.real
+    def get_state(self, timeout=1,full=False):
+	if full:
+	    return self.player.get_state(timeout=timeout)
+	else:
+	    success, state, pending = self.player.get_state(1)
+	    return state.real
 
     def is_playing(self):
         return self.playing

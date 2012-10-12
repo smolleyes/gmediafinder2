@@ -35,18 +35,7 @@ import pangocairo
 
 if sys.platform == "win32":
     import win32api
-## custom lib
-import lib.debrid as debrider
-from lib.downloads import downloader
-from lib.player.player_gui import Player
-from lib.config import *
-from lib.engines.main import Engines
-from lib.functions import *
-from lib.playlist import Playlist
-if sys.platform != "win32":
-    from lib.pykey import send_string
-import lib.checklinks as checkLink
-from lib.get_stream import Browser as browser
+
 try:
     import lib.debrid as debrider
     from lib.downloads import downloader
@@ -283,9 +272,10 @@ class GsongFinder(object):
         self.media_notebook = self.gladeGui.get_widget("media_notebook")
         self.browser_box = self.gladeGui.get_widget("browser_cont")
         self.browser = browser(self)
-        self.browser.load_uri('http://video.google.com/')
+        #self.browser.load_uri('http://video.google.com/')
         
         ## start gui
+        gobject.idle_add(self.media_notebook.set_current_page,1)
         self.window.show_all()
         self.throbber.hide()
         ## start engines
@@ -467,7 +457,7 @@ class GsongFinder(object):
             ## else extract needed metacity's infos
             self.media_thumb = self.model.get_value(self.selected_iter, 0)
             name = self.model.get_value(self.selected_iter, 4)
-            self.media_name = decode_htmlentities(name)
+            self.media_name = self.clean_markup(name)
             self.file_tags = {}
             self.media_markup = self.model.get_value(self.selected_iter, 1)
             self.media_plugname = self.model.get_value(self.selected_iter, 5)
@@ -488,26 +478,13 @@ class GsongFinder(object):
             ## else extract needed metacity's infos
             self.media_thumb = self.Playlist.treestore.get_value(self.selected_iter, 0)
             name = self.Playlist.treestore.get_value(self.selected_iter, 0)
-            self.media_name = decode_htmlentities(name)
+            self.media_name = self.clean_markup(name)
             self.file_tags = {}
             self.media_markup = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.media_plugname = self.Playlist.treestore.get_value(self.selected_iter, 0)
             self.Playlist.on_selected(self.Playlist.treeview)
             ## for youtube...
             self.search_engine.updateBrowser=True
-            
-        selected = self.treeview.get_selection()
-        self.selected_iter = selected.get_selected()[1]
-        self.path = self.model.get_path(self.selected_iter)
-        print self.model.get_value(self.selected_iter, 0)
-        print self.model.get_value(self.selected_iter, 1)
-        print self.model.get_value(self.selected_iter, 2)
-        print self.model.get_value(self.selected_iter, 3)
-        print self.model.get_value(self.selected_iter, 4)
-        print self.model.get_value(self.selected_iter, 5)
-        print self.model.get_value(self.selected_iter, 6)
-        print self.model.get_value(self.selected_iter, 7)
-        print self.model.get_value(self.selected_iter, 8)
                 
         ## play in engines
         try:
@@ -666,7 +643,7 @@ class GsongFinder(object):
             #thread.start_new_thread(self.search_engine.search,(self.user_search,page))
         self.add_thread(self.search_engine,self.user_search,page)
 
-    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None, select=True):
+    def add_sound(self, name, media_link, img=None, quality_list=None, plugname=None,markup_src=None, synop=None, select=False):
         orig_pixbuf = img
         if not img:
             img = gtk.gdk.pixbuf_new_from_file_at_scale(os.path.join(self.img_path,'video.png'), 64,64, 1)
@@ -698,12 +675,17 @@ class GsongFinder(object):
                         7, orig_pixbuf,
                         8, select
                         )
-        #if select:
-            #self.selected_iter = miter
-            #self.path = self.model.get_path(self.selected_iter)
-            #gobject.idle_add(self.treeview.set_cursor,self.path)
-            #gobject.idle_add(self.get_model)
+        if select:
+            self.selected_iter = miter
+            self.path = self.model.get_path(self.selected_iter)
+            gobject.idle_add(self.treeview.set_cursor,self.path)
+            gobject.idle_add(self.get_model)
 
+    def clean_markup(self,string):
+        n = decode_htmlentities(string)
+        m = glib.markup_escape_text(n)
+        return m
+    
     def stop_play(self,widget=None):
         self.active_link = None
         self.player.stop()
@@ -713,7 +695,6 @@ class GsongFinder(object):
             self.stop_play()
         except:
             print ""
-        gobject.idle_add(self.media_notebook.set_current_page,1)
         self.active_link = url
         self.player.play_toggled(url)
 		

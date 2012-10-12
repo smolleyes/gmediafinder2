@@ -5,9 +5,13 @@ from xml.dom import minidom
 from xml.dom.minidom import Document, parse
 import thread
 import threading
-from lib.functions import htmlentitydecode, translate_html
 import urllib2
 import re
+
+try:
+    from lib.functions import htmlentitydecode, translate_html
+except:
+    from GmediaFinder.lib.functions import htmlentitydecode, translate_html
 
 class Playlist(object):
     def __init__(self, gui):

@@ -13,18 +13,20 @@ import time
 import gobject
 gobject.threads_init()
 import thread
-from lib.player.player_engine import *
+
 ## custom lib
 try:
     import lib.config as config
     from lib.player.player_engine import *
     from lib.functions import *
     from lib.pykey import send_string
+    from lib.player.player_engine import *
 except:
     from GmediaFinder.lib.functions import *
     from GmediaFinder.lib import config
     from GmediaFinder.lib.player.player_engine import *
     from GmediaFinder.lib.pykey import send_string
+    from GmediaFinder.lib.player.player_engine import *
     
 GST_STATE_VOID_PENDING        = 0
 GST_STATE_NULL                = 1
@@ -71,14 +73,12 @@ class Player(gobject.GObject):
         self.adjustment = gtk.Adjustment(0.0, 0.00, 100.0, 0.1, 1.0, 1.0)
         self.seeker = gtk.HScale(self.adjustment)
         self.seeker.set_draw_value(False)
-        self.seeker.set_update_policy(gtk.UPDATE_DISCONTINUOUS)
-	#self.seeker.set_digits(2)
-        #self.seeker.set_update_policy(gtk.UPDATE_CONTINUOUS)
+        self.seeker.set_update_policy(gtk.UPDATE_CONTINUOUS)
         self.seekbox.add(self.seeker)
         self.seeker.connect("button-release-event", self.scale_button_release_cb)
         self.seeker.connect("button-press-event", self.scale_button_press_cb)
 	self.seeker.connect('format-value', self.scale_format_value_cb)
-	self.seekmove = None
+	self.seekmove = False
         #timer
         self.timerbox = self.gladeGui.get_widget("timer_box")
         self.timerbox.add(self.time_label)
@@ -265,7 +265,7 @@ class Player(gobject.GObject):
         return self.vis
     
     def play_toggled(self,url=None):
-        if self.player.is_playing():
+        if self.player.get_state() == GST_STATE_PLAYING:
             self.stop()
         else:
             self.start_play(url)
@@ -288,6 +288,7 @@ class Player(gobject.GObject):
 	gobject.idle_add(self.refresh_screen)
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
 	gobject.idle_add(self.seeker.set_fill_level,0.0)
+	self.seeker.set_show_fill_level(True)
     
 
     def pause_resume(self,widget=None):
@@ -465,7 +466,7 @@ class Player(gobject.GObject):
             self.infobox.reparent(self.infobox_cont)
             gobject.idle_add(self.mainGui.search_box.show)
             gobject.idle_add(self.mainGui.results_notebook.show)
-	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,1)
+	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,0)
             gobject.idle_add(self.control_box.show)
             gobject.idle_add(self.mainGui.options_bar.show)
             self.mainGui.window.window.set_cursor(None)
@@ -519,15 +520,14 @@ class Player(gobject.GObject):
                 return
 		
     def start_play(self, location):
-	print "LOCATIONNNNNNN : %s" % location
-	#if not sys.platform == "win32":
-            #if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
-		#self.player.player.set_property('flags', 0x00000008|0x00000002)
-		#self.vis = self.change_visualisation()
-                #self.visual = gst.element_factory_make(self.vis,'visual')
-                #self.player.player.set_property('vis-plugin', self.visual)
-	    #else:
-		#self.player.player.set_property('flags', 0x00000001|0x00000002)
+	if not sys.platform == "win32":
+            if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
+		self.player.player.set_property('flags', 0x00000008|0x00000002|0x80)
+		self.vis = self.change_visualisation()
+                self.visual = gst.element_factory_make(self.vis,'visual')
+                self.player.player.set_property('vis-plugin', self.visual)
+	    else:
+		self.player.player.set_property('flags', 0x00000001|0x00000002|0x80)
 	self.player.file_tags = {}
 	self.active_link = location
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)
@@ -644,7 +644,7 @@ class Player(gobject.GObject):
         gst.debug('value changed, perform seek to %r' % real)
         self.player.seek(real)
         # allow for a preroll
-        self.player.get_state(timeout=50*gst.MSECOND) # 50 ms
+        self.player.get_state(timeout=50*gst.MSECOND,full=True) # 50 ms
 
     def scale_button_release_cb(self, widget, event):
         # see seek.cstop_seek
@@ -678,6 +678,6 @@ class Player(gobject.GObject):
 	self.player.player.set_property("volume", float(value))
     
     def _fill_status_changed(self, player, fill_value):
-        self.seeker.set_fill_level(fill_value)
+        gobject.idle_add(self.seeker.set_fill_level,fill_value)
         self.seeker.set_show_fill_level(True)
 		

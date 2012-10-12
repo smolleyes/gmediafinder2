@@ -1,5 +1,10 @@
-gmediafinder (0.9.9.1-0ppa2~maverick) maverick; urgency=high
+gmediafinder (1.0.1-0ppa1~precise) maverick; urgency=high
 
-  * small fixes
+  * add progressive download
+  * fix youtube engine
+  * fix dailymotion engine
+  * fix xvideos
+  * add drtuber engine, remove youporn
+  * many bug fixes...
 
- -- Laguillaumie sylvain <s.lagui@free.fr>  Sun, 25 Fev 2011 00:19:53 +0100
+ -- Laguillaumie sylvain <s.lagui@free.fr>  Sun, 13 Oct 2012 00:01:50 +0100

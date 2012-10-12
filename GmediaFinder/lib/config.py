@@ -3,10 +3,14 @@ import os,sys,gtk
 import gettext
 from configobj import ConfigObj
 
-from lib.Translation import Translation
 from xml.dom import minidom
 from xml.dom.minidom import Document
 import re
+
+try:
+    from lib.Translation import Translation
+except:
+    from GmediaFinder.lib.Translation import Translation
 
 VERSION = "1.0.1"
 APP_NAME = "gmediafinder"

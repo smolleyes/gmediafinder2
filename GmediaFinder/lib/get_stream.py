@@ -7,7 +7,6 @@ import webkit
 import warnings
 import urllib
 import re
-import threading
 from time import sleep
 import gobject
 from optparse import OptionParser
@@ -66,13 +65,17 @@ class WebView(webkit.WebView):
 	return False
 	
     def get_html(self):
+	try:
 	    self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
 	    html = self.get_main_frame().get_title()
-	    gobject.idle_add(self.execute_script,'document.title=oldtitle;')
+	    self.execute_script('document.title=oldtitle;')
 	    return html
+	except:
+	    return
 
 class Browser():
     def __init__(self, mainGui):
+	gobject.threads_init()
 	self.mainGui = mainGui
 	self.url_bar = self.mainGui.gladeGui.get_widget("browser_entry")
 	self.url_bar.connect("activate", self.on_active)
@@ -83,7 +86,7 @@ class Browser():
 	self.view.connect('resource-request-starting', self.resource_cb)
 	## update adress bar
 	self.view.connect("load_committed", self.update_buttons)
-	self.mainGui.browser_box.add(self.view)
+	#self.mainGui.browser_box.add(self.view)
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
 	
@@ -204,7 +207,7 @@ class Browser():
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.go_back)
 		break
-	    elif 'http://www.dailymotion.com/embed/video/' in req:
+	    elif 'http://www.dailymotion.com/embed/video/' in req and '&cache=0' in req:
 		print "Dailymotion: Link detected"
 		code = self.view.get_html()
 		link=None
@@ -214,7 +217,7 @@ class Browser():
 		    title=urllib.unquote(re.search('(;*)title":"(.*?)",', code).group(2)).replace('\\','').replace('\'','')
 		except:
 		    title='Streaming dailymotion video...'
-		self.mainGui.media_name=title
+		self.mainGui.media_name=self.mainGui.clean_markup(title)
 		try:
 		    link = urllib.unquote(re.search('(;*)stream_h264_url\":\"(.*?)",', code).group(2)).replace('\\','')
 		except:
@@ -278,10 +281,8 @@ class Browser():
 		print "Gametrailer: Link detected"
 		self.mainGui.media_name = 'Streaming Gametrailer...'
 		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.go_back)
 		break
 	self.page_requests=[]
-	return True
 	    
     def stop_player(self):
 	## hide/stop the flashplayer
@@ -306,28 +307,28 @@ class Browser():
         self.view.open(url)
 
     def go_home(self,widget):
-	gobject.idle_add(self.view.open,self.homepage)
+	self.view.open(self.homepage)
     
     def go_back(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            backwards.'''
-        gobject.idle_add(self.view.go_back)
+        self.view.go_back()
 
     def go_forward(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            forwards.'''
-        gobject.idle_add(self.view.go_forward)
+        self.view.go_forward()
 
     def refresh(self, widget, data=None):
         '''Simple makes webkit reload the current back.'''
-        gobject.idle_add(self.view.reload)
+        self.view.reload()
 
     def update_buttons(self, widget, data=None):
         '''Gets the current url entry and puts that into the url bar.
            It then checks to see if we can go back, if we can it makes the
            back button clickable.  Then it does the same for the foward
            button.'''
-        self.url_bar.set_text( widget.get_main_frame().get_uri() )
+        self.url_bar.set_text(widget.get_main_frame().get_uri())
         self.back_button.set_sensitive(self.view.can_go_back())
         self.forward_button.set_sensitive(self.view.can_go_forward())
 	
