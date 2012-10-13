@@ -23,9 +23,9 @@ xgettext -k_ -kN_ -o $basedir/gmediafinder.pot $(find /home/smo/Documents/projec
 ## create or update po files
 for lang in $LANGLIST; do
 if [ ! -e "$basedir"/$lang.po ]; then
-	msginit --input=$basedir/gmediafinder.pot --output=$basedir/$lang.po --locale=$lang_$(echo "$lang" | tr '[:lower:]' '[:upper:]')
+	msginit --no-translator --input=$basedir/gmediafinder.pot --output=$basedir/$lang.po --locale=$lang_$(echo "$lang" | tr '[:lower:]' '[:upper:]')
 else
-	msginit --input=$basedir/gmediafinder.pot --output=$basedir/$lang-update.po --locale=$lang_$(echo "$lang" | tr '[:lower:]' '[:upper:]')
+	msginit --no-translator --input=$basedir/gmediafinder.pot --output=$basedir/$lang-update.po --locale=$lang_$(echo "$lang" | tr '[:lower:]' '[:upper:]')
 	msgmerge -U $basedir/$lang.po $basedir/$lang-update.po
 	## clean files
 	rm $basedir/$lang-update.po
