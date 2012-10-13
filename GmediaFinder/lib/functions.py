@@ -275,9 +275,10 @@ class urlFetch(Thread):
         else:
             print "instance"
             try:
-                t = urlretrieve(self.url, self.local, self._hook)
-                f = open(self.local)
-                self.engine.filter(f,self.query)
+                r= get_url_data(self.url)
+                #t = urlretrieve(self.url, self.local, self._hook)
+                #f = open(self.local)
+                self.engine.filter(r,self.query)
             except Abort, KeyBoardInterrupt:
                 e = sys.exc_info()[1]
                 if e != "":

@@ -1,10 +1,10 @@
-gmediafinder (1.0.1-0ppa2~precise) precise; urgency=high
+gmediafinder (1.0.1-0ppa3~precise) precise; urgency=high
 
   * add progressive download
   * fix youtube engine
   * fix dailymotion engine
   * fix xvideos/pornhub
-  * add drtuber engine, remove youporn
+  * add drtuber engine,add vimeo engine(unstable),  remove youporn
   * many bug fixes...
 
  -- Laguillaumie sylvain <s.lagui@free.fr>  Sun, 13 Oct 2012 00:01:50 +0100

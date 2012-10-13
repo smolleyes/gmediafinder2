@@ -263,7 +263,7 @@ class Youtube(object):
         link = 'http://www.youtube.com/watch?v=%s' % link
         self.gui.browser.load_uri(link)
     
-    def make_youtube_entry(self,video,read=None, select=True):
+    def make_youtube_entry(self,video,read=None, select=False):
         duration = video.media.duration.seconds
         calc = divmod(int(duration),60)
         seconds = int(calc[1])

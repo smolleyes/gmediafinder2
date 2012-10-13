@@ -155,6 +155,7 @@ class Browser():
         self._hovered_uri = uri
 	
     def load_uri(self,uri):
+	print "loading uri: %s" % uri
 	gobject.idle_add(self.view.load_uri,uri)
     
     def load_finished(self,v,r):
@@ -234,7 +235,6 @@ class Browser():
 		gobject.idle_add(self.view.stop_loading)
 		break
 	    elif 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
-		print req
 		code=None
 		link=None
 		code = get_url_data(req)
@@ -244,6 +244,11 @@ class Browser():
 	    elif 'video.pornhub' in req and '.mp4' in req or '.flv' in req:
 		self.mainGui.start_play(req)
 		break
+	    elif 'vimeo.com' in req:
+		if 'aksessionid' in req:
+		    self.mainGui.start_play(req)
+		    self.load_uri(self.homepage)
+		    break
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:
 		    selected = self.mainGui.treeview.get_selection()
@@ -336,6 +341,7 @@ class Browser():
         self.forward_button.set_sensitive(self.view.can_go_forward())
 	
     def load_code(self,like_link=None,html=None):
+	print html
 	if not html:
 	    html = '''
 	    <!DOCTYPE html>
