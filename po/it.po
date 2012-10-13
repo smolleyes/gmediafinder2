@@ -862,7 +862,7 @@ msgstr ""
 "jakdaw\n"
 "infinite\n"
 "corona\n"
-"bumpscope\n"
+"bumpscope"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1719
