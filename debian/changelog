@@ -1,4 +1,4 @@
-gmediafinder (1.0.1-0ppa1~precise) maverick; urgency=high
+gmediafinder (1.0.1-0ppa1~precise) precise; urgency=high
 
   * add progressive download
   * fix youtube engine

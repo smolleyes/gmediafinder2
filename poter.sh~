@@ -18,7 +18,7 @@ if [ "$1" = "cmo" ]; then
 fi
 
 ## cree pot fichier glade et des .py
-xgettext -k_ -kN_ -o $basedir/gmediafinder.pot $(find /home/smo/Documents/projects/gmediafinder-rew | egrep "\.glade|[a-zA-Z].py$|\.pot" | xargs)
+xgettext -k_ -kN_ -o $basedir/gmediafinder.pot $(find /home/smo/Documents/gmediafinder-rew | egrep "\.glade|[a-zA-Z].py$|\.pot" | xargs)
 
 ## create or update po files
 for lang in $LANGLIST; do
