@@ -79,22 +79,8 @@ class DrTuber(object):
             self.thread_stop=True
             
     def play(self,link):
-        res = None
-        print URL + link
         data = self.scrapper.load_uri(URL + link)
-        #for line in data.readlines():
-            #if 'config=/player/config.php' in line:
-                #print line
-                #config = re.search('(.*)config=(.*?)&id=player',line).group(2)
-                #res = self.scrapper.load_uri(URL + config)
-                #break
-        #for line in res.readlines():
-            #if '<video_file>' in line:
-                #link = re.search('<video_file>(.*?)</video_file>',line).group(1)
-                #self.gui.media_link = link
-                #break
-        #return self.gui.start_play(link)
-            
+
     def print_info(self,msg):
         gobject.idle_add(self.gui.info_label.set_text,msg)
     

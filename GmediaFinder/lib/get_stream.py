@@ -241,6 +241,9 @@ class Browser():
 		link = re.search('<video_file>(.*?)</video_file>',code.read()).group(1)
 		self.mainGui.start_play(link)
 		break
+	    elif 'video.pornhub' in req and '.mp4' in req or '.flv' in req:
+		self.mainGui.start_play(req)
+		break
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:
 		    selected = self.mainGui.treeview.get_selection()

@@ -6,8 +6,10 @@ import gobject
 
 try:
     from lib.functions import *
+    from lib.get_stream import Browser
 except:
     from GmediaFinder.lib.functions import *
+    from GmediaFinder.lib.get_stream import Browser
 
 class PornHub(object):
     def __init__(self,gui):
@@ -19,6 +21,7 @@ class PornHub(object):
         self.thread_stop      = False
         self.adult_content    = True
         self.has_browser_mode = False
+        self.scrapper=Browser(gui)
         self.search_url       = "http://www.pornhub.com/video/search?search=%s&o=%s&page=%s"
         self.category_url     = "http://www.empflix.com/channels/new-%s-%s.html"
         ## options labels
@@ -44,13 +47,7 @@ class PornHub(object):
         return self.search_url % (urllib.quote_plus(query),orderby,page)
     
     def play(self,link):
-        data = get_url_data(link)
-        for line in data.readlines():
-            if '"video_url"' in line:
-                link = urllib.unquote(line.split('"')[3])
-                self.gui.media_link = link
-                break
-        return self.gui.start_play(link)
+        data = self.scrapper.load_uri(link)
         
     def filter(self,data,user_search):
         flag_found = False
@@ -63,14 +60,12 @@ class PornHub(object):
                 break
             if 'class="img"' in line:
                 flag_found = True
-                title      = line.split('"')[3]
                 link       = line.split('"')[1]
-                print link
-            if flag_found:
-                if 'startThumbChange' in line:
-                    img_link = line.split('"')[1]
-                    img      = download_photo(img_link)
-                    gobject.idle_add(self.gui.add_sound, title, link, img, None, self.name)
+            if 'class="rotating"' in line:
+                title      = re.search('alt=\"(.*?)\"', line).group(1)
+                img_link = re.search('data-smallthumb=\"(.*?)\"', line).group(1)
+                img      = download_photo(img_link)
+                gobject.idle_add(self.gui.add_sound, title, link, img, None, self.name)
                 if 'Our Friends' in line:
                     break
         if not flag_found:
