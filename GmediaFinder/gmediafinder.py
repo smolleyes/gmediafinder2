@@ -60,7 +60,6 @@ except:
     from GmediaFinder.lib.player.player_gui import Player
     from GmediaFinder.lib.downloads import downloader
 
-gtk.gdk.threads_init()
 
 class GsongFinder(object):
     def __init__(self):
@@ -307,6 +306,7 @@ class GsongFinder(object):
         self.stop_search_btn.set_sensitive(0)
             
         #THE ACTUAL THREAD BIT
+        gtk.gdk.threads_init()
         self.manager = FooThreadManager(20)
         self.resume_downloads()
         self.mainloop = gobject.MainLoop(is_running=True)
