@@ -247,7 +247,7 @@ class Browser():
 	    elif 'vimeo.com' in req:
 		if 'aksessionid' in req:
 		    self.mainGui.start_play(req)
-		    self.load_uri(self.homepage)
+		    self.load_code()
 		    break
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:
