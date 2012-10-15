@@ -7,5 +7,5 @@ Icon=gmediafinder
 Terminal=false
 X-MultipleArgs=false
 Type=Application
-Categories=AudioVideo
+Categories=AudioVideo;
 Name[fr_FR]=Gmediafinder
