@@ -491,6 +491,8 @@ class GsongFinder(object):
             self.player_thread.stop()
         except:
             print ""
+        if self.media_link == '':
+            return
         self.player_thread = thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
@@ -509,9 +511,9 @@ class GsongFinder(object):
             return
         self.change_page_request = False
         self.stop_threads()
-        self.model.clear()
-        self.player.changepage_btn.set_sensitive(0)
-        self.player.pageback_btn.set_sensitive(0)
+        gobject.idle_add(self.model.clear)
+        gobject.idle_add(self.player.changepage_btn.set_sensitive,0)
+        gobject.idle_add(self.player.pageback_btn.set_sensitive,0)
         self.__add_to_history()
         self.engine_list = self.engine_selector.get_list()
         if self.engine_selector.getSelected() == self.global_search:
@@ -637,9 +639,9 @@ class GsongFinder(object):
             self.search_engine.current_page = self.search_engine.main_start_page
         ## check if first page then desactivate back page
         if page > 1:
-            self.player.pageback_btn.set_sensitive(1)
+            gobject.idle_add(self.player.pageback_btn.set_sensitive,1)
         else:
-            self.player.pageback_btn.set_sensitive(0)
+            gobject.idle_add(self.player.pageback_btn.set_sensitive,0)
             #thread.start_new_thread(self.search_engine.search,(self.user_search,page))
         self.add_thread(self.search_engine,self.user_search,page)
 
@@ -679,7 +681,7 @@ class GsongFinder(object):
             self.selected_iter = miter
             self.path = self.model.get_path(self.selected_iter)
             gobject.idle_add(self.treeview.set_cursor,self.path)
-            gobject.idle_add(self.get_model)
+            self.get_model()
 
     def clean_markup(self,string):
         n = decode_htmlentities(string)
@@ -688,7 +690,7 @@ class GsongFinder(object):
     
     def stop_play(self,widget=None):
         self.active_link = None
-        self.player.stop()
+        self.player.play_toggled()
     
     def start_play(self,url):
         self.active_link = url
@@ -864,8 +866,8 @@ class GsongFinder(object):
                     self.change_page_request=False
                     return
         else:
-            self.player.changepage_btn.set_sensitive(0)
-        self.info_label.set_text("")
+            gobject.idle_add(self.player.changepage_btn.set_sensitive,0)
+        gobject.idle_add(self.info_label.set_text,"")
 
 
     def thread_progress(self, thread):
@@ -878,7 +880,7 @@ class GsongFinder(object):
             self.selected_iter = self.model.get_iter_first()
             path = self.model.get_path(self.selected_iter)
             gobject.idle_add(self.treeview.set_cursor,path)
-            gobject.idle_add(self.get_model)
+            self.get_model()
         except:
             return
     

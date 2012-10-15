@@ -33,6 +33,7 @@ GST_STATE_NULL                = 1
 GST_STATE_READY               = 2
 GST_STATE_PAUSED              = 3
 GST_STATE_PLAYING             = 4
+GST_STATE_BUFFERING           = 5
 
 gtk.gdk.threads_init()
 
@@ -265,10 +266,10 @@ class Player(gobject.GObject):
         return self.vis
     
     def play_toggled(self,url=None):
-        if self.player.get_state() == GST_STATE_PLAYING:
+	#print "start/play toggled: state -> %s " % self.player.get_state()
+        if self.player.get_state() != GST_STATE_READY:
             self.stop()
-        else:
-            self.start_play(url)
+        self.start_play(url)
     
     def stop(self,widget=None):
 	self.play_thread_id = None
@@ -288,7 +289,6 @@ class Player(gobject.GObject):
 	gobject.idle_add(self.refresh_screen)
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.play_icon)
 	gobject.idle_add(self.seeker.set_fill_level,0.0)
-	self.seeker.set_show_fill_level(True)
     
 
     def pause_resume(self,widget=None):
@@ -403,6 +403,8 @@ class Player(gobject.GObject):
 	    path = self.mainGui.model.get_path(self.selected_iter)
 	except:
 	    return
+	if path == '' or self.select_iter is None:
+	    return
 	self.path = self.mainGui.path
 	model = None
 	treeview = None
@@ -417,7 +419,7 @@ class Player(gobject.GObject):
 	if self.play_options == "loop":
 	    path = model.get_path(self.selected_iter)
 	    if path:
-		treeview.set_cursor(path)
+		gobject.idle_add(treeview.set_cursor,path)
 		self.mainGui.get_model()
 	elif self.play_options == "continue":
 	    ## first, check if iter is still available (changed search while
@@ -429,7 +431,7 @@ class Player(gobject.GObject):
 			self.selected_iter = model.get_iter_first()
 			if self.selected_iter:
 			    path = model.get_path(self.selected_iter)
-			    treeview.set_cursor(path)
+			    gobject.idle_add(treeview.set_cursor,path)
 			    self.mainGui.get_model()
 		    except:
 			self.stop()
@@ -438,7 +440,7 @@ class Player(gobject.GObject):
 		    try:
 			self.selected_iter = model.iter_next(self.selected_iter)
 			path = model.get_path(self.selected_iter)
-			treeview.set_cursor(path)
+			gobject.idle_add(treeview.set_cursor,path)
 			self.mainGui.get_model()
 		    except:
 			if not self.mainGui.playlist_mode:
@@ -455,7 +457,7 @@ class Player(gobject.GObject):
 	    num = random.randint(0,len(model))
 	    self.selected_iter = model[num].iter
 	    path = model.get_path(self.selected_iter)
-	    treeview.set_cursor(path)
+	    gobject.idle_add(treeview.set_cursor,path)
 	    self.mainGui.get_model()
 	
     def set_fullscreen(self,widget=None):
@@ -519,7 +521,9 @@ class Player(gobject.GObject):
             except:
                 return
 		
-    def start_play(self, location):
+    def start_play(self, location=None):
+	if not location:
+	    return
 	if not sys.platform == "win32":
             if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
 		self.player.player.set_property('flags', 0x00000008|0x00000002|0x80)
@@ -669,7 +673,7 @@ class Player(gobject.GObject):
         self.p_position, self.p_duration = self.player.query_position()
         if self.p_position != gst.CLOCK_TIME_NONE:
             value = self.p_position * 100.0 / self.p_duration
-            self.adjustment.set_value(value)
+            gobject.idle_add(self.adjustment.set_value,value)
 	
         return True
 

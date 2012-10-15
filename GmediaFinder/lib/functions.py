@@ -214,9 +214,9 @@ class ComboBox(object):
             name = self.model.get_value(iter, 0)
             if name == usr_search:
                 found = 1
-                self.select(path[0])
+                gobject.idle_add(self.select,path[0])
                 break
-            self.combobox.set_active(-1)
+            gobject.idle_add(self.combobox.set_active,-1)
             
     def get_list(self):
         l = {}
