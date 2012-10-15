@@ -273,7 +273,6 @@ class urlFetch(Thread):
                 self.stop = True
                 self.abort()
         else:
-            print "instance"
             try:
                 r= get_url_data(self.url)
                 #t = urlretrieve(self.url, self.local, self._hook)

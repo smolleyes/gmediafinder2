@@ -29,6 +29,7 @@ class Youtube(object):
         self.has_browser_mode = False
         self.vp8 = False
         self.updateBrowser=True
+        self.qlist_checked=False
         ## the gui box to show custom filters/options
         self.opt_box = self.gui.gladeGui.get_widget("search_options_box")
         ## options labels
@@ -247,6 +248,7 @@ class Youtube(object):
                 
 
     def play(self,link):
+        self.qlist_checked = False
         self.load_youtube_res(link)
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
@@ -357,6 +359,8 @@ class Youtube(object):
         gobject.idle_add(self.gui.quality_box.show)
 
     def on_youtube_video_rate_changed(self,widget):
+        if self.qlist_checked == False:
+            return
         active = self.youtube_video_rate.get_active()
         print "Youtube: video rate changed -> %s" % active
         try:
@@ -429,4 +433,5 @@ class Youtube(object):
                 continue
         #except:
         #    return
+        self.qlist_checked =True
         return links_arr, quality_arr

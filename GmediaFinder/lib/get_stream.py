@@ -85,7 +85,7 @@ class Browser():
 	## get requested pages
 	self.view.connect('resource-request-starting', self.resource_cb)
 	## update adress bar
-	self.view.connect("load_committed", self.update_buttons)
+	#self.view.connect("load_committed", self.update_buttons)
 	#self.mainGui.browser_box.add(self.view)
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
@@ -94,9 +94,9 @@ class Browser():
 	settings.set_property('enable-scripts', True)
 	settings.set_property('javascript-can-open-windows-automatically', True)
 	self.view.connect('create-web-view',self.on_new_window_cb)
-	self.view.connect("hovering-over-link", self._hovering_over_link_cb)
+	#self.view.connect("hovering-over-link", self._hovering_over_link_cb)
 	self.view.connect("load-finished", self.load_finished)
-	self.view.connect("navigation-requested", self.on_click_link)
+	#self.view.connect("navigation-requested", self.on_click_link)
 	self.console_response = self.view.connect('console-message', self.on_console_message)
 	self._hovered_uri = None
 	self.isLoading=False
@@ -135,7 +135,7 @@ class Browser():
   
         window = gtk.Window()
         window.add(vbox)
-	view.connect("web-view-ready", self.new_web_view_ready)
+	#view.connect("web-view-ready", self.new_web_view_ready)
         return view
   
     def new_web_view_ready (self, web_view):
@@ -159,7 +159,7 @@ class Browser():
 	gobject.idle_add(self.view.load_uri,uri)
     
     def load_finished(self,v,r):
-	print "load finished"
+	#print "load finished"
 	self.analyse_req()
 	
     def on_click_link(self, view, frame, req, data=None):
@@ -247,7 +247,7 @@ class Browser():
 	    elif 'vimeo.com' in req:
 		if 'aksessionid' in req:
 		    self.mainGui.start_play(req)
-		    self.load_code()
+		    self.load_default_page()
 		    break
 	    elif 'lscache' in req and "youtube.com" in req:
 		try:

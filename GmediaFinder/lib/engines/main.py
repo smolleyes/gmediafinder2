@@ -29,7 +29,6 @@ class Engines(object):
         elif sys.platform == "win32" and not 'zip' in config.exec_path:
             self.engines_path.append(config.exec_path+'\lib\engines')
             sys.path.append(config.exec_path+'\lib\engines')
-        print  self.engines_path
         for path in self.engines_path:
             for engine in os.listdir(path):
                 if os.path.isdir(os.path.join(path, engine)):
