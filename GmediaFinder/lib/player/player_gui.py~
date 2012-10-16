@@ -143,10 +143,10 @@ class Player(gobject.GObject):
 	    
 	##gplayer
 	self.active_link=None
-	#def on_eos():
-            #self.player.seek(0L)
-            #self.play_toggled()
-        #self.player.on_eos = lambda *x: on_eos()
+	def on_eos():
+            self.player.seek(0L)
+            self.play_toggled()
+        self.player.on_eos = lambda *x: on_eos()
         
         self.update_id = -1
         self.changed_id = -1
@@ -272,8 +272,6 @@ class Player(gobject.GObject):
 		self.start_play(url)
     
     def stop(self,widget=None):
-		if self.player.get_state() == GST_STATE_READY:
-			return
 		self.play_thread_id = None
 		self.radio_mode = False
 		self.active_link = None
@@ -329,7 +327,7 @@ class Player(gobject.GObject):
 	    return
     
     def on_expose_event(self, widget, event):
-        if self.player.get_state() == GST_STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
+        if self.player.get_state == gst.STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
             return
         x , y, self.area_width, self.area_height = event.area
         gobject.idle_add(widget.window.draw_drawable,widget.get_style().fg_gc[gtk.STATE_NORMAL],
@@ -362,7 +360,7 @@ class Player(gobject.GObject):
 	    
     def on_finished(self,widget):
 	print 'file finished'
-	#self.stop()
+	self.stop()
 	try:
 	    self.check_play_options()
 	except:
@@ -524,14 +522,14 @@ class Player(gobject.GObject):
     def start_play(self, location=None):
 	if not location:
 	    return
-	if not sys.platform == "win32":
-            if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
-		self.player.player.set_property('flags', 0x00000008|0x00000002)
-		self.vis = self.change_visualisation()
-                self.visual = gst.element_factory_make(self.vis,'visual')
-                self.player.player.set_property('vis-plugin', self.visual)
-	    else:
-		self.player.player.set_property('flags', 0x00000001|0x00000002|0x80)
+	#if not sys.platform == "win32":
+            #if not self.vis_selector.getSelectedIndex() == 0 and self.mainGui.search_engine.engine_type != "video":
+		#self.player.player.set_property('flags', 0x00000008|0x00000002|0x80)
+		#self.vis = self.change_visualisation()
+                #self.visual = gst.element_factory_make(self.vis,'visual')
+                #self.player.player.set_property('vis-plugin', self.visual)
+	    #else:
+		#self.player.player.set_property('flags', 0x00000001|0x00000002|0x80)
 	self.player.file_tags = {}
 	self.active_link = location
 	gobject.idle_add(self.play_btn_pb.set_from_pixbuf,self.stop_icon)

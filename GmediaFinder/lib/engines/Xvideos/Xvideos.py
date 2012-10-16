@@ -45,7 +45,7 @@ class Xvideos(object):
                 link = urllib.unquote(re.search('flv_url=([^&]*)', line).group(1))
                 self.gui.media_link = link
                 break
-        return self.gui.start_play(link)
+        self.gui.start_play(link)
         
     def filter(self,data,user_search):
         flag_found = False      
