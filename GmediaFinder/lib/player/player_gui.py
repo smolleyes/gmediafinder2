@@ -269,9 +269,11 @@ class Player(gobject.GObject):
 			self.stop()
 		if not url:
 			return
-		return self.start_play(url)
+		self.start_play(url)
     
     def stop(self,widget=None):
+		if self.player.get_state() == GST_STATE_READY:
+			return
 		self.play_thread_id = None
 		self.radio_mode = False
 		self.active_link = None

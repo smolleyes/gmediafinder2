@@ -1,5 +1,5 @@
 import re
-import urllib2
+import urllib2,urllib
 import gobject,glib
 import json
 
@@ -46,7 +46,7 @@ class DailyMotion(object):
         if choice != "":
             filters = self.filters_list[self.filters_label][choice]
             f = 'filters=%s&' % filters
-        return self.search_url % (f,orderby,page,query)
+        return self.search_url % (f,orderby,page,urllib.quote(query))
     
     def play(self,link):
         try:
