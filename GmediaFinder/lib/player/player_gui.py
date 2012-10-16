@@ -58,7 +58,7 @@ class Player(gobject.GObject):
         self.movie_window = self.gladeGui.get_widget("drawingarea")
         self.movie_window.set_flags(gtk.CAN_FOCUS)
         self.movie_window.unset_flags(gtk.DOUBLE_BUFFERED)
-        #self.movie_window.connect('realize', self.on_drawingarea_realized)
+        self.movie_window.connect('realize', self.on_drawingarea_realized)
         self.mainGui.window.connect('motion-notify-event', self.on_motion_notify)
         self.movie_window.connect('configure-event', self.on_configure_event)
         self.movie_window.connect('expose-event', self.on_expose_event)
@@ -143,10 +143,10 @@ class Player(gobject.GObject):
 	    
 	##gplayer
 	self.active_link=None
-	def on_eos():
-            self.player.seek(0L)
-            self.play_toggled()
-        self.player.on_eos = lambda *x: on_eos()
+	#def on_eos():
+            #self.player.seek(0L)
+            #self.play_toggled()
+        #self.player.on_eos = lambda *x: on_eos()
         
         self.update_id = -1
         self.changed_id = -1
@@ -329,7 +329,7 @@ class Player(gobject.GObject):
 	    return
     
     def on_expose_event(self, widget, event):
-        if self.player.get_state == gst.STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
+        if self.player.get_state() == GST_STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
             return
         x , y, self.area_width, self.area_height = event.area
         gobject.idle_add(widget.window.draw_drawable,widget.get_style().fg_gc[gtk.STATE_NORMAL],
@@ -362,7 +362,7 @@ class Player(gobject.GObject):
 	    
     def on_finished(self,widget):
 	print 'file finished'
-	self.stop()
+	#self.stop()
 	try:
 	    self.check_play_options()
 	except:

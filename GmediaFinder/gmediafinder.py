@@ -487,10 +487,6 @@ class GsongFinder(object):
             self.search_engine.updateBrowser=True
                 
         ## play in engines
-        try:
-            self.player_thread.stop()
-        except:
-            print ""
         self.player_thread = thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
