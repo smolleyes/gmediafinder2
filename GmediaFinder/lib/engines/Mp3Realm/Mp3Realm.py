@@ -65,7 +65,7 @@ class Mp3Realm(object):
         
     def play(self,link):
         self.gui.media_link = link
-        return self.gui.start_play(link)
+        self.gui.start_play(link)
     
     def print_info(self,msg):
         gobject.idle_add(self.gui.info_label.set_text,msg)

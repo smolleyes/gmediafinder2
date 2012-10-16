@@ -691,10 +691,6 @@ class GsongFinder(object):
         self.player.stop()
     
     def start_play(self,url):
-        try:
-            self.stop_play()
-        except:
-            print ""
         self.active_link = url
         self.player.play_toggled(url)
 		
