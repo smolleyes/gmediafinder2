@@ -257,7 +257,7 @@ class Youtube(object):
                 print "updating browser"
                 #self.update_media_infos(link)
             self.media_codec = self.quality_list[active].split('|')[1]
-            self.gui.player.play_toggled(self.media_link[active])
+            #self.gui.player.play_toggled(self.media_link[active])
         except:
             self.gui.start_play('')
 

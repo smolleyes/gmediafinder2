@@ -143,10 +143,10 @@ class Player(gobject.GObject):
 	    
 	##gplayer
 	self.active_link=None
-	#def on_eos():
-            #self.player.seek(0L)
-            #self.play_toggled()
-        #self.player.on_eos = lambda *x: on_eos()
+	def on_eos():
+            self.player.seek(0L)
+            self.play_toggled()
+        self.player.on_eos = lambda *x: on_eos()
         
         self.update_id = -1
         self.changed_id = -1

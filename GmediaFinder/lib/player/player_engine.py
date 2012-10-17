@@ -64,7 +64,7 @@ class GstPlayer(gobject.GObject):
         self._temp_location = None
         self.started_buffering = False
         self.fill_timeout_id = 0
-        self.player.props.flags |= 0x80
+        #self.player.props.flags |= 0x80
         self.player.connect("deep-notify::temp-location", self.on_temp_location)
 
     @gobject.property
