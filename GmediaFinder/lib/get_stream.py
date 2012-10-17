@@ -183,32 +183,7 @@ class Browser():
     
     def analyse_req(self):
 	for req in self.page_requests:
-	    if 'megavideo.com/files/' in req:
-		print "MEGAVIDEO: Link detected"
-		self.mainGui.media_name = 'Streaming Megavideo...'
-		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.go_back)
-		break
-	    elif 'videobb.com/s?v=' in req:
-		print "Videobb: Link detected"
-		self.mainGui.media_name = 'Streaming Videobb...'
-		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.go_back)
-		break
-	    elif 'http://www.mixturecloud.com/media/' in req and 'player.mixturecloud' in req:
-		print "Mixture: Link detected"
-		self.mainGui.media_name = 'Streaming mixture video...'
-		vid=re.search('mixturecloud.com/media/(.*)&win',req).group(1)
-		self.debrider.debridMixture(vid)
-		break
-		##gobject.idle_add(self.view.go_back)
-	    elif 'http://av.vimeo.com' in req and '?token=' in req:
-		print "Vimeo: Link detected"
-		self.mainGui.media_name = 'Streaming Vimeo...'
-		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.go_back)
-		break
-	    elif 'http://www.dailymotion.com/embed/video/' in req and '&cache=0' in req:
+	    if 'http://www.dailymotion.com/embed/video/' in req and '&cache=0' in req:
 		print "Dailymotion: Link detected"
 		code = self.view.get_html()
 		link=None
@@ -242,6 +217,10 @@ class Browser():
 		self.mainGui.start_play(link)
 		break
 	    elif 'video.pornhub' in req and '.mp4' in req or '.flv' in req:
+		self.mainGui.start_play(req)
+		break
+	    elif 'public.youporn' in req and '.flv?s' in req or '.mp4?s' in req:
+		self.load_default_page()
 		self.mainGui.start_play(req)
 		break
 	    elif 'vimeo.com' in req:
@@ -282,13 +261,6 @@ class Browser():
 		    self.isLoading=False
 		    self.page_requests=[]
 		    self.mainGui.search_engine.on_paste(url=url)
-		break
-		    
-		
-	    elif 'http://trailers-ak.gametrailers.com' in req:
-		print "Gametrailer: Link detected"
-		self.mainGui.media_name = 'Streaming Gametrailer...'
-		self.mainGui.start_play(req)
 		break
 	self.page_requests=[]
 	    
