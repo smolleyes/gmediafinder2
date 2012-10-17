@@ -159,6 +159,8 @@ class Youtube(object):
             text = url
         if text != '':
             vid=self.get_videoId(text)
+            if vid == '':
+                return
             yt = yt_service.YouTubeService()
             entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
             self.filter(entry, '', update)
@@ -176,9 +178,11 @@ class Youtube(object):
                 try:
                     vid = os.path.basename(os.path.dirname(text))
                 except:
-                    if not vid:
-                        error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
+                    error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
                     return
+        if vid=='':
+            error_dialog(_('Your link:\n\n%s\n\nis not a valid youtube link...' % text))
+            return
         return vid
         
     def set_max_youtube_res(self, widget):
@@ -280,6 +284,8 @@ class Youtube(object):
         except:
             pass
         vid_id=self.get_videoId(url)
+        if vid_id == '':
+            return
         try:
             vid_pic = download_photo(thumb)
         except:
