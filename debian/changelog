@@ -1,5 +1,8 @@
-gmediafinder (1.0.2-0ppa1~precise) precise; urgency=high
+gmediafinder (1.0.3-0ppa1~precise) precise; urgency=high
 
-  * bug fixes...
+  * Fix youtube engine
+  * add youporn, dilandau and mp3juices engines
+  * remove nuttymp3 engine
+  * bug fixes
 
  -- Laguillaumie sylvain <s.lagui@free.fr>  Tue, 15 Oct 2012 22:09:50 +0100
