@@ -28,8 +28,5 @@ direct use:
 cd gmediafinder2/GmediaFinder; python gmediafinder.py
 
 
-FOR MANDRIVA / rpm based systems USERS!
---------------------
-you can use the gmediafinder.spec file in the git :)
 
 enjoy !
