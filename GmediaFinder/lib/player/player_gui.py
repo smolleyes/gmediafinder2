@@ -362,7 +362,6 @@ class Player(gobject.GObject):
 	    
     def on_finished(self,widget):
 	print 'file finished'
-	#self.stop()
 	try:
 	    self.check_play_options()
 	except:
