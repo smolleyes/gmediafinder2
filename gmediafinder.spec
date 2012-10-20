@@ -1,5 +1,5 @@
 #Obtaining source
-#git clone git://github.com/smolleyes/gmediafinder.git && tar cjf gmediafinder-{_version}.tar.bz2 gmediafinder/ && rm -rf gmediafinder
+#git clone git://github.com/smolleyes/gmediafinder2.git && tar cjf gmediafinder-%%{version}.tar.bz2 gmediafinder && rm -rf gmediafinder
 Name:			gmediafinder
 Version:		1.0.3
 Release:		2
