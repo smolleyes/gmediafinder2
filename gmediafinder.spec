@@ -7,7 +7,7 @@ Summary:		Stream and/or download and/or convert files
 License:		GPLv2
 Group:			Video
 URL:			http://gnomefiles.org/content/show.php/Gmediafinder?content=138588&PHPSESSID=9c909890a42ce1ac7a555efab2b34b83
-Source0:		https://nodeload.github.com/smolleyes/gmediafinder2/%{name}-%{version}.tar.gz
+Source0:		%{name}-%{version}.tar.gz
 BuildRequires:		hicolor-icon-theme 
 BuildRequires:		python-mechanize 
 BuildRequires:		python-setuptools 

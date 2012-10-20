@@ -59,6 +59,9 @@ except:
     import GmediaFinder.lib.checklinks as checkLink
     from GmediaFinder.lib.player.player_gui import Player
     from GmediaFinder.lib.downloads import downloader
+    from GmediaFinder.lib.get_stream import Browser as browser
+    from GmediaFinder.lib.engines.main import Engines
+    
 
 gtk.gdk.threads_init()
 
