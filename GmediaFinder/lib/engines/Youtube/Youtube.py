@@ -1,5 +1,5 @@
 import re
-import urllib
+import urllib, json
 import gdata.youtube.service as yt_service
 import gobject, thread
 import os
@@ -35,6 +35,7 @@ class Youtube(object):
         ## options labels
         self.order_label = _("Order by: ")
         self.category_label = _("Category: ")
+        self.filtersLabel = _("Filters: ")
         ## video quality combobox
         self.youtube_quality_box = self.gui.gladeGui.get_widget("quality_box")
         
@@ -132,6 +133,15 @@ class Youtube(object):
         
         gobject.idle_add(self.gui.search_opt_box.show_all)
         
+        ## filter combobox
+        self.filters = ComboBox(cb)
+        self.filtersList = {self.filtersLabel:{"":"",_("HD"):"hd",_("3D"):"3d",
+            },
+        }
+        self.filters = create_comboBox(self.gui, self.filtersList)
+        
+        gobject.idle_add(self.gui.search_opt_box.show_all)
+        
         ## vp8 check
         if not sys.platform == 'win32':
             out,err = Popen('/usr/bin/gst-inspect-0.10| grep vp8',shell=True,stdout=PIPE,stderr=STDOUT).communicate()
@@ -161,8 +171,11 @@ class Youtube(object):
             vid=self.get_videoId(text)
             if vid == '':
                 return
-            yt = yt_service.YouTubeService()
-            entry = yt.GetYouTubeVideoEntry(video_id='%s' % vid)
+            link =r'http://gdata.youtube.com/feeds/api/videos/%s?alt=json&v=2' % vid
+            inp = urllib.urlopen(link)
+            resp = json.load(inp)
+            inp.close()
+            entry = resp['entry']
             self.filter(entry, '', update)
         else:
             return
@@ -202,22 +215,36 @@ class Youtube(object):
         self.thread_stop=False
         nlist = []
         link_list = []
+        filters=''
+        category=''
         next_page = 0
-        ## prepare query
-        query = yt_service.YouTubeVideoQuery()
-        query.vq = user_search # the term(s) that you are searching for
-        query.max_results = '25'
-        #query.lr = 'fr'
+        max_res = 25
         orderby = self.orderby.getSelected()
-        query.orderby = self.orderbyOpt[self.order_label][orderby]
-        cat = self.category.getSelected()
-        if self.category.getSelectedIndex() != 0:
-            query.categories.append('/%s' % self.catlist[self.category_label][cat])
-
+        order = self.orderbyOpt[self.order_label][orderby]
         if self.current_page == 1:
             self.num_start = 1
-        query.start_index = self.num_start
-        vquery = self.client.YouTubeQuery(query)
+        if self.filters.getSelectedIndex() != 0:
+            selectedFilter = self.filters.getSelected()
+            filters = self.filtersList[self.filtersLabel][selectedFilter]
+        cat = self.category.getSelected()
+        if self.category.getSelectedIndex() != 0:
+            category = self.catlist[self.category_label][cat]
+
+        link = r'http://gdata.youtube.com/feeds/api/videos?q=%s&start-index=%s&max-results=%s&orderby=%s&alt=json&v=2' % (user_search.replace(' ','+'),self.num_start,max_res,order)
+        if category != '':
+            link += '&category=' + category
+        if filters != '':
+            link += '&'+filters
+
+        inp = urllib.urlopen(link)
+        resp = json.load(inp)
+        inp.close()
+        
+        try:
+            vquery = resp['feed']['entry']
+        except:
+            self.thread_stop=True
+            return
         return vquery
 
     def filter(self,vquery,user_search,direct_link=None):
@@ -234,7 +261,7 @@ class Youtube(object):
             self.make_youtube_entry(vquery, True, direct_link)
         
         try:
-            if len(vquery.entry) == 0:
+            if len(vquery) == 0:
                 self.print_info(_("%s: No results for %s ...") % (self.name,user_search))
                 time.sleep(5)
                 self.thread_stop=True
@@ -243,7 +270,7 @@ class Youtube(object):
             self.thread_stop=True
             return
 
-        for entry in vquery.entry:
+        for entry in vquery:
             if not self.thread_stop:
                 self.make_youtube_entry(entry)
             else:
@@ -270,27 +297,27 @@ class Youtube(object):
         self.gui.browser.load_uri(link)
     
     def make_youtube_entry(self,video,read=None, select=False):
-        duration = video.media.duration.seconds
+        duration = video['media$group']['yt$duration']['seconds']
         calc = divmod(int(duration),60)
         seconds = int(calc[1])
         if seconds < 10:
             seconds = "0%d" % seconds
         duration = "%d:%s" % (calc[0],seconds)
-        url = video.link[1].href
-        thumb = video.media.thumbnail[-1].url
+        url = video['link'][0]['href']
+        thumb = video['media$group']['media$thumbnail'][0]['url']
         count = 0
         try:
-            count = video.statistics.view_count
+            count = video['yt$statistics']['viewCount']
         except:
             pass
-        vid_id=self.get_videoId(url)
+        vid_id=video['id'].values()[0].split(':')[-1]
         if vid_id == '':
             return
         try:
             vid_pic = download_photo(thumb)
         except:
             return
-        title = video.title.text
+        title = video['title']['$t']
         if not count:
             count = 0
 
