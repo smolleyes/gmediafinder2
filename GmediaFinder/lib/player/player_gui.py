@@ -652,7 +652,7 @@ class Player(gobject.GObject):
 
     def scale_button_release_cb(self, widget, event):
         # see seek.cstop_seek
-        widget.disconnect(self.changed_id)
+        self.seeker.disconnect(self.changed_id)
         self.changed_id = -1
 	self.seekmove = False
         if self.seek_timeout_id != -1:

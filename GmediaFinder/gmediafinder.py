@@ -444,8 +444,6 @@ class GsongFinder(object):
             self.search_engine.load_gui()
 
     def get_model(self,widget=None,path=None,column=None):
-        #if self.search_playlist_menu_active:
-        #return
         self.media_bitrate = ""
         self.media_codec = ""
         current_page = self.results_notebook.get_current_page()

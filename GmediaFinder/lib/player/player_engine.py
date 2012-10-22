@@ -139,7 +139,7 @@ class GstPlayer(gobject.GObject):
 	if percent == 100:
 	    self._cbuffering = -1
 	    if self.get_state() == GST_STATE_PAUSED:
-		self.mainGui.info_label.set_text('')
+		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.playerGui.media_name_label.set_markup,'<small><b>%s</b></small>' % self.mainGui.media_name)
 		self.playerGui.pause_resume()
 	elif self.status == GST_STATE_BUFFERING:
