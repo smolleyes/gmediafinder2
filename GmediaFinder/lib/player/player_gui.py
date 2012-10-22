@@ -268,6 +268,9 @@ class Player(gobject.GObject):
 		if self.player.get_state() != GST_STATE_READY:
 			self.stop()
 		if not url:
+		    try:
+			self.mainGui.get_model()
+		    except:
 			return
 		self.start_play(url)
     
@@ -362,7 +365,6 @@ class Player(gobject.GObject):
             self.set_fullscreen()
 	    
     def on_finished(self,widget):
-	print 'file finished'
 	try:
 	    self.check_play_options()
 	except:
@@ -399,7 +401,6 @@ class Player(gobject.GObject):
 	    self.play_options = "continue"
 		
     def check_play_options(self):
-	print "play option : %s" % self.play_options
 	try:
 	    self.selected_iter = self.mainGui.selected_iter
 	    path = self.mainGui.model.get_path(self.selected_iter)

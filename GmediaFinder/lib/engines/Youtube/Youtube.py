@@ -284,9 +284,6 @@ class Youtube(object):
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
         try:
-            if self.updateBrowser:
-                print "updating browser"
-                #self.update_media_infos(link)
             self.media_codec = self.quality_list[active].split('|')[1]
             #self.gui.player.play_toggled(self.media_link[active])
         except:
@@ -395,7 +392,6 @@ class Youtube(object):
         if self.qlist_checked == False:
             return
         active = self.youtube_video_rate.get_active()
-        print "Youtube: video rate changed -> %s" % active
         try:
             self.media_codec = self.quality_list[active].split('|')[1]
             self.gui.start_play(self.media_link[active])
