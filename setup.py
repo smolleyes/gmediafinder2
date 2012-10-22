@@ -116,7 +116,7 @@ if sys.argv[1] == 'install':
 
 	if not prefix:
 		prefix = '/usr'
-	os.system('chmod +x %s' % os.path.join(prefix,'bin/gmediafinder'))
+	#os.system('chmod +x %s' % os.path.join(prefix,'bin/gmediafinder'))
 	gtk_update_icon_cache = '''gtk-update-icon-cache -f -t \
 %s/share/icons/hicolor''' % prefix
 	root_specified = [s for s in sys.argv if s.startswith('--root')]
