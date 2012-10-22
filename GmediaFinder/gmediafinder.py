@@ -693,7 +693,7 @@ class GsongFinder(object):
         except:
             print ""
         self.active_link = url
-        self.player.play_toggled(url)
+        self.player.play_toggled(None,url)
 		
     def load_new_page(self):
         self.change_page_request=True

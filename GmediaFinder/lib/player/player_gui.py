@@ -111,6 +111,7 @@ class Player(gobject.GObject):
 	
         ## SIGNALS
         dic = {
+	"on_play_btn_clicked" : self.play_toggled,
         "on_pause_btn_clicked" : self.pause_resume,
         "on_shuffle_btn_toggled" : self.set_play_options,
         "on_repeat_btn_toggled" : self.set_play_options,
@@ -211,7 +212,7 @@ class Player(gobject.GObject):
         self.play_btn.set_property('can-default', True)
         self.play_btn.set_focus_on_click(False)
         self.play_btn.set_property('has-default', True)
-        self.play_btn.connect('clicked', lambda *args: self.play_toggled())
+        #self.play_btn.connect('clicked', lambda *args: self.play_toggled())
         ## pause
         self.pause_btn = self.gladeGui.get_widget("pause_btn")
         self.pause_btn_pb = self.gladeGui.get_widget("pause_btn_img")
@@ -264,15 +265,20 @@ class Player(gobject.GObject):
         self.mainGui.conf.write()
         return self.vis
     
-    def play_toggled(self,url=None):
-		if self.player.get_state() != GST_STATE_READY:
-			self.stop()
-		if not url:
-		    try:
-			self.mainGui.get_model()
-		    except:
-			return
-		self.start_play(url)
+    def play_toggled(self,widget=None,url=None):
+	if widget:
+	    if self.player.get_state() != GST_STATE_READY and self.player.get_state() != GST_STATE_NULL:
+		self.stop()
+		return
+	    else:
+		try:
+		    self.mainGui.get_model()
+		except:
+		    return
+	else:
+	    if self.player.get_state() != GST_STATE_READY and self.player.get_state() != GST_STATE_NULL:
+		self.stop()
+	    self.start_play(url)
     
     def stop(self,widget=None):
 		if self.player.get_state() == GST_STATE_READY:
