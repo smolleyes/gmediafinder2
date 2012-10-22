@@ -298,6 +298,7 @@ class Player(gobject.GObject):
 	    self.player.pause()
             gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.play_icon)
         else:
+	    gobject.idle_add(self.media_name_label.set_markup,'<small><b>%s</b></small>' % self.mainGui.media_name)
             self.player.play()
 	    gobject.idle_add(self.pause_btn_pb.set_from_pixbuf,self.pause_icon)
         
