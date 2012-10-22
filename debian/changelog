@@ -1,4 +1,4 @@
-gmediafinder (1.0.4-0ppa3~precise) precise; urgency=high
+gmediafinder (1.0.4-0ppa4~precise) precise; urgency=high
 
   * Use api v2 for youtube engine
   * add hd and 3d filters for youtube search engine

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-22 21:38+0200\n"
+"POT-Creation-Date: 2012-10-22 23:48+0200\n"
 "PO-Revision-Date: 2012-10-13 00:11+0000\n"
 "Last-Translator: paokouran <s.lagui@free.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:246
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:482
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:481
@@ -30,6 +32,8 @@ msgstr ""
 msgid "enter fullscreen"
 msgstr "attiva fullscreen"
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:292
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:250
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:286
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:283
@@ -44,6 +48,8 @@ msgstr "attiva fullscreen"
 msgid "Bitrate:"
 msgstr "Bitrate: "
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:287
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:284
@@ -58,6 +64,8 @@ msgstr "Bitrate: "
 msgid "Encoding:"
 msgstr "Encoding: "
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:253
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:294
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:288
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:285
@@ -72,6 +80,7 @@ msgstr "Encoding: "
 msgid "Playing:"
 msgstr "Riproducendo:"
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:500
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:499
