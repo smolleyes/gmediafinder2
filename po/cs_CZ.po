@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-18 23:10+0200\n"
+"POT-Creation-Date: 2012-10-22 19:22+0200\n"
 "PO-Revision-Date: 2012-10-13 02:25+0200\n"
 "Last-Translator: root <s.lagui@free.fr>\n"
 "Language-Team: Language CS\n"
@@ -229,20 +229,28 @@ msgstr ""
 msgid "Category: "
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:38
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:26
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:23
+msgid "Filters: "
+msgstr ""
+
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:48
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:52
 msgid "Quality"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:108
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:107
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:106
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:112
 msgid "Paste youtube link"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:113
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:131
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:132
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
@@ -251,6 +259,8 @@ msgstr ""
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:39
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:52
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:56
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:113
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:131
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:112
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:130
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
@@ -267,13 +277,14 @@ msgstr ""
 msgid "Most relevant"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:29
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:42
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:50
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:113
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:39
@@ -286,11 +297,12 @@ msgstr ""
 msgid "Most recent"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:50
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:113
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:118
@@ -300,11 +312,12 @@ msgstr ""
 msgid "Most viewed"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:51
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:114
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:119
@@ -315,90 +328,116 @@ msgstr ""
 msgid "Most rated"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:122
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:121
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 msgid "Sport"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:122
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 msgid "Films"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:122
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 msgid "Cars"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 msgid "Music"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 msgid "Technology"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 msgid "Animals"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 msgid "Travel"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 msgid "Games"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 msgid "Comedy"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:130
 msgid "Peoples"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:130
 msgid "News"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:131
 msgid "Entertainement"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:131
 msgid "Trailers"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:138
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:37
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+msgid "HD"
+msgstr ""
+
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:138
+msgid "3D"
+msgstr ""
+
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:166
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:156
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:155
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:159
 msgid "There's no link to paste..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:194
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:197
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:181
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:184
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:180
@@ -413,6 +452,8 @@ msgid ""
 "is not a valid youtube link..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:254
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:265
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:227
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:238
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:223
@@ -425,6 +466,7 @@ msgstr ""
 msgid "%s: No results for %s ..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:299
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:291
@@ -499,16 +541,6 @@ msgstr ""
 msgid "Longest"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:26
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:23
-msgid "Filters: "
-msgstr ""
-
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:37
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
-msgid "HD"
-msgstr ""
-
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
 #, python-format
@@ -565,42 +597,49 @@ msgstr ""
 msgid "%(min)02d:%(sec)02d"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:256
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:263
 msgid " Results : "
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:231
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:228
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:287
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:294
 msgid "Copy file link"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:233
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:230
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:296
 msgid "Add to Library"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:288
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:285
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:343
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:350
 msgid "All"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:286
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:344
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:351
 msgid "All audios"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:290
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:287
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:345
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:352
 msgid "All videos"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:498
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:497
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:578
@@ -609,6 +648,7 @@ msgstr ""
 msgid "Please select a search engine..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:502
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:582
@@ -617,6 +657,7 @@ msgstr ""
 msgid "Please enter an artist/album or song name..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:504
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:508
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:585
@@ -625,11 +666,14 @@ msgstr ""
 msgid "Please select an engine..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:793
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1046
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1050

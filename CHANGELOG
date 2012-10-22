@@ -1,3 +1,8 @@
+V 1.0.4
+  * Use api v2 for youtube engine
+  * add hd and 3d filters for youtube search engine
+  * bug fixes
+  
 V 1.0.3
   * Fix youtube engine
   * add youporn, dilandau and mp3juices engines
