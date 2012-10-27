@@ -280,7 +280,10 @@ class Youtube(object):
 
     def play(self,link):
         self.qlist_checked = False
-        self.load_youtube_res(link)
+        try:
+            self.load_youtube_res(link)
+        except:
+            self.gui.player.check_play_options()
         self.gui.media_link=link
         active = self.youtube_video_rate.get_active()
         try:

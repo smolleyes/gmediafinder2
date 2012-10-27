@@ -58,7 +58,7 @@ class Player(gobject.GObject):
         self.movie_window = self.gladeGui.get_widget("drawingarea")
         self.movie_window.set_flags(gtk.CAN_FOCUS)
         self.movie_window.unset_flags(gtk.DOUBLE_BUFFERED)
-        self.movie_window.connect('realize', self.on_drawingarea_realized)
+        #self.movie_window.connect('realize', self.on_drawingarea_realized)
         self.mainGui.window.connect('motion-notify-event', self.on_motion_notify)
         self.movie_window.connect('configure-event', self.on_configure_event)
         self.movie_window.connect('expose-event', self.on_expose_event)
