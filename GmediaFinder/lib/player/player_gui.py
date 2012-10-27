@@ -687,7 +687,7 @@ class Player(gobject.GObject):
 
 
     def on_volume_changed(self,widget,value):
-	self.player.player.set_property("volume", float(value))
+	gobject.idle_add(self.player.player.set_property,"volume", float(value))
     
     def _fill_status_changed(self, player, fill_value):
         gobject.idle_add(self.seeker.set_fill_level,fill_value)
