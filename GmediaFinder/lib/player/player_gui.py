@@ -322,7 +322,7 @@ class Player(gobject.GObject):
 	    try:
 		gobject.idle_add(self.player.set_window_id,self.movie_window.window.handle)
 	    except:
-		return
+		pass
         else:
 	    try:
 		gobject.idle_add(self.player.set_window_id,self.movie_window.window.xid)
@@ -336,11 +336,11 @@ class Player(gobject.GObject):
                                       pixmap, x, y, x, y, x,y)
 	    gobject.idle_add(self.mainGui.media_notebook.queue_draw_area,0,0,-1,-1)
 	except:
-	    return
+	    pass
     
     def on_expose_event(self, widget, event):
         if self.player.get_state() == GST_STATE_PLAYING and self.mainGui.search_engine.engine_type == 'video':
-            return
+            pass
         x , y, self.area_width, self.area_height = event.area
         gobject.idle_add(widget.window.draw_drawable,widget.get_style().fg_gc[gtk.STATE_NORMAL],
                                       pixmap, x, y, x, y, self.area_width, self.area_height)
@@ -348,8 +348,8 @@ class Player(gobject.GObject):
             try:
                 self.mainGui.search_engine.print_media_infos()
             except:
-                return False
-        return False
+                pass
+        #return False
     
     def on_configure_event(self, widget, event):         
 		global pixmap
@@ -358,7 +358,7 @@ class Player(gobject.GObject):
 		gobject.idle_add(pixmap.draw_rectangle,widget.get_style().black_gc,
 								True, 0, 0, width, height)
 		
-		return True
+		#return True
     
     def on_motion_notify(self, widget, event):
         visible =  self.miniPlayer.get_property("visible")
