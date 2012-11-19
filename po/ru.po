@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# alexander barakin <alex@barak.in>, 2012.
 #   <funboyz@gmail.com>, 2011.
 #   <linux4martin@gmx.de>, 2011.
 #   <ostioporos@gmail.com>, 2011.
@@ -10,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-22 23:48+0200\n"
-"PO-Revision-Date: 2012-10-13 00:11+0000\n"
-"Last-Translator: paokouran <s.lagui@free.fr>\n"
+"POT-Creation-Date: 2012-11-19 17:36+0100\n"
+"PO-Revision-Date: 2012-11-10 22:44+0000\n"
+"Last-Translator: alexander barakin <alex@barak.in>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -99,7 +100,7 @@ msgstr "Буферизация :"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:315
 msgid "Initializing download..."
-msgstr ""
+msgstr "Подготовка к скачиванию..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:324
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:463
@@ -116,7 +117,7 @@ msgstr "Отправка запроса на загрузку..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:348
 msgid "File already downloaded on disk..."
-msgstr ""
+msgstr "Файл уже скачан на диск..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:356
@@ -132,7 +133,7 @@ msgstr "Поддерживаемый запрос, пытаюсь возобно
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:372
 msgid "Range request not supported, redownloading file..."
-msgstr ""
+msgstr "Докачивание не поддерживается, скачиваем заново..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:392
@@ -155,15 +156,15 @@ msgstr "Загрузка отменена..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:477
 msgid "Download complete..."
-msgstr ""
+msgstr "Скачивание завершено..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:530
 msgid "Cancelling download..."
-msgstr ""
+msgstr "Прекращение  скачивания..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:555
 msgid "Download paused..."
-msgstr ""
+msgstr "Скачивание приостановлено..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:500
@@ -174,23 +175,23 @@ msgstr "Возобновление загрузки..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:575
 msgid "Extracting audio..."
-msgstr ""
+msgstr "Извлечение записи..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:582
 msgid "Extraction failed..."
-msgstr ""
+msgstr "Извлечение завершилось ошибкой..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:47
 msgid "Add link in debrider:"
-msgstr ""
+msgstr "Добавить ссылку в восстановитель:"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:69
 msgid "Error 503"
-msgstr ""
+msgstr "Ошибка 503"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:95
 msgid "Invalide link or no account ..."
-msgstr ""
+msgstr "Неправильная ссылка или аккаунт..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
 #, python-format
@@ -492,8 +493,8 @@ msgstr ""
 msgid "%s: No results for %s ..."
 msgstr "%s: Нет результата для %s ..."
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:299
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:291
@@ -564,12 +565,12 @@ msgstr "%s: Не удалось соединиться..."
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Top rated"
-msgstr ""
+msgstr "Лучше по рейтингу"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Longest"
-msgstr ""
+msgstr "Самые длинные"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
@@ -629,7 +630,7 @@ msgstr "%s: Нет результата для %s..."
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/functions.py:84
 #, python-format
 msgid "%(min)02d:%(sec)02d"
-msgstr ""
+msgstr "%(min)02d:%(sec)02d"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
@@ -704,7 +705,7 @@ msgstr "Пожалуйста, выберите движек..."
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
-msgstr ""
+msgstr "Ссылка удалена или просрочена!..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
@@ -832,11 +833,11 @@ msgstr "списки"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:750
 msgid "Browser"
-msgstr ""
+msgstr "Браузер"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:770
 msgid "Video"
-msgstr ""
+msgstr "Видео"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:833
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:622
@@ -1063,7 +1064,7 @@ msgstr "<b>Опции извлечения : </b>"
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1936
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1915
 msgid "<b>Select your engines : </b>"
-msgstr "<b>Выбрать движек : </b>"
+msgstr "<b>Выбрать движок : </b>"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2266
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1961

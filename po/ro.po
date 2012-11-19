@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-#   <symbianflo@fastwebnet.it>, 2011.
+#   <symbianflo@fastwebnet.it>, 2011-2012.
 # symbianflo <symbianflo@fastwebnet.it>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-22 23:48+0200\n"
-"PO-Revision-Date: 2012-10-13 00:11+0000\n"
-"Last-Translator: paokouran <s.lagui@free.fr>\n"
+"POT-Creation-Date: 2012-11-19 17:36+0100\n"
+"PO-Revision-Date: 2012-11-10 12:26+0000\n"
+"Last-Translator: symbianflo <symbianflo@fastwebnet.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr "Buffering:"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:315
 msgid "Initializing download..."
-msgstr ""
+msgstr "Se inițializează descărcarea ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:324
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:463
@@ -115,7 +115,7 @@ msgstr "Trimit cererea de descărcare..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:348
 msgid "File already downloaded on disk..."
-msgstr ""
+msgstr "Fișierul descărcat deja de pe hard ... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:356
@@ -131,7 +131,7 @@ msgstr "Solicitarea interval suportat, încearcă  reluarea ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:372
 msgid "Range request not supported, redownloading file..."
-msgstr ""
+msgstr "Gama de solicitare neacceptata, nouă descărcare a fișierului"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:392
@@ -154,15 +154,15 @@ msgstr "Descărcări  anulate ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:477
 msgid "Download complete..."
-msgstr ""
+msgstr "Descărcarea finalizată ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:530
 msgid "Cancelling download..."
-msgstr ""
+msgstr "Se anulează descărcarea... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:555
 msgid "Download paused..."
-msgstr ""
+msgstr "Descărcarea în pauză..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:500
@@ -173,23 +173,23 @@ msgstr "Reluare descărcare ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:575
 msgid "Extracting audio..."
-msgstr ""
+msgstr "Extragerea audio... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:582
 msgid "Extraction failed..."
-msgstr ""
+msgstr "Extracția nu a reușit ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:47
 msgid "Add link in debrider:"
-msgstr ""
+msgstr "Adaugă link-ul in debrider: "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:69
 msgid "Error 503"
-msgstr ""
+msgstr "Eroare 503 "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:95
 msgid "Invalide link or no account ..."
-msgstr ""
+msgstr "Link-ul  inexistent sau Nu aveți cont ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
 #, python-format
@@ -491,8 +491,8 @@ msgstr ""
 msgid "%s: No results for %s ..."
 msgstr "%s Nici un rezultat pentru %s... "
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:299
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:291
@@ -562,12 +562,12 @@ msgstr "%s: Conexiunea a eşuat,,, "
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Top rated"
-msgstr ""
+msgstr "Cele mai votate "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Longest"
-msgstr ""
+msgstr "Cel mai lung"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
@@ -627,7 +627,7 @@ msgstr "%s: Nici un rezultat pentru %s...  "
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/functions.py:84
 #, python-format
 msgid "%(min)02d:%(sec)02d"
-msgstr ""
+msgstr "%(min)02d:%(sec)02d "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
@@ -702,7 +702,7 @@ msgstr "Vă rugăm să alegeţi un motor de căutare"
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
-msgstr ""
+msgstr "Acest link a fost eliminat sau a expirat...!"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
@@ -840,11 +840,11 @@ msgstr "playlists"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:750
 msgid "Browser"
-msgstr ""
+msgstr "Browser-ul "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:770
 msgid "Video"
-msgstr ""
+msgstr "Video "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:833
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:622
@@ -1020,15 +1020,14 @@ msgid ""
 "corona\n"
 "bumpscope"
 msgstr ""
-"disabled\n"
-"jess\n"
-"goom\n"
-"oinksie\n"
-"lv_scope\n"
-"lv_analyzer\n"
-"jakdaw\n"
-"infinite\n"
-"corona\n"
+"disabled⏎ \n"
+"jess⏎ \n"
+"goom⏎ \n"
+"oinksie⏎ \n"
+"lv_scope⏎ \n"
+"lv_analyzer⏎ \n"
+"jakdaw⏎ infinite⏎ \n"
+"corona⏎ \n"
 "bumpscope"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2024

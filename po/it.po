@@ -4,15 +4,15 @@
 #
 # Translators:
 # Bernardo Miguel Savone <bmsavone@gmail.com>, 2011, 2012.
-#   <symbianflo@fastwebnet.it>, 2011, 2012.
+#   <symbianflo@fastwebnet.it>, 2011-2012.
 # symbianflo <symbianflo@fastwebnet.it>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-22 23:48+0200\n"
-"PO-Revision-Date: 2012-10-13 00:11+0000\n"
-"Last-Translator: paokouran <s.lagui@free.fr>\n"
+"POT-Creation-Date: 2012-11-19 17:36+0100\n"
+"PO-Revision-Date: 2012-11-10 12:11+0000\n"
+"Last-Translator: symbianflo <symbianflo@fastwebnet.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgstr "Buffering :"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:315
 msgid "Initializing download..."
-msgstr ""
+msgstr "Inizializzazione download ... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:324
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:463
@@ -115,7 +115,7 @@ msgstr "Invio richiesta di download ... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:348
 msgid "File already downloaded on disk..."
-msgstr ""
+msgstr "File già scaricato sul disco ... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:356
@@ -131,7 +131,7 @@ msgstr "Richiesta di intervallo supportata, cercando di riprendere..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:372
 msgid "Range request not supported, redownloading file..."
-msgstr ""
+msgstr "Richiesta non supportata,nuovo scaricamento del file ..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:392
@@ -154,15 +154,15 @@ msgstr "Download annullato..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:477
 msgid "Download complete..."
-msgstr ""
+msgstr "Download completo... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:530
 msgid "Cancelling download..."
-msgstr ""
+msgstr "Annullare il download... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:555
 msgid "Download paused..."
-msgstr ""
+msgstr "Download In pausa... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:500
@@ -173,23 +173,23 @@ msgstr "Riprendendo download..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:575
 msgid "Extracting audio..."
-msgstr ""
+msgstr "Estrazione audio... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:582
 msgid "Extraction failed..."
-msgstr ""
+msgstr "Estrazione non riuscita..."
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:47
 msgid "Add link in debrider:"
-msgstr ""
+msgstr "Aggiungi link in debrider:"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:69
 msgid "Error 503"
-msgstr ""
+msgstr "Errore 503"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:95
 msgid "Invalide link or no account ..."
-msgstr ""
+msgstr "Collegamento Invalide o nessun conto ... "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
 #, python-format
@@ -491,8 +491,8 @@ msgstr ""
 msgid "%s: No results for %s ..."
 msgstr "%s: Nessun risultato per %s... "
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:299
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:291
@@ -562,12 +562,12 @@ msgstr "%s: Connessione non riuscita ... "
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Top rated"
-msgstr ""
+msgstr "Primi in classifica "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Longest"
-msgstr ""
+msgstr "Il Più lungo"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
@@ -627,7 +627,7 @@ msgstr "%s: Nessun risultato per %s... "
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/functions.py:84
 #, python-format
 msgid "%(min)02d:%(sec)02d"
-msgstr ""
+msgstr "%(min)02d:%(sec)02d "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
@@ -702,7 +702,7 @@ msgstr "Si prega di selezionare un motore di ricerca..."
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
-msgstr ""
+msgstr "Questo collegamento è stato rimosso o è scaduto ...!"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
@@ -830,11 +830,11 @@ msgstr "playlist"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:750
 msgid "Browser"
-msgstr ""
+msgstr "Browser"
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:770
 msgid "Video"
-msgstr ""
+msgstr "Video "
 
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:833
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:622
