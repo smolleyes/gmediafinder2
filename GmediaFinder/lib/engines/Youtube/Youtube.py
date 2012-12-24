@@ -30,6 +30,7 @@ class Youtube(object):
         self.vp8 = False
         self.updateBrowser=True
         self.qlist_checked=False
+        self.elarrId=0
         ## the gui box to show custom filters/options
         self.opt_box = self.gui.gladeGui.get_widget("search_options_box")
         ## options labels
@@ -397,44 +398,104 @@ class Youtube(object):
         active = self.youtube_video_rate.get_active()
         try:
             self.media_codec = self.quality_list[active].split('|')[1]
+            if not self.gui.search_engine.updateBrowser:
+                self.update_media_infos(self.gui.media_link)
+            print self.media_link[active]
             self.gui.start_play(self.media_link[active])
         except:
             pass
+            
+    def getVideoInfo(self,vid_id):
+        elarr= ["&el=embedded","&el=vevo","&el=detailpage"]
+        #try:
+        reqUrl = "http://www.youtube.com/get_video_info?video_id=%s%s&ps=default&eurl=&gl=US&hl=en" % (vid_id,elarr[self.elarrId])
+        print "video ID : %s" % vid_id +" with req : %s" % reqUrl
+        req = urllib2.Request(reqUrl)
+        stream = urllib2.urlopen(req)
+        c = urllib.unquote(stream.read())
+        content = re.sub('&type=(.*?)&','&',c)
+        return content
+       
 
     def get_quality_list(self,vid_id):
         links_arr = []
         quality_arr = []
-        #try:
-        req = urllib2.Request("http://www.youtube.com/get_video_info?video_id=%s" % vid_id)
-        stream = urllib2.urlopen(req)
-        contents = urllib.unquote(stream.read())
-        if re.search('status=fail',contents):
-            req = urllib2.Request("http://www.youtube.com/watch?v=%s" % vid_id)
-            stream = urllib2.urlopen(req)
-            contents = urllib.unquote(stream.read())
-        ## links list
+        if self.elarrId == 0:   
+            contents=self.getVideoInfo(vid_id)
+
+        #check token
+        tokenRe = re.compile("^.*&token=([^&]+).*$")
         try:
-            matches = re.search("url_encoded_fmt_stream_map=(.*?)&length_seconds",contents).group(1)
+            matches = tokenRe.search(contents).group(1)
         except:
+            # try el=vevo
+            print "Trying el=vevo"
+            self.elarrId+=1
+            contents=self.getVideoInfo(vid_id)
             try:
-                matches = re.search("url_encoded_fmt_stream_map=(.*?)\">",contents).group(1)
+                matches = tokenRe.search(contents).group(1)
             except:
-                matches = re.search("url_encoded_fmt_stream_map=(.*)",contents).group(1)
-        fmt_arr = urllib.unquote(matches).split('&quality')
+                #try el=detailpage
+                print "Trying el=detailpage"
+                self.elarrId+=1
+                contents=self.getVideoInfo(vid_id)
+                try:
+                    matches = tokenRe.search(contents).group(1)
+                except:
+                    req = urllib2.Request("http://www.youtube.com/watch?v=%s" % vid_id)
+                    stream = urllib2.urlopen(req)
+                    contents = urllib.unquote(stream.read())
+                    stream.close()
+        print "TOKEN found : %s" % matches
+        self.elarrId = 0
+        
+        ## links list
+        regexp1 = re.compile("^.*url_encoded_fmt_stream_map=([^&]+).*$")
+        matches = regexp1.search(contents).group()
+        fmt_arr = urllib.unquote(matches).split(',')
+        if len(fmt_arr) == 1:
+            fmt_arr = urllib.unquote(matches).split('url=')
+        #print fmt_arr
         ## quality_list
-        regexp1 = re.compile("fmt_list=([^&]+)&")
+        regexp1 = re.compile("fmt_list=([^&]+)")
         matches = regexp1.search(contents).group(1)
         quality_list = urllib.unquote(matches).split(',')
-        stream.close()
         ##
         link_list = []
+        vidFormat = None
         for link in fmt_arr:
+            itag=''
+            url=''
             try:
-                res = re.search('url=(.*)', link).group(1)
-                link=re.sub('sig','signature',res)
-                link_list.append(link)
+                if 'videoplayback' in link and 'sig=' in link and 'itag=' in link:
+                    try:
+                        try:
+                            burl=re.search('http://(.*)sig=(.*?)(,|&)',link).group().replace('sig','signature').strip(',|&')
+                        except:
+                            burl=re.search('http://(.*)sig=(.*)',link).group().replace('sig','signature').strip(',|&')
+                        itag = re.search('itag=(.*?)(&|,)',burl).group(1)
+                        curl = burl.replace('itag=%s' % itag,'')
+                        url = curl.replace('&signature','&itag=%s&signature' % itag)
+                        if 'videoplayback' in url and 'signature=' in url and 'itag=' in url and not 'url=' in url:
+                            link_list.append(url)
+                    except:
+                        try:
+                            itag = re.search('itag=(.*?)(&|,)',link).group(1)
+                            sig = re.search('sig=(.*?)(&|,)',link).group(1)
+                            url=re.search('url=(.*)(&|,)',link).group(1).replace('itag=%s' % itag,'')
+                            furl=url+"&itag=%s"%itag+"&signature=%s"%sig
+                            if 'videoplayback' in furl and 'signature=' in furl and 'itag=' in furl and not 'url=' in furl:
+                                link_list.append(furl)
+                            else:
+                                if "url=" in furl:
+                                    url = furl.split('url=')[0]
+                        except:
+                            pass
             except:
+                print " CAN T DECODE LINK " + link + "\n"
                 continue
+        
+        #print link_list
         ## remove flv links...
         i = 0
         if quality_list[0] == quality_list[1]:
@@ -467,3 +528,4 @@ class Youtube(object):
         #    return
         self.qlist_checked =True
         return links_arr, quality_arr
+        
