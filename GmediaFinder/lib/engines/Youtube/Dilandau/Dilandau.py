@@ -3,23 +3,22 @@ import urllib2
 import urllib
 import time
 import os
-import re
 
 try:
     from lib.functions import *
 except:
     from GmediaFinder.lib.functions import *
     
-class Mp3Juices(object):
+class Dilandau(object):
     def __init__(self,gui):
         self.gui = gui
         self.engine_type = "audio"
-        self.name="Mp3Juices"
+        self.name="Dilandau"
         self.current_page = 1
         self.main_start_page = 1
         self.thread_stop=False
         self.has_browser_mode = False
-        self.search_url = "http://mp3juices.com/search/%s/%s"
+        self.search_url = "http://fr.dilandau.eu/telecharger-mp3/%s-%s.html"
         self.start_engine()
     
     def start_engine(self):
@@ -29,29 +28,26 @@ class Mp3Juices(object):
         pass
     
     def get_search_url(self,query,page):
-        self.print_info(_('%s: Searching for %s...') % (self.name,query))
+        self.print_info(_('%s: Searching for %s with dilandau...') % (self.name,query))
         return self.search_url % (query,page)
         
     def filter(self, d, user_search):
-		flag_found = False
-		data=d.read().split('loadPlayer')
-		if len(data) == 0:
-			self.print_info(_("%s: No results for %s...") % (self.name,user_search))
-			time.sleep(5)
-			self.thread_stop=True
-		d=data[0].split('[url]"')
-		for line in d:
-		    if self.thread_stop:
-			    break
-		    try:
-			titre=re.search('(.*)<span class="song_title"(.*?)>(.*?)<',line).group(3)
-			#print titre
-			url=re.search('value="(.*?)class="cache"',line).group(1).replace('"','')
-			#print url
-			gobject.idle_add(self.gui.add_sound, titre, url, None, None, self.name)
-		    except:
-			continue
-		self.thread_stop=True
+        flag_found = False
+        data=d.read().split('/>') 
+        for line in data:
+			if self.thread_stop:
+				break
+			if 'class="title_song"' in line:
+				titre = decode_htmlentities(re.search('title=\"(.*?)\"', line).group(1))
+			if '<a class="button tip download_button"' in line:
+				url = re.search('href=\"(.*?)\"', line).group(1)
+				gobject.idle_add(self.gui.add_sound, titre, url, None, None, self.name)
+				flag_found = True
+				continue
+        if not flag_found:
+            self.print_info(_("%s: No results for %s...") % (self.name,user_search))
+            time.sleep(5)
+        self.thread_stop=True
         
     def play(self,link):
         try:
