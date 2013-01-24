@@ -398,9 +398,8 @@ class Youtube(object):
         active = self.youtube_video_rate.get_active()
         try:
             self.media_codec = self.quality_list[active].split('|')[1]
-            if not self.gui.search_engine.updateBrowser:
-                self.update_media_infos(self.gui.media_link)
-            print self.media_link[active]
+            #if not self.gui.search_engine.updateBrowser:
+                #self.update_media_infos(self.gui.media_link)
             self.gui.start_play(self.media_link[active])
         except:
             pass
@@ -409,7 +408,7 @@ class Youtube(object):
         elarr= ["&el=embedded","&el=vevo","&el=detailpage"]
         #try:
         reqUrl = "http://www.youtube.com/get_video_info?video_id=%s%s&ps=default&eurl=&gl=US&hl=en" % (vid_id,elarr[self.elarrId])
-        print "video ID : %s" % vid_id +" with req : %s" % reqUrl
+        #print "video ID : %s" % vid_id +" with req : %s" % reqUrl
         req = urllib2.Request(reqUrl)
         stream = urllib2.urlopen(req)
         c = urllib.unquote(stream.read())
@@ -429,14 +428,14 @@ class Youtube(object):
             matches = tokenRe.search(contents).group(1)
         except:
             # try el=vevo
-            print "Trying el=vevo"
+            #print "Trying el=vevo"
             self.elarrId+=1
             contents=self.getVideoInfo(vid_id)
             try:
                 matches = tokenRe.search(contents).group(1)
             except:
                 #try el=detailpage
-                print "Trying el=detailpage"
+                #print "Trying el=detailpage"
                 self.elarrId+=1
                 contents=self.getVideoInfo(vid_id)
                 try:
@@ -446,7 +445,7 @@ class Youtube(object):
                     stream = urllib2.urlopen(req)
                     contents = urllib.unquote(stream.read())
                     stream.close()
-        print "TOKEN found : %s" % matches
+        #print "TOKEN found : %s" % matches
         self.elarrId = 0
         
         ## links list

@@ -6,7 +6,7 @@ import gtk
 import webkit
 import warnings
 import urllib
-import re
+import re, thread
 from time import sleep
 import gobject
 from optparse import OptionParser
@@ -85,12 +85,13 @@ class Browser():
 	## get requested pages
 	self.view.connect('resource-request-starting', self.resource_cb)
 	## update adress bar
-	#self.view.connect("load_committed", self.update_buttons)
-	#self.mainGui.browser_box.add(self.view)
+	self.view.connect("load_committed", self.update_buttons)
+	self.mainGui.browser_box.add(self.view)
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
 	
 	settings = webkit.WebSettings()
+	#settings.set_property('enable-plugins', False)
 	settings.set_property('enable-scripts', True)
 	settings.set_property('javascript-can-open-windows-automatically', True)
 	self.view.connect('create-web-view',self.on_new_window_cb)
@@ -102,7 +103,8 @@ class Browser():
 	self.isLoading=False
 	self.page_requests=[]
 	self.source_code = None
-	
+	self.analyzed=False
+	self.view.set_settings(settings)
 	## opt
 	self.homepage = 'http://www.google.com'
 	
@@ -120,7 +122,7 @@ class Browser():
         """ callback on 'console-message' webkit.WebView signal """
         #print ('Myconsole:' + str(args))
         self.view.stop_emission('console-message')
-	return True
+	#return True
 	
     def on_new_window_cb(self, web_view, frame, data=None):
 	scrolled_window = gtk.ScrolledWindow()
@@ -135,7 +137,7 @@ class Browser():
   
         window = gtk.Window()
         window.add(vbox)
-	#view.connect("web-view-ready", self.new_web_view_ready)
+	view.connect("web-view-ready", self.new_web_view_ready)
         return view
   
     def new_web_view_ready (self, web_view):
@@ -155,6 +157,7 @@ class Browser():
         self._hovered_uri = uri
 	
     def load_uri(self,uri):
+	self.analyzed=False
 	print "loading uri: %s" % uri
 	gobject.idle_add(self.view.load_uri,uri)
     
@@ -168,8 +171,6 @@ class Browser():
         # link is being used like a button, the else will catch true links
         # and open them in the webbrowser
         uri = req.get_uri()
-        if 'youtube.com/watch?' in uri:
-	    self.isLoading=True
     
     def resource_cb(self, view, frame, resource, request, response):
 	req = request.get_uri()
@@ -182,10 +183,15 @@ class Browser():
 	#response = resource.get_property('message').get_property('response-headers')
     
     def analyse_req(self):
+	if self.analyzed:
+	    return
+	print "analyse"
 	for req in self.page_requests:
-	    if 'http://www.dailymotion.com/embed/video/' in req and '&cache=0' in req:
+	    #print req
+	    if 'http://www.dailymotion.com/embed/video/' in req:
 		print "Dailymotion: Link detected"
 		code = self.view.get_html()
+		print code
 		link=None
 		title=None
 		## get tile
@@ -201,42 +207,50 @@ class Browser():
 			link = urllib.unquote(re.search('(;*)stream_h264_ld_url\":\"(.*?)",', code).group(2)).replace('\\','')
 		    except:
 			print 'can t find video url...'
+			try:
+			     f=open('/tmp/truc',"w")
+			     f.writelines(code)
+			     f.close()
+			     u=re.search('http://dailymotion.com(.*)&cache=0',code).group()
+			     print u
+			
+			except:
+			    print ''
 			link=''
+		self.analyzed=True
 		self.mainGui.start_play(link)
 		break
 	    elif 'grooveshark.com/stream.php?streamKey' in req:
-		self.mainGui.media_name = 'Streaming putlocker...'
+		self.analyzed=True
 		self.mainGui.start_play(req)
 		gobject.idle_add(self.view.stop_loading)
 		break
 	    elif 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
+		print "drtuber link detected: %s" % req
 		code=None
 		link=None
 		code = get_url_data(req)
 		link = re.search('<video_file>(.*?)</video_file>',code.read()).group(1)
+		print "loading link : %s" % link
+		self.analyzed=True
 		self.mainGui.start_play(link)
 		break
 	    elif 'video.pornhub' in req and '.mp4' in req or '.flv' in req:
+		self.analyzed=True
 		self.mainGui.start_play(req)
 		break
 	    elif 'public.youporn' in req and '.flv?s' in req or '.mp4?s' in req:
-		self.load_default_page()
+		self.analyzed=True
 		self.mainGui.start_play(req)
 		break
 	    elif 'vimeo.com' in req:
 		if 'aksessionid' in req:
+		    self.analyzed=True
 		    self.mainGui.start_play(req)
 		    self.load_default_page()
 		    break
-	    elif 'lscache' in req and "youtube.com" in req:
-		try:
-		    selected = self.mainGui.treeview.get_selection()
-		    self.selected_iter = selected.get_selected()[1]
-		    self.path = self.mainGui.model.get_path(self.selected_iter)
-		    updateBrowser = self.mainGui.model.get_value(self.selected_iter, 8)
-		except:
-		    updateBrowser = False
-		if updateBrowser and self.isLoading is False or self.mainGui.playlist_mode is True:
+	    elif 'c.youtube.com/generate_204' in req:
+		if self.mainGui.playlist_mode is True:
 		    self.page_requests=[]
 		    self.isLoading=False
 		    break
@@ -256,16 +270,19 @@ class Browser():
 		except:
 		    curent_id = None
 		## if not match read new video
+		print reqid, current_id
 		if reqid != current_id:
 		    gobject.idle_add(self.mainGui.search_entry.set_text,'')
 		    self.isLoading=False
 		    self.page_requests=[]
+		    self.analyzed=True
 		    self.mainGui.search_engine.on_paste(url=url)
 		break
 	self.page_requests=[]
 	    
     def stop_player(self):
 	## hide/stop the flashplayer
+	return
 	try:
 	    script = "player = document.getElementById('movie_player');"
 	    script += "player.mute();"
