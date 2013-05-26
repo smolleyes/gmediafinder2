@@ -9,11 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2013-01-24 02:49+0100\n"
-=======
 "POT-Creation-Date: 2013-05-23 23:27+0200\n"
->>>>>>> fix
 "PO-Revision-Date: 2012-11-10 12:26+0000\n"
 "Last-Translator: symbianflo <symbianflo@fastwebnet.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

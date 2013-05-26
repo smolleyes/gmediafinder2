@@ -1,6 +1,3 @@
-V 1.0.5
-  * fix engines
-
 V 1.0.4
   * Use api v2 for youtube engine
   * add hd and 3d filters for youtube search engine

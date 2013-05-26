@@ -40,6 +40,7 @@ class Vimeo(object):
                            }
         self.orderby = create_comboBox(self.gui, self.orderbyOpt)
         self.orderby.setIndexFromString(_("Relevant"))
+        self.scrapper.load_uri('http://vimeo.com/search')
     
     def get_search_url(self,query,page):
         choice  = self.orderby.getSelected()
@@ -89,6 +90,7 @@ class Vimeo(object):
             return
         
         video_url = "http://player.vimeo.com/play_redirect?clip_id=%s&sig=%s&time=%s&quality=%s&codecs=%s&type=moogaloop_local&embed_location=" %( os.path.basename(link), sig, timestamp, quality, video_codec.upper())
+        print video_url
         self.scrapper.load_uri(video_url,origin=link)
         
     def filter(self,data,user_search):

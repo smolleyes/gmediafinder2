@@ -5,11 +5,7 @@ import sys
 import gtk
 import webkit
 import warnings
-<<<<<<< HEAD
-import urllib
-=======
-import urllib, urllib2
->>>>>>> fix
+import urllib, urllib2, json
 import re, thread
 from time import sleep
 import gobject
@@ -31,7 +27,7 @@ except:
 class WebView(webkit.WebView):
     def __init__(self):
 	gobject.threads_init()
-        webkit.WebView.__init__(self)
+	webkit.WebView.__init__(self)
 	settings = self.get_settings()
 	
 	# scale other content besides from text as well
@@ -71,11 +67,11 @@ class WebView(webkit.WebView):
 	menu.show_all()
 	return False
 	
-	def get_html(self):
-	    self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
-	    html = self.get_main_frame().get_title()
-	    self.execute_script('document.title=oldtitle;')
-	    return html
+    def get_html(self):
+	self.execute_script('oldtitle=document.title;document.title=document.documentElement.innerHTML;')
+	html = self.get_main_frame().get_title()
+	self.execute_script('document.title=oldtitle;')
+	return html
 	
 
 class Browser():
@@ -96,19 +92,12 @@ class Browser():
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
 	
-<<<<<<< HEAD
-	settings = webkit.WebSettings()
-	#settings.set_property('enable-plugins', False)
-	settings.set_property('enable-scripts', True)
-	settings.set_property('javascript-can-open-windows-automatically', True)
-=======
 	self.settings = self.view.get_settings()
 	self.settings.set_property('enable-plugins', False)
 	self.settings.set_property('enable-scripts', True)
 	self.settings.set_property('javascript-can-open-windows-automatically', True)
 	self.settings.set_property("enable-developer-extras", True)
-	self.settings.set_property('user-agent', 'Mozilla/5.0 (Linux; webOS/2.2.4; U; en-US) AppleWebKit/534.6 (KHTML like Gecko) webOSBrowser/221.56 Safari/534.6 Pre/3.0; iPhone; Safari/7534.48.3; AppleWebKit/534.46; Version/5.1; Mobile/9A334; CPUiPhoneOS5_0likeMacOSX')
->>>>>>> fix
+	#self.settings.set_property('user-agent', 'Mozilla/5.0 (Linux; webOS/2.2.4; U; en-US) AppleWebKit/534.6 (KHTML like Gecko) webOSBrowser/221.56 Safari/534.6 Pre/3.0; iPhone; Safari/7534.48.3; AppleWebKit/534.46; Version/5.1; Mobile/9A334; CPUiPhoneOS5_0likeMacOSX')
 	self.view.connect('create-web-view',self.on_new_window_cb)
 	#self.view.connect("navigation-policy-decision-requested",self._nav_request_policy_decision_cb)
 	#self.view.connect("hovering-over-link", self._hovering_over_link_cb)
@@ -121,14 +110,10 @@ class Browser():
 	self.page_requests=[]
 	self.source_code = None
 	self.analyzed=False
-<<<<<<< HEAD
-	self.view.set_settings(settings)
-=======
 	self.ytid=''
 	self.l_uri=''
 	self.origin=''
 	self.view.set_settings(self.settings)
->>>>>>> fix
 	## opt
 	self.homepage = 'http://www.google.com'
 	inspector = Inspector(self.view.get_web_inspector())
@@ -147,13 +132,10 @@ class Browser():
         #print ('Myconsole:' + str(args))
         self.view.stop_emission('console-message')
 	#return True
-<<<<<<< HEAD
-=======
 	
     def on_response_received(self,view,frame,resource,response):
 	pass
 	#print response.get_uri()
->>>>>>> fix
 	
     
     def on_new_window_cb(self, web_view, frame, data=None):
@@ -188,10 +170,8 @@ class Browser():
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 	
-<<<<<<< HEAD
-    def load_uri(self,uri):
-=======
     def load_uri(self,uri,name=None,origin=None):
+	self.origin=None
 	try:
 	    if self.mainGui.search_engine.name=='Youtube' or self.mainGui.search_engine.name=='DailyMotion' or self.mainGui.search_engine.name=='Vimeo':
 		self.settings.set_property('user-agent','Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.5 Safari/537.36')
@@ -208,7 +188,6 @@ class Browser():
 	    self.stream_name=name
 	if origin:
 	    self.origin=origin
->>>>>>> fix
 	self.analyzed=False
 	print "loading uri: %s" % uri
 	gobject.idle_add(self.view.load_uri,uri)
@@ -217,35 +196,6 @@ class Browser():
 	print "load finished"
 	self.analyse_req()
 	
-<<<<<<< HEAD
-    def on_click_link(self, view, frame, req, data=None):
-        """Describes what to do when a href link is clicked"""
-        # As Ryan Paul stated he likes to use the prefix program:/ if the
-        # link is being used like a button, the else will catch true links
-        # and open them in the webbrowser
-        uri = req.get_uri()
-    
-    def resource_cb(self, view, frame, resource, request, response):
-	req = request.get_uri()
-	self.page_requests.append(req)
-	try:
-	    self.stop_player()
-	except:
-	    pass
-	#head = frame.get_network_response().get_property('message').get_property('response-headers')
-	#response = resource.get_property('message').get_property('response-headers')
-    
-    def analyse_req(self):
-	if self.analyzed:
-	    return
-	print "analyse"
-	for req in self.page_requests:
-	    #print req
-	    if 'http://www.dailymotion.com/embed/video/' in req:
-		print "Dailymotion: Link detected"
-		code = self.view.get_html()
-		print code
-=======
     def on_click_link(view, frame, networkRequest,data=None):
 	# get uri from request object
 	uri=networkRequest.get_uri()
@@ -258,17 +208,7 @@ class Browser():
 	# eg. the default uri handler...
     
     def _nav_request_policy_decision_cb(self,view,frame,net_req,nav_act,pol_dec):
-        uri=net_req.get_uri()
-        if uri==self.l_uri:
-            pol_dec.use()
-            return True
-        if uri.startswith('about:'):
-            return False
-        self.l_uri=uri
-        page=urllib.urlopen(uri)
-        print page.read()
-	return True
-        
+        pass
     
     def resource_cb(self, view, frame, resource, request, response):
 	req = request.get_uri()
@@ -295,7 +235,6 @@ class Browser():
 		    self.mainGui.start_play(link)
 		    return
 	elif 'http://www.youtube.com/watch?v=' in req or 'http://m.youtube.com/watch?' in req:
-		print req
 		ytid=''
 		try:
 		    ytid = re.search('\?v=(.*?)&',req).group(1)
@@ -321,7 +260,6 @@ class Browser():
 	elif 'http://www.dailymotion.com/embed/video/' in req:
 		print "Dailymotion: Link detected, loading page...."
 		code = Html.fromstring(urllib2.urlopen(req).read()).text_content()
->>>>>>> fix
 		link=None
 		title=None
 		## get tile
@@ -342,25 +280,72 @@ class Browser():
 			     f.writelines(code)
 			     f.close()
 			     u=re.search('http://dailymotion.com(.*)&cache=0',code).group()
-<<<<<<< HEAD
-			     print u
-			
-=======
->>>>>>> fix
 			except:
 			    print ''
 			link=''
 		self.analyzed=True
 		self.mainGui.start_play(link)
-<<<<<<< HEAD
-		break
-	    elif 'grooveshark.com/stream.php?streamKey' in req:
-		self.analyzed=True
-		self.mainGui.start_play(req)
-		gobject.idle_add(self.view.stop_loading)
-		break
-	    elif 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
-=======
+	elif 'vimeo.com' in req:
+		if 'aksessionid' in req:
+		    self.load_uri(self.origin)
+		    self.mainGui.start_play(req)
+		    self.analyzed=True
+		else:
+		    try:
+			re.search("http://vimeo.com/[1-9].*/",req).group()
+		    except:
+			try:
+			    if self.analyzed:
+				return
+			    vid=re.search("http://vimeo.com/([1-9].*)",req).group(1)
+			    print vid
+			    user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.15 (KHTML, like Gecko) Ubuntu/10.10 Chromium/10.0.608.0 Chrome/10.0.608.0 Safari/534.15'
+			    headers =  { 'User-Agent' : user_agent , 'Accept-Language' : 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' }
+			    request = urllib2.Request('http://player.vimeo.com/video/'+vid, None, headers)
+			    try:
+				webpage = urllib2.urlopen(request).read()
+			    except (urllib2.URLError, httplib.HTTPException, socket.error), err:
+				print "ERROR: Unable to retrieve video webpage: %s" % link
+				return
+				
+			    # Extract the config JSON
+			    config = webpage.split(' = {config:')[1].split(',assets:')[0]
+			    try:
+				config = json.loads(config)
+			    except:
+				print 'ERROR: unable to extract info section'
+				return
+			    
+			    # Extract title
+			    video_title = config["video"]["title"]
+			    self.mainGui.media_name=video_title
+			    
+			    # Vimeo specific: extract request signature and timestamp
+			    sig = config['request']['signature']
+			    timestamp = config['request']['timestamp']
+			    
+			    # Vimeo specific: extract video codec and quality information
+			    # TODO bind to format param
+			    codecs = [('h264', 'mp4'), ('vp8', 'flv'), ('vp6', 'flv')]
+			    for codec in codecs:
+				if codec[0] in config["video"]["files"]:
+				    video_codec = codec[0]
+				    video_extension = codec[1]
+				    if 'hd' in config["video"]["files"][codec[0]]: 
+					quality = 'hd'
+				    else: 
+					quality = 'sd'
+				    break
+			    else:
+				print 'ERROR: no known codec found'
+				return
+			    
+			    video_url = "http://player.vimeo.com/play_redirect?clip_id=%s&sig=%s&time=%s&quality=%s&codecs=%s&type=moogaloop_local&embed_location=" %( vid, sig, timestamp, quality, video_codec.upper())
+			    print video_url
+			    self.analyzed=True
+			    self.load_uri(video_url,origin=req)
+			except:
+			    pass
 		    
 	self.page_requests.append(req)
     
@@ -369,7 +354,6 @@ class Browser():
 	    return
 	for req in self.page_requests:
 	    if 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
->>>>>>> fix
 		print "drtuber link detected: %s" % req
 		code=None
 		link=None
@@ -379,29 +363,6 @@ class Browser():
 		self.analyzed=True
 		self.mainGui.start_play(link)
 		break
-<<<<<<< HEAD
-	    elif 'video.pornhub' in req and '.mp4' in req or '.flv' in req:
-		self.analyzed=True
-		self.mainGui.start_play(req)
-		break
-	    elif 'public.youporn' in req and '.flv?s' in req or '.mp4?s' in req:
-		self.analyzed=True
-		self.mainGui.start_play(req)
-		break
-=======
->>>>>>> fix
-	    elif 'vimeo.com' in req:
-		if 'aksessionid' in req:
-		    self.analyzed=True
-		    self.mainGui.start_play(req)
-		    self.load_uri(self.origin)
-		    break
-<<<<<<< HEAD
-	    elif 'c.youtube.com/generate_204' in req:
-		if self.mainGui.playlist_mode is True:
-		    self.page_requests=[]
-		    self.isLoading=False
-=======
 	    elif 'http://m.pornhub.com/video/show' in req:
 		print req
 		html=self.view.get_html()
@@ -409,7 +370,6 @@ class Browser():
 		    link=re.search('.*(http://.*?mobile.pornhub.com/videos.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
 		    print link
 		    self.mainGui.start_play(link)
->>>>>>> fix
 		    break
 		except:
 		    print 'can t find video link....'
@@ -423,21 +383,8 @@ class Browser():
 		    self.mainGui.start_play(link)
 		    break
 		except:
-<<<<<<< HEAD
-		    curent_id = None
-		## if not match read new video
-		print reqid, current_id
-		if reqid != current_id:
-		    gobject.idle_add(self.mainGui.search_entry.set_text,'')
-		    self.isLoading=False
-		    self.page_requests=[]
-		    self.analyzed=True
-		    self.mainGui.search_engine.on_paste(url=url)
-		break
-=======
 		    print 'can t find video link....'
 		    break
->>>>>>> fix
 	self.page_requests=[]
 	    
     def stop_player(self):

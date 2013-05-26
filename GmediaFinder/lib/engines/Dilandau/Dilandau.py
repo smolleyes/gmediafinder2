@@ -3,6 +3,7 @@ import urllib2
 import urllib
 import time
 import os
+import mechanize
 
 try:
     from lib.functions import *
@@ -18,7 +19,9 @@ class Dilandau(object):
         self.main_start_page = 1
         self.thread_stop=False
         self.has_browser_mode = False
-        self.search_url = "http://fr.dilandau.eu/telecharger-mp3/%s-%s.html"
+        self.browser = mechanize.Browser()
+        self.browser.addheaders = [('User-Agent','Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30')]
+        self.search_url = "http://fr.dilandau.eu/telecharger-musiques-mp3/%s/%s.html"
         self.start_engine()
     
     def start_engine(self):
@@ -33,17 +36,17 @@ class Dilandau(object):
         
     def filter(self, d, user_search):
         flag_found = False
-        data=d.read().split('/>') 
+        data = d.read().split('/>')
         for line in data:
-			if self.thread_stop:
-				break
-			if 'class="title_song"' in line:
-				titre = decode_htmlentities(re.search('title=\"(.*?)\"', line).group(1))
-			if '<a class="button tip download_button"' in line:
-				url = re.search('href=\"(.*?)\"', line).group(1)
-				gobject.idle_add(self.gui.add_sound, titre, url, None, None, self.name)
-				flag_found = True
-				continue
+            if self.thread_stop:
+                break
+            if '<a download="' in line:
+                titre = decode_htmlentities(re.search('data-filename=\"(.*?)\"', line).group(1))
+                href = re.search('<a download=(.*?)" href="(.*?)"',line).group(2)
+                url= re.search('url=\"(.*?)\"', line).group(1)
+                gobject.idle_add(self.gui.add_sound, titre, href+url, None, None, self.name)
+                flag_found = True
+                continue
         if not flag_found:
             self.print_info(_("%s: No results for %s...") % (self.name,user_search))
             time.sleep(5)

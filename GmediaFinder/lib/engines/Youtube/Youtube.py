@@ -399,12 +399,7 @@ class Youtube(object):
         active = self.youtube_video_rate.get_active()
         try:
             self.media_codec = self.quality_list[active].split('|')[1]
-<<<<<<< HEAD
-            #if not self.gui.search_engine.updateBrowser:
-                #self.update_media_infos(self.gui.media_link)
-=======
             self.update_media_infos(self.gui.media_link)
->>>>>>> fix
             self.gui.start_play(self.media_link[active])
         except:
             pass
@@ -413,19 +408,12 @@ class Youtube(object):
         elarr= ["&el=embedded","&el=vevo","&el=detailpage"]
         #try:
         reqUrl = "http://www.youtube.com/get_video_info?video_id=%s%s&ps=default&eurl=&gl=US&hl=en" % (vid_id,elarr[self.elarrId])
-<<<<<<< HEAD
-        #print "video ID : %s" % vid_id +" with req : %s" % reqUrl
-=======
         print "video ID : %s" % vid_id +" with req : %s" % reqUrl
->>>>>>> fix
         req = urllib2.Request(reqUrl)
         stream = urllib2.urlopen(req)
         c = urllib.unquote(stream.read())
         content = re.sub('&type=(.*?)&','&',c)
-<<<<<<< HEAD
-=======
         self.gui.media_link=vid_id
->>>>>>> fix
         return content
        
 
@@ -441,22 +429,14 @@ class Youtube(object):
             matches = tokenRe.search(contents).group(1)
         except:
             # try el=vevo
-<<<<<<< HEAD
-            #print "Trying el=vevo"
-=======
             print "Trying el=vevo"
->>>>>>> fix
             self.elarrId+=1
             contents=self.getVideoInfo(vid_id)
             try:
                 matches = tokenRe.search(contents).group(1)
             except:
                 #try el=detailpage
-<<<<<<< HEAD
-                #print "Trying el=detailpage"
-=======
                 print "Trying el=detailpage"
->>>>>>> fix
                 self.elarrId+=1
                 contents=self.getVideoInfo(vid_id)
                 try:
@@ -466,11 +446,7 @@ class Youtube(object):
                     stream = urllib2.urlopen(req)
                     contents = urllib.unquote(stream.read())
                     stream.close()
-<<<<<<< HEAD
-        #print "TOKEN found : %s" % matches
-=======
         print "TOKEN found : %s" % matches
->>>>>>> fix
         self.elarrId = 0
         
         ## links list

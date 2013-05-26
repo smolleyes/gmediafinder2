@@ -37,6 +37,7 @@ class YouPorn(object):
         self.order_label = _("Order by: ")
         self.scrapper=self.gui.browser
         self.start_engine()
+        self.browser=self.gui.browser
     
     
     def start_engine(self):
@@ -81,9 +82,6 @@ class YouPorn(object):
         self.thread_stop=True
     
     def get_search_url(self,query,page):
-        if not self.initialized:
-            self.browser.open(ENTER_URL)
-            self.initialized = True
         choice = self.orderby.getSelected()
         orderby = self.orderbyOpt[self.order_label][choice]
         return SEARCH_URL % (orderby,query,page)
