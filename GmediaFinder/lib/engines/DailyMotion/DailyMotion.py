@@ -20,7 +20,6 @@ class DailyMotion(object):
         self.main_start_page = 1
         self.thread_stop=False
         self.has_browser_mode = False
-        self.browser=Browser(gui)
         ## options labels
         self.order_label = _("Order by: ")
         self.filters_label = _("Filters: ")
@@ -50,19 +49,7 @@ class DailyMotion(object):
     
     def play(self,link):
         try:
-            data = self.browser.load_uri(link)
-            #j_data = data.read().split('info =')[1].split(';')[0]
-            #js = json.loads(j_data)
-            #print js
-            #try:
-                #link = js['stream_h264_url']
-            #except:
-                #try:
-                    #link = js['stream_h264_ld_url']
-                #except:
-                    #return self.gui.start_play('')
-            #self.gui.media_link = link
-            #return self.gui.start_play(link)
+            return self.gui.browser.load_uri(link)
         except:
             return
         
@@ -73,7 +60,7 @@ class DailyMotion(object):
             if self.thread_stop == True:
                 break
             title = dic['title']
-            link = dic['embed_url']+'&cache=0'
+            link = 'http://www.dailymotion.com/video/' + dic['embed_url'].rsplit('/',1)[1]
             img_link = dic['thumbnail_medium_url']
             duration = dic['duration']
             calc = divmod(int(duration),60)

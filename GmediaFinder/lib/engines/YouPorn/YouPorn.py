@@ -1,6 +1,5 @@
 #-*- coding: UTF-8 -*-
 
-import mechanize
 import re
 import urllib, urllib2
 import gtk
@@ -36,9 +35,7 @@ class YouPorn(object):
         self.has_browser_mode = False
         ## options labels
         self.order_label = _("Order by: ")
-        self.browser = mechanize.Browser()
-        self.browser.addheaders = []
-        self.scrapper=Browser(gui)
+        self.scrapper=self.gui.browser
         self.start_engine()
     
     

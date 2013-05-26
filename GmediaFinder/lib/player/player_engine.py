@@ -288,7 +288,7 @@ class GstPlayer(gobject.GObject):
     def is_playing(self):
         return self.playing
 
-gobject.type_register(GstPlayer)
+#gobject.type_register(GstPlayer)
 gobject.signal_new('finished',
                    GstPlayer,
                    gobject.SIGNAL_RUN_LAST,

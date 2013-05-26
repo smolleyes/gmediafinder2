@@ -32,6 +32,7 @@ import locale
 import Queue
 import cairo
 import pangocairo
+from lib.get_stream import Browser as browser
 
 if sys.platform == "win32":
     import win32api
@@ -63,10 +64,9 @@ except:
     from GmediaFinder.lib.engines.main import Engines
     
 
-gtk.gdk.threads_init()
-
 class GsongFinder(object):
     def __init__(self):
+        gtk.gdk.threads_init()
         ## default search options
         self.is_playing = False
         self.is_paused = False
@@ -92,6 +92,7 @@ class GsongFinder(object):
         self.url_checker = checkLink.CheckLinkIntegrity()
         self.url_debrid = debrider.Debrid(self)
         self.player_thread=None
+        self.from_browser=False
         
         ## main gui
         self.gladeGui = gtk.glade.XML(glade_file, None ,APP_NAME)
@@ -275,7 +276,7 @@ class GsongFinder(object):
         self.media_notebook = self.gladeGui.get_widget("media_notebook")
         self.browser_box = self.gladeGui.get_widget("browser_cont")
         self.browser = browser(self)
-        #self.browser.load_uri('http://video.google.com/')
+        self.browser.load_uri('http://google.fr')
         
         ## start gui
         gobject.idle_add(self.media_notebook.set_current_page,1)
@@ -444,9 +445,11 @@ class GsongFinder(object):
             self.search_engine.load_gui()
 
     def get_model(self,widget=None,path=None,column=None):
+        self.stop_play()
         self.media_bitrate = ""
         self.media_codec = ""
         current_page = self.results_notebook.get_current_page()
+        current_notebook_page = self.notebook.get_current_page()
         if int(current_page) == 1:
             self.playlist_mode = True
         else:
@@ -465,10 +468,6 @@ class GsongFinder(object):
             ## for global search
             if not self.engine_selector.getSelected() == self.media_plugname:
                 gobject.idle_add(self.set_engine,None,self.media_plugname)
-            try:
-                self.search_engine.updateBrowser=self.model.get_value(self.selected_iter, 8)
-            except:
-                self.search_engine.updateBrowser=False
             ## return only theme name and description then extract infos from hash
             self.media_link = self.model.get_value(self.selected_iter, 2)
             self.media_img = self.model.get_value(self.selected_iter, 0)
@@ -694,6 +693,9 @@ class GsongFinder(object):
             print ""
         self.active_link = url
         self.player.play_toggled(None,url)
+        if self.media_notebook.get_current_page() == 0:
+            gobject.idle_add(self.media_notebook.set_current_page,1)
+            
 		
     def load_new_page(self):
         self.change_page_request=True

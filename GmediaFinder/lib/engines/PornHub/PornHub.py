@@ -21,7 +21,7 @@ class PornHub(object):
         self.thread_stop      = False
         self.adult_content    = True
         self.has_browser_mode = False
-        self.scrapper=Browser(gui)
+        self.scrapper=self.gui.browser
         self.search_url       = "http://www.pornhub.com/video/search?search=%s&o=%s&page=%s"
         self.category_url     = "http://www.empflix.com/channels/new-%s-%s.html"
         ## options labels

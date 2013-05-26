@@ -1,6 +1,5 @@
 #-*- coding: UTF-8 -*-
 
-import mechanize
 import re
 import urllib, urllib2
 import gtk
@@ -30,9 +29,7 @@ class DrTuber(object):
         self.initialized=False
         self.has_browser_mode = False
         ## options labels
-        self.browser = mechanize.Browser()
-        self.browser.addheaders = []
-        self.scrapper=Browser(gui)
+        self.scrapper=self.gui.browser
         self.start_engine()
     
     

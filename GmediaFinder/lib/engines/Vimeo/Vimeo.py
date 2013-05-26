@@ -21,7 +21,7 @@ class Vimeo(object):
         self.thread_stop      = False
         self.adult_content    = True
         self.has_browser_mode = False
-        self.scrapper=Browser(gui)
+        self.scrapper=self.gui.browser
         self.search_url       = "http://vimeo.com/search/page:%s/sort:%s/format:thumbnail?q=%s"
         ## options labels
         self.order_label      = _("Order by: ")
@@ -44,6 +44,7 @@ class Vimeo(object):
     def get_search_url(self,query,page):
         choice  = self.orderby.getSelected()
         orderby = self.orderbyOpt[self.order_label][choice]
+        print self.search_url % (page,orderby,urllib.quote_plus(query))
         return self.search_url % (page,orderby,urllib.quote_plus(query))
     
     def play(self,link):
@@ -78,16 +79,17 @@ class Vimeo(object):
             if codec[0] in config["video"]["files"]:
                 video_codec = codec[0]
                 video_extension = codec[1]
-                if 'hd' in config["video"]["files"][codec[0]]: quality = 'hd'
-                else: quality = 'sd'
+                if 'hd' in config["video"]["files"][codec[0]]: 
+                    quality = 'hd'
+                else: 
+                    quality = 'sd'
                 break
         else:
             print 'ERROR: no known codec found'
             return
         
-        video_url = "http://player.vimeo.com/play_redirect?clip_id=%s&sig=%s&time=%s&quality=%s&codecs=%s&type=moogaloop_local&embed_location=" \
-                    %(os.path.basename(link), sig, timestamp, quality, video_codec.upper())
-        self.scrapper.load_uri(video_url)
+        video_url = "http://player.vimeo.com/play_redirect?clip_id=%s&sig=%s&time=%s&quality=%s&codecs=%s&type=moogaloop_local&embed_location=" %( os.path.basename(link), sig, timestamp, quality, video_codec.upper())
+        self.scrapper.load_uri(video_url,origin=link)
         
     def filter(self,data,user_search):
         flag_found = False
@@ -95,6 +97,7 @@ class Vimeo(object):
         title      = ""
         markup     = ""
         link       = ""
+        img=""
         for line in data.readlines():
             if self.thread_stop == True:
                 break
@@ -104,8 +107,8 @@ class Vimeo(object):
             if 'class="thumbnail thumbnail_lg_wide"' in line:
                 img_link = re.search('src=\"(.*?)\"', line).group(1)
                 img      = download_photo(img_link)
-            if 'p class="title"' in line:
-                title=re.search('(.*)>(.*?)</p>', line).group(2)
+            if 'a href="/%s' % link in line and 'title=' in line and not 'data-' in line:
+                title=re.search('title="(.*)"', line).group(1)
                 gobject.idle_add(self.gui.add_sound, title, 'http://vimeo.com/'+link, img, None, self.name)
 
         if not flag_found:

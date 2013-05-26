@@ -34,12 +34,11 @@ GST_STATE_READY               = 2
 GST_STATE_PAUSED              = 3
 GST_STATE_PLAYING             = 4
 
-gtk.gdk.threads_init()
-
 class Player(gobject.GObject):
     UPDATE_INTERVAL = 500
     
     def __init__(self,mainGui):
+	gtk.gdk.threads_init()
 	self.timer = 0
         self.gladeGui = mainGui.gladeGui
         self.time_label = gtk.Label("00:00 / 00:00")
@@ -404,7 +403,7 @@ class Player(gobject.GObject):
 		else:
 			self.play_options = "continue"
 	else:
-	    self.play_options = "continue"
+	    self.play_options = ""
 		
     def check_play_options(self):
 	try:
@@ -466,6 +465,8 @@ class Player(gobject.GObject):
 	    path = model.get_path(self.selected_iter)
 	    treeview.set_cursor(path)
 	    self.mainGui.get_model()
+	else:
+	    self.player.stop()
 	
     def set_fullscreen(self,widget=None):
         self.timer = 0
@@ -475,7 +476,7 @@ class Player(gobject.GObject):
             self.infobox.reparent(self.infobox_cont)
             gobject.idle_add(self.mainGui.search_box.show)
             gobject.idle_add(self.mainGui.results_notebook.show)
-	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,0)
+	    gobject.idle_add(self.mainGui.media_notebook.set_show_tabs,1)
             gobject.idle_add(self.control_box.show)
             gobject.idle_add(self.mainGui.options_bar.show)
             self.mainGui.window.window.set_cursor(None)
