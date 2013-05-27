@@ -104,7 +104,7 @@ class Browser():
 	self.view.connect("load-finished", self.load_finished)
 	#self.view.connect("navigation-requested", self.on_click_link)
 	self.console_response = self.view.connect('console-message', self.on_console_message)
-	self.view.connect('resource-response-received', self.on_response_received)
+	#self.view.connect('resource-response-received', self.on_response_received)
 	self._hovered_uri = None
 	self.isLoading=False
 	self.page_requests=[]
