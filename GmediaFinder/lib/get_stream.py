@@ -353,18 +353,23 @@ class Browser():
 	if self.analyzed:
 	    return
 	for req in self.page_requests:
-	    if 'drtuber.com' in req and "player/config.php" and "pkey=" in req:
+	    if 'drtuber.com' in req and not 'mp4' in req:
 		print "drtuber link detected: %s" % req
 		code=None
 		link=None
-		code = get_url_data(req)
-		link = re.search('<video_file>(.*?)</video_file>',code.read()).group(1)
-		print "loading link : %s" % link
+		code = self.view.get_html()
+		link = re.search('/mp4/(.*?)video_bottom(.*?)"',code).group().replace('"','')
+		self.load_uri('http://mobile.drtuber.com%s' % link)
+		break
+	    elif 'drtuber.com/mp4' in req:
+		code=None
+		link=None
+		code = self.view.get_html()
+		link = re.search('(.*)a href="((.*).mp4(.*?))"',code).group(2)
 		self.analyzed=True
 		self.mainGui.start_play(link)
 		break
 	    elif 'http://m.pornhub.com/video/show' in req:
-		print req
 		html=self.view.get_html()
 		try:
 		    link=re.search('.*(http://.*?mobile.pornhub.com/videos.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
@@ -437,7 +442,6 @@ class Browser():
         self.forward_button.set_sensitive(self.view.can_go_forward())
 	
     def load_code(self,like_link=None,html=None):
-	print html
 	if not html:
 	    html = '''
 	    <!DOCTYPE html>
