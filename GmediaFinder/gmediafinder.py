@@ -306,6 +306,8 @@ class GsongFinder(object):
         self.engine_selector.append(self.global_video_search)
         self.search_entry.grab_focus()
         self.statbar.hide()
+        self.media_link=''
+        self.media_link_id = ''
         
         ## hide some icons by default
         self.stop_search_btn.set_sensitive(0)
@@ -490,6 +492,7 @@ class GsongFinder(object):
         self.player_thread = thread.start_new_thread(self.search_engine.play,(self.media_link,))
         #self.search_engine.play(self.media_link)
         
+    
     def prepare_search(self,widget=None):
         self.user_search = self.search_entry.get_text()
         self.latest_engine = self.engine_selector.getSelectedIndex()
@@ -759,7 +762,11 @@ class GsongFinder(object):
 
     def on_treeview_clicked(self,widget):
         '''prepare media infos from engine if available'''
+        selected = self.treeview.get_selection()
+        self.selected_iter = selected.get_selected()[1]
+        self.path = self.model.get_path(self.selected_iter)
         try:
+            self.media_link_id = self.model.get_value(self.selected_iter, 2)
             self.search_engine.get_media_infos()
         except:
             return
@@ -784,7 +791,6 @@ class GsongFinder(object):
             name = self.media_name
         if not codec:
             codec = self.player.player.media_codec
-        print link, name, codec, data, engine_name, engine_type
         download = downloader.FileDownloader(self, link, name, codec, data, engine_name, engine_type)
         download.start()
                 
@@ -895,7 +901,7 @@ class GsongFinder(object):
         self.search_playlist_menu_active = False
         link = self.media_link
         if self.search_engine.name == 'Youtube' and not vid:
-            link = 'http://www.youtube.com/watch?v=%s' % self.media_link
+            link = 'http://www.youtube.com/watch?v=%s' % self.media_link_id
         clipboard = gtk.Clipboard(gtk.gdk.display_get_default(), "CLIPBOARD")
         clipboard.set_text(link)
         print '%s copied to clipboard' % link

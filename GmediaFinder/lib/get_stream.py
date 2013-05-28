@@ -276,7 +276,7 @@ class Browser():
 		## if not match read new video
 		if self.ytid != self.mainGui.media_link:
 		    self.mainGui.media_link = self.ytid
-		    gobject.idle_add(self.mainGui.search_engine.on_paste,url=req)
+		    self.mainGui.search_engine.on_paste(url=req)
 		    
 	elif 'http://www.dailymotion.com/embed/video/' in req:
 		print "Dailymotion: Link detected, loading page...."
@@ -319,7 +319,6 @@ class Browser():
 			    if self.analyzed:
 				return
 			    vid=re.search("http://vimeo.com/([1-9].*)",req).group(1)
-			    print vid
 			    user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.15 (KHTML, like Gecko) Ubuntu/10.10 Chromium/10.0.608.0 Chrome/10.0.608.0 Safari/534.15'
 			    headers =  { 'User-Agent' : user_agent , 'Accept-Language' : 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' }
 			    request = urllib2.Request('http://player.vimeo.com/video/'+vid, None, headers)
@@ -362,7 +361,6 @@ class Browser():
 				return
 			    
 			    video_url = "http://player.vimeo.com/play_redirect?clip_id=%s&sig=%s&time=%s&quality=%s&codecs=%s&type=moogaloop_local&embed_location=" %( vid, sig, timestamp, quality, video_codec.upper())
-			    print video_url
 			    self.analyzed=True
 			    self.load_uri(video_url,origin=req)
 			except:
@@ -425,18 +423,15 @@ class Browser():
 		html=self.view.get_html()
 		try:
 		    link=re.search('.*(http://.*?mobile.pornhub.com/videos.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
-		    print link
 		    gobject.idle_add(self.mainGui.start_play,link)
 		    break
 		except:
 		    print 'can t find video link....'
 		    break
 	    elif 'http://mobile.youporn.com/video/show' in req:
-		print req
 		html=self.view.get_html()
 		try:
 		    link=re.search('.*(http://.*?mobile.youporn.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
-		    print link
 		    gobject.idle_add(self.mainGui.start_play,link)
 		    break
 		except:

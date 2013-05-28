@@ -37,6 +37,8 @@ class Youtube(object):
         self.order_label = _("Order by: ")
         self.category_label = _("Category: ")
         self.filtersLabel = _("Filters: ")
+        self.searchTypeLabel=_('Search for:')
+        self.selected_searchType=''
         ## video quality combobox
         self.youtube_quality_box = self.gui.gladeGui.get_widget("quality_box")
         
@@ -110,8 +112,17 @@ class Youtube(object):
         button.props.relief = gtk.RELIEF_NONE
         self.gui.search_opt_box.pack_start(button,False,False,10)
         
-        ## create orderby combobox
+        ## search type combobox
         cb = create_comboBox()
+        
+        self.searchType = ComboBox(cb)
+        self.searchTypeList = {self.searchTypeLabel:{"":"",_("Videos"):('videos'),_("Playlist"):("playlist"),
+            },
+        }
+        self.searchType = create_comboBox(self.gui, self.searchTypeList)
+        self.searchType.setIndexFromString(_("Videos"))
+        
+        ## create orderby combobox
         self.orderbyOpt = {self.order_label:{_("Most relevant"):"relevance",
                                              _("Most recent"):"published",_("Most viewed"):"viewCount",
                                              _("Most rated"):"rating",
@@ -131,8 +142,7 @@ class Youtube(object):
         }
         self.category = create_comboBox(self.gui, self.catlist)
         self.orderby.setIndexFromString(_("Most relevant"))
-        
-        gobject.idle_add(self.gui.search_opt_box.show_all)
+
         
         ## filter combobox
         self.filters = ComboBox(cb)
@@ -157,6 +167,7 @@ class Youtube(object):
         
     def on_paste(self,widget=None,url=None):
         text = ''
+        gobject.idle_add(self.gui.search_entry.set_text,"")
         update=True
         if not url:
             clipboard = gtk.Clipboard(gtk.gdk.display_get_default(), "CLIPBOARD")
@@ -220,6 +231,8 @@ class Youtube(object):
         category=''
         next_page = 0
         max_res = 25
+        searchT=self.searchType.getSelected()
+        self.selected_searchType=self.searchTypeList[self.searchTypeLabel][searchT]
         orderby = self.orderby.getSelected()
         order = self.orderbyOpt[self.order_label][orderby]
         if self.current_page == 1:
@@ -227,16 +240,19 @@ class Youtube(object):
         if self.filters.getSelectedIndex() != 0:
             selectedFilter = self.filters.getSelected()
             filters = self.filtersList[self.filtersLabel][selectedFilter]
+            self.filtersStr=filters
         cat = self.category.getSelected()
         if self.category.getSelectedIndex() != 0:
             category = self.catlist[self.category_label][cat]
-
-        link = r'http://gdata.youtube.com/feeds/api/videos?q=%s&start-index=%s&max-results=%s&orderby=%s&alt=json&v=2' % (user_search.replace(' ','+'),self.num_start,max_res,order)
+            
+        if self.selected_searchType == 'playlist':
+            link=r'https://gdata.youtube.com/feeds/api/playlists/snippets?q=%s&start-index=%s&max-results=%s&alt=json&v=2' % (user_search.replace(' ','+'),self.num_start,max_res)
+        else:
+            link = r'http://gdata.youtube.com/feeds/api/videos?q=%s&start-index=%s&max-results=%s&orderby=%s&alt=json&v=2' % (user_search.replace(' ','+'),self.num_start,max_res,order)
         if category != '':
             link += '&category=' + category
-        if filters != '':
+        if filters != '' and filters != 'playlist':
             link += '&'+filters
-
         inp = urllib.urlopen(link)
         resp = json.load(inp)
         inp.close()
@@ -280,55 +296,95 @@ class Youtube(object):
                 
 
     def play(self,link):
-        self.qlist_checked = False
-        try:
-            self.load_youtube_res(link)
-        except:
-            self.gui.player.check_play_options()
-        self.gui.media_link=link
-        active = self.youtube_video_rate.get_active()
-        try:
-            self.media_codec = self.quality_list[active].split('|')[1]
-            #self.gui.player.play_toggled(self.media_link[active])
-        except:
-            self.gui.start_play('')
+        if 'playlists' in link:
+            #gobject.idle_add(self.searchType.setIndexFromString,_("Videos"))
+            gobject.idle_add(self.gui.search_entry.set_text,"")
+            gobject.idle_add(self.gui.model.clear)
+            self.thread_stop=False
+            self.selected_searchType = 'videos'
+            inp = urllib.urlopen(link)
+            resp = json.load(inp)
+            inp.close()
+            try:
+                vquery = resp['feed']['entry']
+            except:
+                self.thread_stop=True
+                return
+            for entry in vquery:
+                if not self.thread_stop:
+                    self.make_youtube_entry(entry)
+                else:
+                    return
+            self.thread_stop=True  
+        else:
+            self.qlist_checked = False
+            try:
+                self.load_youtube_res(link)
+            except:
+                self.gui.player.check_play_options()
+            self.gui.media_link=link
+            active = self.youtube_video_rate.get_active()
+            try:
+                self.media_codec = self.quality_list[active].split('|')[1]
+            except:
+                self.gui.start_play('')
 
     def update_media_infos(self,link):
         link = 'http://www.youtube.com/watch?v=%s' % link
         self.gui.browser.load_uri(link)
-        #self.gui.browser.stop_player()
     
     def make_youtube_entry(self,video,read=None, select=False):
-        duration = video['media$group']['yt$duration']['seconds']
-        calc = divmod(int(duration),60)
-        seconds = int(calc[1])
-        if seconds < 10:
-            seconds = "0%d" % seconds
-        duration = "%d:%s" % (calc[0],seconds)
-        url = video['link'][0]['href']
-        thumb = video['media$group']['media$thumbnail'][0]['url']
-        count = 0
-        try:
-            count = video['yt$statistics']['viewCount']
-        except:
-            pass
-        vid_id=video['id'].values()[0].split(':')[-1]
-        if vid_id == '':
-            return
-        try:
-            vid_pic = download_photo(thumb)
-        except:
-            return
-        title = video['title']['$t']
-        if not count:
-            count = 0
+        if self.selected_searchType == 'playlist':
+            title=video['summary']['$t']
+            thumb = video['media$group']['media$thumbnail'][0]['url']
+            video_num= video['yt$countHint']['$t']
+            playlist_id=video['yt$playlistId']['$t']
+            playlist_link='https://gdata.youtube.com/feeds/api/playlists/%s?alt=json&v=2' % playlist_id
+            try:
+                vid_pic = download_photo(thumb)
+            except:
+                return
+                
+            values = {'name': title, 'count': video_num}
+            markup = _("\n\n<small><b>videos in the playlist:</b> %(count)s</small>") % values
+            if not title or not playlist_link or not vid_pic:
+                return
+            gobject.idle_add(self.gui.add_sound,title, playlist_link, vid_pic,None,self.name,markup,None,select)
+            
+        else:
+            try:
+                duration = video['media$group']['yt$duration']['seconds']
+                calc = divmod(int(duration),60)
+                seconds = int(calc[1])
+                if seconds < 10:
+                    seconds = "0%d" % seconds
+                duration = "%d:%s" % (calc[0],seconds)
+                url = video['link'][0]['href']
+                thumb = video['media$group']['media$thumbnail'][0]['url']
+                count = 0
+                try:
+                    count = video['yt$statistics']['viewCount']
+                except:
+                    pass
+                vid_id=video['media$group']['yt$videoid']['$t']
+                if vid_id == '':
+                    return
+                try:
+                    vid_pic = download_photo(thumb)
+                except:
+                    return
+                title = video['title']['$t']
+                if not count:
+                    count = 0
 
-        
-        values = {'name': title, 'count': count, 'duration': duration}
-        markup = _("\n<small><b>view:</b> %(count)s        <b>Duration:</b> %(duration)s</small>") % values
-        if not title or not url or not vid_pic:
-            return
-        gobject.idle_add(self.gui.add_sound,title, vid_id, vid_pic,None,self.name,markup,None,select)
+                
+                values = {'name': title, 'count': count, 'duration': duration}
+                markup = _("\n<small><b>view:</b> %(count)s        <b>Duration:</b> %(duration)s</small>") % values
+                if not title or not url or not vid_pic:
+                    return
+                gobject.idle_add(self.gui.add_sound,title,vid_id, vid_pic,None,self.name,markup,None,select)
+            except:
+                print "can t get video informations..."
                 
 
     def get_codec(self, num):
@@ -408,7 +464,6 @@ class Youtube(object):
         elarr= ["&el=embedded","&el=vevo","&el=detailpage"]
         #try:
         reqUrl = "http://www.youtube.com/get_video_info?video_id=%s%s&ps=default&eurl=&gl=US&hl=en" % (vid_id,elarr[self.elarrId])
-        print "video ID : %s" % vid_id +" with req : %s" % reqUrl
         req = urllib2.Request(reqUrl)
         stream = urllib2.urlopen(req)
         c = urllib.unquote(stream.read())
@@ -429,14 +484,12 @@ class Youtube(object):
             matches = tokenRe.search(contents).group(1)
         except:
             # try el=vevo
-            print "Trying el=vevo"
             self.elarrId+=1
             contents=self.getVideoInfo(vid_id)
             try:
                 matches = tokenRe.search(contents).group(1)
             except:
                 #try el=detailpage
-                print "Trying el=detailpage"
                 self.elarrId+=1
                 contents=self.getVideoInfo(vid_id)
                 try:
@@ -446,7 +499,6 @@ class Youtube(object):
                     stream = urllib2.urlopen(req)
                     contents = urllib.unquote(stream.read())
                     stream.close()
-        print "TOKEN found : %s" % matches
         self.elarrId = 0
         
         ## links list
