@@ -227,7 +227,6 @@ class Browser():
 	# load the page somehow.....
 	page=urllib.urlopen(networkRequest.get_uri())
 	# load into associated view, passing in uri
-	print page
 	# return 1 to stop any other handlers running
 	# eg. the default uri handler...
     
@@ -237,25 +236,21 @@ class Browser():
     def resource_cb(self, view, frame, resource, request, response):
 	req = request.get_uri()
 	if 'http://www.debrideurstreaming.com/stats.php' in req:
-		html=self.view.get_html()
-		if 'purevid.com/get' in html:
-		    link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
-		    if self.stream_name != '':
-			self.mainGui.media_name=self.stream_name
-		    else:
-			self.mainGui.media_name='streaming Dpstream'
-		    gobject.idle_add(self.mainGui.info_label.set_text,'')
-		    print link
-		    self.mainGui.start_play(link)
-		    return
-		elif 'uploadhero.co/v.php?s' in html:
-		    link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
-		    if self.stream_name != '':
-			self.mainGui.media_name=self.stream_name
-		    gobject.idle_add(self.mainGui.info_label.set_text,'')
-		    print link
-		    self.mainGui.start_play(link)
-		    return
+	    html=self.view.get_html()
+	    if 'purevid.com/get' in html:
+		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
+		if self.mainGui.media_name != '':
+		    self.mainGui.media_name='streaming purevid...'
+		gobject.idle_add(self.mainGui.info_label.set_text,'')
+		gobject.idle_add(self.mainGui.start_play,link)
+		gobject.idle_add(self.view.stop_loading)
+	    elif 'uploadhero.co/v.php?s' in html:
+		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
+		if self.mainGui.media_name != '':
+		    self.mainGui.media_name='streaming uploadhero...'
+		gobject.idle_add(self.mainGui.info_label.set_text,'')
+		gobject.idle_add(self.mainGui.start_play,link)
+		gobject.idle_add(self.view.stop_loading)
 	elif 'http://www.youtube.com/watch?v=' in req or 'http://m.youtube.com/watch?' in req:
 		ytid=''
 		try:
@@ -277,7 +272,7 @@ class Browser():
 		## if not match read new video
 		if self.ytid != self.mainGui.media_link:
 		    self.mainGui.media_link = self.ytid
-		    self.mainGui.search_engine.on_paste(url=req)
+		    gobject.idle_add(self.mainGui.search_engine.on_paste,url=req)
 		    
 	elif 'http://www.dailymotion.com/embed/video/' in req:
 		print "Dailymotion: Link detected, loading page...."
@@ -306,11 +301,11 @@ class Browser():
 			    print ''
 			link=''
 		self.analyzed=True
-		self.mainGui.start_play(link)
+		gobject.idle_add(self.mainGui.start_play,link)
 	elif 'vimeo.com' in req:
 		if 'aksessionid' in req:
 		    self.load_uri(self.origin)
-		    self.mainGui.start_play(req)
+		    gobject.idle_add(self.mainGui.start_play,req)
 		    self.analyzed=True
 		else:
 		    try:
@@ -369,23 +364,34 @@ class Browser():
 			except:
 			    pass
 	elif 'dpstreaming.org' in req and 'streaming-telecharger' in req:
+	    if self.analyzed:
+		return
 	    html=self.view.get_html()
 	    link=''
 	    img_link=''
 	    name=''
 	    try:
 		link=re.search('http://uploadhero.co(.*?)"',html).group().replace('"','')
-		img_link=re.search('<img id="il_fi"(.*?)src="(.*?)"',html).group(2).replace('"','')
-		name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
-		if img_link != '':
-		    img=download_photo(img_link)
-		gobject.idle_add(self.mainGui.add_sound, name, "http://www.debrideurstreaming.com/?chrome&lien_debrid=%s" % link, img, None, 'DpStreaming',None, None)
-		if link != '' and name != '' and img_link != '':
-		    gobject.idle_add(self.view.stop_loading)
-		    gobject.idle_add(self.mainGui.select_first_media)
-		    gobject.idle_add(self.mainGui.get_model)
 	    except:
-		pass
+		try:
+		    link=re.search('http://www.purevid.com/v/(.*?)/',html).group()
+		except:
+		    try:
+			link=re.search('http://www.mixturecloud.com/media/(.*?)"',html).group().replace('"','')
+		    except:
+			return
+	    try:
+		img_link=re.search('<img id="il_fi"(.*?)src="(.*?)"',html).group(2).replace('"','')
+		img=download_photo(img_link)
+	    except:
+		img=None
+	    name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
+	    gobject.idle_add(self.mainGui.add_sound, name, "http://www.debrideurstreaming.com/?chrome&lien_debrid=%s" % link, img, None, 'DpStreaming',None, None)
+	    if link != '' and name != '' and img_link != '':
+		gobject.idle_add(self.view.stop_loading)
+		gobject.idle_add(self.mainGui.select_first_media)
+		gobject.idle_add(self.mainGui.get_model)
+		self.analyzed=True
 		    
 	self.page_requests.append(req)
     
@@ -399,7 +405,7 @@ class Browser():
 		link=None
 		code = self.view.get_html()
 		link = re.search('/mp4/(.*?)video_bottom(.*?)"',code).group().replace('"','')
-		self.load_uri('http://mobile.drtuber.com%s' % link)
+		gobject.idle_add(self.load_uri,'http://mobile.drtuber.com%s' % link)
 		break
 	    elif 'drtuber.com/mp4' in req:
 		code=None
@@ -407,14 +413,14 @@ class Browser():
 		code = self.view.get_html()
 		link = re.search('(.*)a href="((.*).mp4(.*?))"',code).group(2)
 		self.analyzed=True
-		self.mainGui.start_play(link)
+		gobject.idle_add(self.mainGui.start_play,link)
 		break
 	    elif 'http://m.pornhub.com/video/show' in req:
 		html=self.view.get_html()
 		try:
 		    link=re.search('.*(http://.*?mobile.pornhub.com/videos.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
 		    print link
-		    self.mainGui.start_play(link)
+		    gobject.idle_add(self.mainGui.start_play,link)
 		    break
 		except:
 		    print 'can t find video link....'
@@ -425,7 +431,7 @@ class Browser():
 		try:
 		    link=re.search('.*(http://.*?mobile.youporn.*?mp4.*?)"',html).group(1).replace('"','').replace('&amp;','&')
 		    print link
-		    self.mainGui.start_play(link)
+		    gobject.idle_add(self.mainGui.start_play,link)
 		    break
 		except:
 		    print 'can t find video link....'
@@ -434,7 +440,7 @@ class Browser():
 		html=self.view.get_html()
 		try:
 		    vid=re.search('/dl/(.*?)/',html).group(1)
-		    self.mainGui.start_play('http://mobile.eporner.com/dl2/%s/0' % vid)
+		    gobject.idle_add(self.mainGui.start_play,'http://mobile.eporner.com/dl2/%s/0' % vid)
 		    break
 		except:
 		    print 'can t find video link....'
@@ -470,25 +476,25 @@ class Browser():
             url.index("://")
         except:
             url = "http://"+url
-        self.url_bar.set_text(url)
-        self.view.open(url)
+        gobject.idle_add(self.url_bar.set_text,url)
+        gobject.idle_add(self.view.open,url)
 
     def go_home(self,widget):
-	self.view.open(self.homepage)
+	gobject.idle_add(self.view.open,self.homepage)
     
     def go_back(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            backwards.'''
-        self.view.go_back()
+        gobject.idle_add(self.view.go_back)
 
     def go_forward(self, widget, data=None):
         '''Webkit will remember the links and this will allow us to go
            forwards.'''
-        self.view.go_forward()
+        gobject.idle_add(self.view.go_forward)
 
     def refresh(self, widget, data=None):
         '''Simple makes webkit reload the current back.'''
-        self.view.reload()
+        gobject.idle_add(self.view.reload)
 
     def update_buttons(self, widget, data=None):
         '''Gets the current url entry and puts that into the url bar.
@@ -496,8 +502,8 @@ class Browser():
            back button clickable.  Then it does the same for the foward
            button.'''
         self.url_bar.set_text(widget.get_main_frame().get_uri())
-        self.back_button.set_sensitive(self.view.can_go_back())
-        self.forward_button.set_sensitive(self.view.can_go_forward())
+        gobject.idle_add(self.back_button.set_sensitive,self.view.can_go_back)
+        gobject.idle_add(self.forward_button.set_sensitive,self.view.can_go_forward)
 	
     def load_code(self,like_link=None,html=None):
 	if not html:
