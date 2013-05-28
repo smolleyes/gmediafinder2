@@ -1,5 +1,7 @@
-gmediafinder (1.5-0ppa1~precise) precise; urgency=high
+gmediafinder (1.5.1-0ppa0~precise) precise; urgency=high
 
-  * fix all engines, can now launch streams from websites
+  * add youtube plylists support
+  * fix dilandau and drTuber engines
+  * add eporner engine
 
- -- Laguillaumie sylvain <s.lagui@free.fr>  Tue, 2 May 2013 19:20:50 +0100
+ -- Laguillaumie sylvain <s.lagui@free.fr>  Tue, 29 May 2013 01:03:50 +0100

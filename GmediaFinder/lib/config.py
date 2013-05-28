@@ -12,7 +12,7 @@ try:
 except:
     from GmediaFinder.lib.Translation import Translation
 
-VERSION = "1.5"
+VERSION = "1.5.1"
 APP_NAME = "gmediafinder"
 exec_path =  os.path.dirname(os.path.abspath(__file__))
 
