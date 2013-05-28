@@ -504,11 +504,11 @@ class GsongFinder(object):
             self.info_label.set_text(_("Please select an engine..."))
             return
         self.change_page_request = False
-        gobject.idle_add(self.stop_threads)
+        self.stop_threads()
         gobject.idle_add(self.model.clear)
         gobject.idle_add(self.player.changepage_btn.set_sensitive,0)
         gobject.idle_add(self.player.pageback_btn.set_sensitive,0)
-        gobject.idle_add(self.__add_to_history)
+        self.__add_to_history()
         self.engine_list = self.engine_selector.get_list()
         if self.engine_selector.getSelected() == self.global_search:
             for engine in self.engine_list:
