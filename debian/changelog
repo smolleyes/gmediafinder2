@@ -1,4 +1,4 @@
-gmediafinder (1.5.1-0ppa0~precise) precise; urgency=high
+gmediafinder (1.5.1-0ppa0~raring) raring; urgency=high
 
   * add youtube plylists support
   * fix dilandau and drTuber engines
