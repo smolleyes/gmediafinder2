@@ -97,7 +97,14 @@ def translate_html(text_html):
             new_text += key
     return new_text
 
-
+def save_html(html):
+	try:
+	    os.remove('/tmp/x')
+	except:
+	    pass
+	x=open('/tmp/x','w+')
+	x.write(html)
+	x.close()
 
 def htmlentitydecode(s):
     # First convert alpha entities (such as &eacute;)

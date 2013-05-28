@@ -92,10 +92,17 @@ class Browser():
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
 	
+        self.view.connect("script-alert",
+                              self._javascript_script_alert_cb)
+        self.view.connect("script-confirm",
+                              self._javascript_script_confirm_cb)
+        self.view.connect("script-prompt",
+                              self._javascript_script_prompt_cb)
+	
 	self.settings = self.view.get_settings()
-	self.settings.set_property('enable-plugins', False)
+	self.settings.set_property('enable-plugins',False)
 	self.settings.set_property('enable-scripts', True)
-	self.settings.set_property('javascript-can-open-windows-automatically', True)
+	self.settings.set_property('javascript-can-open-windows-automatically', False)
 	self.settings.set_property("enable-developer-extras", True)
 	#self.settings.set_property('user-agent', 'Mozilla/5.0 (Linux; webOS/2.2.4; U; en-US) AppleWebKit/534.6 (KHTML like Gecko) webOSBrowser/221.56 Safari/534.6 Pre/3.0; iPhone; Safari/7534.48.3; AppleWebKit/534.46; Version/5.1; Mobile/9A334; CPUiPhoneOS5_0likeMacOSX')
 	self.view.connect('create-web-view',self.on_new_window_cb)
@@ -127,11 +134,27 @@ class Browser():
 	}
 	self.mainGui.gladeGui.signal_autoconnect(dic)
     
+    def _javascript_script_alert_cb(self, view, frame, message):
+        print "alert", message
+
+    def _javascript_script_prompt_cb(self, view, frame, message, default, text):
+        print "javascript prompt"
+	return 1
+    
+    def _javascript_script_confirm_cb(self, view, frame, message, isConfirmed):
+        print "javascript confirm %s %s" % (message, isConfirmed)
+	return 1
+    
+    def javaScriptAlert(self, frame, message):
+        """Override default JavaScript alert popup and print results
+        """
+        common.logger.debug('Alert:' + message)
+    
     def on_console_message(self, *args):
         """ callback on 'console-message' webkit.WebView signal """
         #print ('Myconsole:' + str(args))
         self.view.stop_emission('console-message')
-	#return True
+	return True
 	
     def on_response_received(self,view,frame,resource,response):
 	pass
@@ -139,6 +162,7 @@ class Browser():
 	
     
     def on_new_window_cb(self, web_view, frame, data=None):
+	return
 	scrolled_window = gtk.ScrolledWindow()
         scrolled_window.props.hscrollbar_policy = gtk.POLICY_AUTOMATIC
         scrolled_window.props.vscrollbar_policy = gtk.POLICY_AUTOMATIC
@@ -177,11 +201,11 @@ class Browser():
 		self.settings.set_property('user-agent','Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.5 Safari/537.36')
 	    else:
 		self.settings.set_property('user-agent', 'Mozilla/5.0 (Linux; webOS/2.2.4; U; en-US) AppleWebKit/534.6 (KHTML like Gecko) webOSBrowser/221.56 Safari/534.6 Pre/3.0; iPhone; Safari/7534.48.3; AppleWebKit/534.46; Version/5.1; Mobile/9A334; CPUiPhoneOS5_0likeMacOSX')
-	    if self.mainGui.search_engine.name=='Streamiz' or self.mainGui.search_engine.name=='DpStream':
+	    if self.mainGui.search_engine.name=='Streamiz' or self.mainGui.search_engine.name=='DpStream' or self.mainGui.search_engine.name=='DpStreaming':
 		self.settings.set_property('enable-plugins',True)
 	    else:
 		self.settings.set_property('enable-plugins',False)
-	    self.view.set_settings(self.browser.settings)
+	    gobject.idle_add(self.view.set_settings,self.settings)
 	except:
 	    pass
 	if name:
@@ -228,8 +252,6 @@ class Browser():
 		    link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
 		    if self.stream_name != '':
 			self.mainGui.media_name=self.stream_name
-		    else:
-			self.mainGui.media_name='streaming streamiz'
 		    gobject.idle_add(self.mainGui.info_label.set_text,'')
 		    print link
 		    self.mainGui.start_play(link)
@@ -346,6 +368,24 @@ class Browser():
 			    self.load_uri(video_url,origin=req)
 			except:
 			    pass
+	elif 'dpstreaming.org' in req and 'streaming-telecharger' in req:
+	    html=self.view.get_html()
+	    link=''
+	    img_link=''
+	    name=''
+	    try:
+		link=re.search('http://uploadhero.co(.*?)"',html).group().replace('"','')
+		img_link=re.search('<img id="il_fi"(.*?)src="(.*?)"',html).group(2).replace('"','')
+		name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
+		if img_link != '':
+		    img=download_photo(img_link)
+		gobject.idle_add(self.mainGui.add_sound, name, "http://www.debrideurstreaming.com/?chrome&lien_debrid=%s" % link, img, None, 'DpStreaming',None, None)
+		if link != '' and name != '' and img_link != '':
+		    gobject.idle_add(self.view.stop_loading)
+		    gobject.idle_add(self.mainGui.select_first_media)
+		    gobject.idle_add(self.mainGui.get_model)
+	    except:
+		pass
 		    
 	self.page_requests.append(req)
     
@@ -390,8 +430,26 @@ class Browser():
 		except:
 		    print 'can t find video link....'
 		    break
+	    elif 'mobile.eporner.com/hd-porn' in req:
+		html=self.view.get_html()
+		try:
+		    vid=re.search('/dl/(.*?)/',html).group(1)
+		    self.mainGui.start_play('http://mobile.eporner.com/dl2/%s/0' % vid)
+		    break
+		except:
+		    print 'can t find video link....'
+		    break
 	self.page_requests=[]
 	    
+    def save_html(self,html):
+	try:
+	    os.remove('/tmp/x')
+	except:
+	    pass
+	x=open('/tmp/x','w+')
+	x.write(html)
+	x.close()
+    
     def stop_player(self):
 	## hide/stop the flashplayer
 	return
