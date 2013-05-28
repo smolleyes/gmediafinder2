@@ -239,15 +239,19 @@ class Browser():
 	    html=self.view.get_html()
 	    if 'purevid.com/get' in html:
 		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
-		if self.mainGui.media_name != '':
+		if self.stream_name != '':
+		    self.mainGui.media_name=self.stream_name
+		else:
 		    self.mainGui.media_name='streaming purevid...'
 		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.mainGui.start_play,link)
 		gobject.idle_add(self.view.stop_loading)
 	    elif 'uploadhero.co/v.php?s' in html:
 		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
-		if self.mainGui.media_name != '':
-		    self.mainGui.media_name='streaming uploadhero...'
+		if self.stream_name != '':
+		    self.mainGui.media_name=self.stream_name
+		else:
+		    self.mainGui.media_name='streaming purevid...'
 		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.mainGui.start_play,link)
 		gobject.idle_add(self.view.stop_loading)
@@ -386,8 +390,10 @@ class Browser():
 	    except:
 		img=None
 	    name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
+	    self.stream_name=name
+	    gobject.idle_add(self.mainGui.model.clear)
 	    gobject.idle_add(self.mainGui.add_sound, name, "http://www.debrideurstreaming.com/?chrome&lien_debrid=%s" % link, img, None, 'DpStreaming',None, None)
-	    if link != '' and name != '' and img_link != '':
+	    if link != '' and name != '':
 		gobject.idle_add(self.view.stop_loading)
 		gobject.idle_add(self.mainGui.select_first_media)
 		gobject.idle_add(self.mainGui.get_model)

@@ -504,11 +504,11 @@ class GsongFinder(object):
             self.info_label.set_text(_("Please select an engine..."))
             return
         self.change_page_request = False
-        self.stop_threads()
-        self.model.clear()
-        self.player.changepage_btn.set_sensitive(0)
-        self.player.pageback_btn.set_sensitive(0)
-        self.__add_to_history()
+        gobject.idle_add(self.stop_threads)
+        gobject.idle_add(self.model.clear)
+        gobject.idle_add(self.player.changepage_btn.set_sensitive,0)
+        gobject.idle_add(self.player.pageback_btn.set_sensitive,0)
+        gobject.idle_add(self.__add_to_history)
         self.engine_list = self.engine_selector.get_list()
         if self.engine_selector.getSelected() == self.global_search:
             for engine in self.engine_list:
@@ -530,7 +530,7 @@ class GsongFinder(object):
                     self.search()
                 except:
                     continue
-            self.engine_selector.setIndexFromString(self.global_video_search)
+            gobject.idle_add(self.engine_selector.setIndexFromString,self.global_video_search)
         elif self.engine_selector.getSelected() == self.global_audio_search:
             for engine in self.engine_list:
                 try:
@@ -543,7 +543,7 @@ class GsongFinder(object):
                     self.search()
                 except:
                     continue
-            self.engine_selector.setIndexFromString(self.global_audio_search)
+            gobject.idle_add(self.engine_selector.setIndexFromString,self.global_audio_search)
         else:
             return self.search()
 
