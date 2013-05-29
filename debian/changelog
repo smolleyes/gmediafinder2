@@ -1,7 +1,8 @@
-gmediafinder (1.5.1-0ppa1~precise) precise; urgency=high
+gmediafinder (1.5.1-0ppa2~raring) raring; urgency=high
 
-  * add youtube plylists support
+  * add youtube playlists support
   * fix dilandau and drTuber engines
   * add eporner engine
+  . fix translations
 
  -- Laguillaumie sylvain <s.lagui@free.fr>  Tue, 29 May 2013 01:03:50 +0100

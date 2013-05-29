@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-23 23:27+0200\n"
+"POT-Creation-Date: 2013-05-29 14:34+0200\n"
 "PO-Revision-Date: 2012-11-10 22:44+0000\n"
 "Last-Translator: alexander barakin <alex@barak.in>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,6 +22,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:246
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:489
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:246
@@ -34,6 +36,8 @@ msgstr ""
 msgid "enter fullscreen"
 msgstr "в полноэкранный"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:250
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:291
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:292
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:250
@@ -50,6 +54,8 @@ msgstr "в полноэкранный"
 msgid "Bitrate:"
 msgstr "Битрейт:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:251
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:292
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
@@ -66,6 +72,8 @@ msgstr "Битрейт:"
 msgid "Encoding:"
 msgstr "Кодирование:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:252
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:253
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:294
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
@@ -82,6 +90,7 @@ msgstr "Кодирование:"
 msgid "Playing:"
 msgstr "Играет"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:500
@@ -91,6 +100,7 @@ msgstr "Играет"
 msgid "leave fullscreen"
 msgstr "из полноэкранного"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_engine.py:135
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_engine.py:135
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:884
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:885
@@ -98,10 +108,13 @@ msgstr "из полноэкранного"
 msgid "Buffering :"
 msgstr "Буферизация :"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:315
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:315
 msgid "Initializing download..."
 msgstr "Подготовка к скачиванию..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:324
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:463
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:324
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:463
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:435
@@ -110,37 +123,45 @@ msgstr "Подготовка к скачиванию..."
 msgid "Starting download..."
 msgstr "Запуск загрузки..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:329
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:329
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:428
 msgid "Sending download request..."
 msgstr "Отправка запроса на загрузку..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:348
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:348
 msgid "File already downloaded on disk..."
 msgstr "Файл уже скачан на диск..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:356
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:443
 msgid "File is here but seems to be incomplete!"
 msgstr "Файл здесь, но он кажется неполным!"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:360
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:360
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:360
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:447
 msgid "Range request supported, trying to resume..."
 msgstr "Поддерживаемый запрос, пытаюсь возобновить..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:372
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:372
 msgid "Range request not supported, redownloading file..."
 msgstr "Докачивание не поддерживается, скачиваем заново..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:392
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:483
 msgid "download stopped..."
 msgstr "загрузка остановилась..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:469
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:487
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:469
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:487
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:544
@@ -148,24 +169,29 @@ msgstr "загрузка остановилась..."
 msgid "Download error..."
 msgstr "Ошибка загрузки..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:472
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:472
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:455
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:538
 msgid "Download canceled..."
 msgstr "Загрузка отменена..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:477
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:477
 msgid "Download complete..."
 msgstr "Скачивание завершено..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:530
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:530
 msgid "Cancelling download..."
 msgstr "Прекращение  скачивания..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:555
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:555
 msgid "Download paused..."
 msgstr "Скачивание приостановлено..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:500
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:594
@@ -173,68 +199,58 @@ msgstr "Скачивание приостановлено..."
 msgid "Resuming download..."
 msgstr "Возобновление загрузки..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:575
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:575
 msgid "Extracting audio..."
 msgstr "Извлечение записи..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:582
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:582
 msgid "Extraction failed..."
 msgstr "Извлечение завершилось ошибкой..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:47
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:47
 msgid "Add link in debrider:"
 msgstr "Добавить ссылку в восстановитель:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:69
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:69
 msgid "Error 503"
 msgstr "Ошибка 503"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:95
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:95
 msgid "Invalide link or no account ..."
 msgstr "Неправильная ссылка или аккаунт..."
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:31
-#, python-format
-msgid "%s: Searching for %s with dilandau..."
-msgstr ""
-
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:48
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:78
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:71
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:72
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:82
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:112
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:48
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Redtube/Redtube.py:78
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Xvideos/Xvideos.py:73
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:71
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:72
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:82
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:112
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:39
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:80
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:61
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:65
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:38
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:51
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:55
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:77
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Skip/Mp3Skip.py:51
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:59
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:49
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:53
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/YouPorn/YouPorn.py:85
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Empflix/Empflix.py:72
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Redtube/Redtube.py:80
-#, python-format
-msgid "%s: No results for %s..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Dilandau/Dilandau.py:35
+#, fuzzy, python-format
+msgid "%(name)s: Searching for %(query)s with dilandau..."
 msgstr "%s: Нет результата для %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Dilandau/Dilandau.py:53
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:79
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:72
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:74
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:69
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:73
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:81
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:118
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:41
+#, fuzzy, python-format
+msgid "%(name)s: No results for %(query)s..."
+msgstr "%s: Нет результата для %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:23
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:23
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:21
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:22
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:28
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:24
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:27
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:21
@@ -263,6 +279,8 @@ msgstr "%s: Нет результата для %s..."
 msgid "Order by: "
 msgstr "Упорядочить по:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:38
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:29
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:29
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:29
@@ -274,6 +292,8 @@ msgstr "Упорядочить по:"
 msgid "Category: "
 msgstr "Категория:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:39
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:25
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:39
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:26
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:26
@@ -282,6 +302,11 @@ msgstr "Категория:"
 msgid "Filters: "
 msgstr "Фильтры:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:40
+msgid "Search for:"
+msgstr ""
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:53
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:51
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:49
@@ -290,6 +315,7 @@ msgstr "Фильтры:"
 msgid "Quality"
 msgstr "качество"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:111
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:109
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:108
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:107
@@ -298,6 +324,27 @@ msgstr "качество"
 msgid "Paste youtube link"
 msgstr "Вставить ссылку на YouTube"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:119
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:123
+#, fuzzy
+msgid "Videos"
+msgstr "Видео"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:119
+#, fuzzy
+msgid "Playlist"
+msgstr "списки"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:126
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:144
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:33
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:38
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:50
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:54
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:133
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
@@ -336,6 +383,13 @@ msgstr "Вставить ссылку на YouTube"
 msgid "Most relevant"
 msgstr "Наиболее подходящие"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:127
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:29
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:42
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:48
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:29
@@ -363,6 +417,11 @@ msgstr "Наиболее подходящие"
 msgid "Most recent"
 msgstr "Самые последние"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:127
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:48
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:37
@@ -383,6 +442,11 @@ msgstr "Самые последние"
 msgid "Most viewed"
 msgstr "Самые просматриваемые"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:128
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:33
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:117
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
@@ -404,6 +468,7 @@ msgstr "Самые просматриваемые"
 msgid "Most rated"
 msgstr "По рейтингу"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:135
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:122
@@ -412,6 +477,7 @@ msgstr "По рейтингу"
 msgid "Sport"
 msgstr "Спорт"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:136
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
@@ -420,6 +486,7 @@ msgstr "Спорт"
 msgid "Films"
 msgstr "Фильмы"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:136
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
@@ -428,6 +495,7 @@ msgstr "Фильмы"
 msgid "Cars"
 msgstr "Машины"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -436,6 +504,7 @@ msgstr "Машины"
 msgid "Music"
 msgstr "Музыка"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -444,6 +513,7 @@ msgstr "Музыка"
 msgid "Technology"
 msgstr "Технология"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -452,6 +522,7 @@ msgstr "Технология"
 msgid "Animals"
 msgstr "Животные"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -460,6 +531,7 @@ msgstr "Животные"
 msgid "Travel"
 msgstr "Путешествия"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -468,6 +540,7 @@ msgstr "Путешествия"
 msgid "Games"
 msgstr "Игры"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -476,6 +549,7 @@ msgstr "Игры"
 msgid "Comedy"
 msgstr "Комедия"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
@@ -484,6 +558,7 @@ msgstr "Комедия"
 msgid "Peoples"
 msgstr "Народные"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
@@ -492,6 +567,7 @@ msgstr "Народные"
 msgid "News"
 msgstr "Новости"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:140
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
@@ -500,6 +576,7 @@ msgstr "Новости"
 msgid "Entertainement"
 msgstr "Развлекательные"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:140
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
@@ -508,6 +585,8 @@ msgstr "Развлекательные"
 msgid "Trailers"
 msgstr "Трейлеры"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:149
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:37
@@ -516,11 +595,13 @@ msgstr "Трейлеры"
 msgid "HD"
 msgstr "HD"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:149
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 msgid "3D"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:178
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:167
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:166
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:156
@@ -529,6 +610,8 @@ msgstr ""
 msgid "There's no link to paste..."
 msgstr "Там нет ссылки для вставки..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:206
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:209
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:195
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:194
@@ -552,22 +635,26 @@ msgstr ""
 "\n"
 "не является ссылкой на YouTube..."
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:255
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:266
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:254
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:265
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:227
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:238
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:223
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:234
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:222
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:233
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:218
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:227
-#, python-format
-msgid "%s: No results for %s ..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:272
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:284
+#, fuzzy, python-format
+msgid "%(name)s: No results for %(query)s ..."
 msgstr "%s: Нет результата для %s ..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:351
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:350
+#, fuzzy, python-format
+msgid ""
+"\n"
+"\n"
+"<small><b>videos in the playlist:</b> %(count)s</small>"
+msgstr ""
+"\n"
+"<small><b>просмотр:</b> %(count)s        <b>Продолжительность:</b> "
+"%(duration)s</small>"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:384
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:383
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:327
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
@@ -584,12 +671,15 @@ msgstr ""
 "<small><b>просмотр:</b> %(count)s        <b>Продолжительность:</b> "
 "%(duration)s</small>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 msgid "Tag: "
 msgstr "Метка: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:32
@@ -599,48 +689,59 @@ msgstr "Метка: "
 msgid "Date of release"
 msgstr "Дата релиза"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 msgid "Average rating"
 msgstr "Средний рейтинг"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 msgid "Week rating"
 msgstr "Рейтинг недели"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 msgid "Month rating"
 msgstr "Рейтинг месяца"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Listened"
 msgstr "Слушать"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Starred"
 msgstr "Отмеченные"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Tag relevant"
 msgstr "Соответствующие метки"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:47
 msgid "music"
 msgstr "музыка"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:82
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:95
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:81
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:94
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:84
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:99
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:84
@@ -651,36 +752,37 @@ msgstr "музыка"
 msgid "%s: Connexion failed..."
 msgstr "%s: Не удалось соединиться..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Top rated"
 msgstr "Лучше по рейтингу"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Longest"
 msgstr "Самые длинные"
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:86
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
-#, python-format
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:74
+#, fuzzy, python-format
 msgid ""
 "\n"
-"<small><b>views:</b> %s        <b>Duration:</b> %s</small>"
+"<small><b>views:</b> %(total)s        <b>Duration:</b> %(duration)s</small>"
 msgstr ""
 "\n"
-"<small><b>просмотров:</b> %s        <b>Длительность:</b> %s</small>"
+"<small><b>просмотр:</b> %(count)s        <b>Продолжительность:</b> "
+"%(duration)s</small>"
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:89
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:89
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:79
-#, python-format
-msgid "%s: No more results for %s..."
-msgstr "%s: Больше нет результатов для %s..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:78
+#, fuzzy, python-format
+msgid "%(name)s: No more results for %(query)s..."
+msgstr "%s: Нет результата для %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:49
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:51
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:51
@@ -690,6 +792,8 @@ msgstr "%s: Больше нет результатов для %s..."
 msgid "Duration"
 msgstr "Продолжительность"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:42
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:42
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:35
@@ -698,44 +802,49 @@ msgstr "Продолжительность"
 msgid "Relevant"
 msgstr "Соответствующие метки"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:35
 msgid "Date"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:36
 msgid "Alphabetical"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:36
 #, fuzzy
 msgid "Plays"
 msgstr "Играет"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:37
 msgid "Likes"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:37
 msgid "Comments"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:32
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:31
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:33
 #, fuzzy, python-format
-msgid "%s: Searching for %s..."
+msgid "%(name)s: Searching for %(query)s..."
 msgstr "%s: Нет результата для %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/functions.py:84
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/functions.py:84
 #, python-format
 msgid "%(min)02d:%(sec)02d"
 msgstr "%(min)02d:%(sec)02d"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:199
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:256
@@ -743,6 +852,7 @@ msgstr "%(min)02d:%(sec)02d"
 msgid " Results : "
 msgstr "Результаты :"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:232
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:231
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:228
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:287
@@ -750,6 +860,7 @@ msgstr "Результаты :"
 msgid "Copy file link"
 msgstr "Копировать ссылку"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:234
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:233
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:230
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:289
@@ -757,6 +868,7 @@ msgstr "Копировать ссылку"
 msgid "Add to Library"
 msgstr "Добавить в библиотеку"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:288
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:285
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:343
@@ -764,6 +876,7 @@ msgstr "Добавить в библиотеку"
 msgid "All"
 msgstr "Все"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:290
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:286
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:344
@@ -771,6 +884,7 @@ msgstr "Все"
 msgid "All audios"
 msgstr "Все аудио"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:291
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:290
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:287
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:345
@@ -778,6 +892,7 @@ msgstr "Все аудио"
 msgid "All videos"
 msgstr "Все видео"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:498
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:497
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
@@ -787,6 +902,7 @@ msgstr "Все видео"
 msgid "Please select a search engine..."
 msgstr "Пожалуйста, выберите поисковую систему..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:502
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
@@ -796,6 +912,7 @@ msgstr "Пожалуйста, выберите поисковую систему
 msgid "Please enter an artist/album or song name..."
 msgstr "Пожалуйста, введите исполнитель/альбом или название песни..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:504
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:508
@@ -805,12 +922,15 @@ msgstr "Пожалуйста, введите исполнитель/альбом
 msgid "Please select an engine..."
 msgstr "Пожалуйста, выберите движек..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:803
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:793
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
 msgstr "Ссылка удалена или просрочена!..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:1057
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:1127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1046
@@ -827,6 +947,7 @@ msgstr "Ссылка удалена или просрочена!..."
 msgid "Searching for %(query)s with %(engine)s (page: %(page)s)"
 msgstr "Поиск %(query)s with %(engine)s (page: %(page)s)"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:11
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:11
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:11
 msgid ""
@@ -862,31 +983,38 @@ msgstr ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:78
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:78
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:78
 msgid "About"
 msgstr "О программе"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:113
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:113
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:113
 msgid "Previous page"
 msgstr "Предыдущая страница"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:137
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:137
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:137
 msgid "Next page"
 msgstr "Следующая страница"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:161
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:161
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:161
 msgid "Stop search"
 msgstr "Остановить поиск"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:195
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:195
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:195
 msgid "Preferences"
 msgstr "Параметры"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:232
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:234
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:232
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:234
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:232
@@ -894,6 +1022,8 @@ msgstr "Параметры"
 msgid "Start search"
 msgstr "Остановить поиск"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:233
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:235
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:233
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:235
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:233
@@ -901,6 +1031,7 @@ msgstr "Остановить поиск"
 msgid "Clean"
 msgstr "Очистить"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:338
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:338
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:45
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:338
@@ -908,11 +1039,14 @@ msgstr "Очистить"
 msgid "Engine: "
 msgstr "Движок:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:445
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:445
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:445
 msgid "results"
 msgstr " результат"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:469
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:476
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:469
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:476
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:469
@@ -920,125 +1054,149 @@ msgstr " результат"
 msgid "Add playlist"
 msgstr "Добавить в список"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:492
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:492
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:492
 msgid "Remove selected"
 msgstr "Удалить выбранные"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:499
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:499
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:499
 msgid "Remove playlist"
 msgstr "Удалить из списка"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:550
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:550
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:550
 msgid "playlists"
 msgstr "списки"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:750
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:750
 msgid "Browser"
 msgstr "Браузер"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:770
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:770
 msgid "Video"
 msgstr "Видео"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:833
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:833
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:622
 msgid "Play/Stop"
 msgstr "Играть/Стоп"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:857
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:857
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:645
 msgid "Pause"
 msgstr "Пау"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:881
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:881
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:668
 msgid "Shuffle"
 msgstr "Случайно"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:905
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:905
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:691
 msgid "Repeat"
 msgstr "Повторять"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:950
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:950
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:736
 msgid "Download"
 msgstr "Загрузить"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:989
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:989
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:767
 msgid "Downloads manager"
 msgstr "Менеджер загрузок"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1239
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1239
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:984
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:963
 msgid "page 1"
 msgstr "страница 1"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1318
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1318
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1056
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1035
 msgid "Home"
 msgstr "Домой"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1348
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1348
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1086
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1065
 msgid "Download path :     "
 msgstr "Путь загрузки:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1366
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1366
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1104
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1083
 msgid "Choose a folder"
 msgstr "Выбрать папку"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1397
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1397
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1135
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1114
 msgid "<b>Downloads  : </b>"
 msgstr "<b>Загрузки  : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1413
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1413
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1151
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1130
 msgid "page 2"
 msgstr "страница 2"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1497
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1497
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1193
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1172
 msgid "New Playlist"
 msgstr "Новый список"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1556
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1556
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1252
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1231
 msgid "Enter a name for the new playlist"
 msgstr "Введите имя для нового списка"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1587
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1587
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1283
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1262
 msgid "Playlist select"
 msgstr "Выбрать список"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1650
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1650
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1346
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1325
 msgid "Select a playlist"
 msgstr "Выбрать список"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1663
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1663
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1359
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1338
 msgid "Create new playlist"
 msgstr "Создать список"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1710
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2185
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1710
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2185
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1406
@@ -1048,60 +1206,70 @@ msgstr "Создать список"
 msgid "Options"
 msgstr "Параметры"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1792
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1792
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1488
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1467
 msgid "Show preview images"
 msgstr "Предварительный просмотр изображений"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1805
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1805
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1501
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1480
 msgid "<b>Playlist options : </b>"
 msgstr "<b>Параметры списка : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1838
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1838
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1534
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1513
 msgid "Max resolution : "
 msgstr "Макс. разрешение :"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1865
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1865
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1561
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1540
 msgid "320x240"
 msgstr "320x240"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1882
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1882
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1578
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1557
 msgid "640x360"
 msgstr "640x360"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1899
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1899
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1595
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1574
 msgid "854x480"
 msgstr "854x480"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1916
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1916
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1612
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1591
 msgid "1280x720"
 msgstr "1280x720"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1933
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1933
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1629
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1608
 msgid "1920x1080"
 msgstr "1920x1080"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1963
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1963
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1659
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1638
 msgid "<b>Youtube video options : </b>"
 msgstr "<b>Параметры видео Youtube : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1994
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1994
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1689
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1668
@@ -1128,54 +1296,63 @@ msgstr ""
 "corona\n"
 "bumpscope"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1719
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1698
 msgid "<b>Visualisations :</b>"
 msgstr "<b>Визуализации :</b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2049
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2049
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1744
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1723
 msgid "Enable downloads"
 msgstr "Включить загрузки"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2065
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2065
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1760
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1739
 msgid "Enable audio extraction"
 msgstr "Включить извлечение аудио"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2081
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2081
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1776
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1755
 msgid "Enable systray"
 msgstr "Включить в системный лоток"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2126
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2126
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1821
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1800
 msgid "Clear history"
 msgstr "Очистить историю"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2161
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2161
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1856
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1835
 msgid "<b>Extras options : </b>"
 msgstr "<b>Опции извлечения : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2241
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2241
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1936
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1915
 msgid "<b>Select your engines : </b>"
 msgstr "<b>Выбрать движок : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2266
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2266
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1961
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1940
 msgid "Engines"
 msgstr "Движки"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2298
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2298
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1993
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1972
@@ -1192,18 +1369,21 @@ msgstr ""
 "ввод поиска: BackSpace\n"
 "показать загрузки: d"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2311
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2311
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2006
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1985
 msgid "<b>Shortcuts:</b>"
 msgstr "<b>Горячие клавиши:</b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2329
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2329
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2003
 msgid "Infos"
 msgstr "Информация"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2372
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2372
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2067
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2046
@@ -1218,36 +1398,42 @@ msgstr ""
 "\n"
 "спасибо!"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2414
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2414
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2109
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2088
 msgid "<b>Support : </b>"
 msgstr "<b>Поддержка : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2432
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2432
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2127
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2106
 msgid "Support"
 msgstr "Поддержка"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2504
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2504
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2199
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2178
 msgid "I refuse"
 msgstr "Я отказываюсь"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2547
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2547
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2242
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2221
 msgid "I accept"
 msgstr "Я принимаю"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2594
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2594
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2289
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2268
 msgid "  Disclaimer, Please read:"
 msgstr "Все права защищены, прочтите:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2625
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2625
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2320
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2299
@@ -1331,6 +1517,101 @@ msgstr ""
 "\n"
 "gmediafinder team reserves the right to update this policy at any time "
 "without notice."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:68
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:80
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:117
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:71
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:48
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:71
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:82
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:112
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:48
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:71
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:82
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:112
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:80
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:61
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:65
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:38
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:51
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:55
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:77
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Skip/Mp3Skip.py:51
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:59
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:49
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:53
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/YouPorn/YouPorn.py:85
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Empflix/Empflix.py:72
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Redtube/Redtube.py:80
+#, python-format
+msgid "%s: No results for %s..."
+msgstr "%s: Нет результата для %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:86
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
+#, python-format
+msgid ""
+"\n"
+"<small><b>views:</b> %s        <b>Duration:</b> %s</small>"
+msgstr ""
+"\n"
+"<small><b>просмотров:</b> %s        <b>Длительность:</b> %s</small>"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:89
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:89
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:79
+#, python-format
+msgid "%s: No more results for %s..."
+msgstr "%s: Больше нет результатов для %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:31
+#, fuzzy, python-format
+msgid "%s: Searching for %s..."
+msgstr "%s: Нет результата для %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:283
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:255
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:266
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:254
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:265
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:227
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:238
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:223
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:234
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:222
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:233
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:218
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:227
+#, python-format
+msgid "%s: No results for %s ..."
+msgstr "%s: Нет результата для %s ..."
+
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:31
+#, python-format
+msgid "%s: Searching for %s with dilandau..."
+msgstr ""
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:31
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:30

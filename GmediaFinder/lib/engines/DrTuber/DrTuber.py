@@ -65,7 +65,8 @@ class DrTuber(object):
                     continue
             
         if not flag_found:
-            self.print_info(_("%s: No results for %s...") % (self.name,query))
+            values = {'name': self.name, 'query': query}
+            self.print_info(_("%(name)s: No results for %(query)s...") % values)
             time.sleep(5)
         self.thread_stop=True
     

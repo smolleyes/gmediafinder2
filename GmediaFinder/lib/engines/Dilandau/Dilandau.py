@@ -31,7 +31,8 @@ class Dilandau(object):
         pass
     
     def get_search_url(self,query,page):
-        self.print_info(_('%s: Searching for %s with dilandau...') % (self.name,query))
+        values = {'name': self.name, 'query': query}
+        self.print_info(_('%(name)s: Searching for %(query)s with dilandau...') % values)
         return self.search_url % (query,page)
         
     def filter(self, d, user_search):
@@ -48,7 +49,8 @@ class Dilandau(object):
                 flag_found = True
                 continue
         if not flag_found:
-            self.print_info(_("%s: No results for %s...") % (self.name,user_search))
+            values = {'name': self.name, 'query': query}
+            self.print_info(_("%(name)s: No results for %(query)s...") % values)
             time.sleep(5)
         self.thread_stop=True
         

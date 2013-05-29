@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-23 23:27+0200\n"
+"POT-Creation-Date: 2013-05-29 14:34+0200\n"
 "PO-Revision-Date: 2012-10-13 00:11+0000\n"
 "Last-Translator: paokouran <s.lagui@free.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,8 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:246
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:489
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:246
@@ -32,6 +34,8 @@ msgstr ""
 msgid "enter fullscreen"
 msgstr "أدخل ملء الشاشة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:250
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:291
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:292
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:250
@@ -48,6 +52,8 @@ msgstr "أدخل ملء الشاشة"
 msgid "Bitrate:"
 msgstr "معدل البت:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:251
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:292
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:251
@@ -64,6 +70,8 @@ msgstr "معدل البت:"
 msgid "Encoding:"
 msgstr "ترميز:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:252
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:293
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:253
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:294
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:252
@@ -80,6 +88,7 @@ msgstr "ترميز:"
 msgid "Playing:"
 msgstr "تشغيل:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:500
@@ -89,6 +98,7 @@ msgstr "تشغيل:"
 msgid "leave fullscreen"
 msgstr "غادر ملء الشاشة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_engine.py:135
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_engine.py:135
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:884
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:885
@@ -96,10 +106,13 @@ msgstr "غادر ملء الشاشة"
 msgid "Buffering :"
 msgstr "التخزين المؤقت :"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:315
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:315
 msgid "Initializing download..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:324
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:463
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:324
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:463
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:435
@@ -108,37 +121,45 @@ msgstr ""
 msgid "Starting download..."
 msgstr "تم بدء التحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:329
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:329
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:428
 msgid "Sending download request..."
 msgstr "إرسال طلب تحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:348
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:348
 msgid "File already downloaded on disk..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:354
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:356
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:443
 msgid "File is here but seems to be incomplete!"
 msgstr "الملف يوجد هنا لكن شيءً ما غير مكتمل!"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:360
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:360
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:360
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:447
 msgid "Range request supported, trying to resume..."
 msgstr "طلب النطاق المعتمدة ، يتم محاولة لاستئناف..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:372
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:372
 msgid "Range request not supported, redownloading file..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:396
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:392
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:483
 msgid "download stopped..."
 msgstr "تم إيقاف التحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:469
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:487
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:469
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:487
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:544
@@ -146,24 +167,29 @@ msgstr "تم إيقاف التحميل..."
 msgid "Download error..."
 msgstr "خطأ في التحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:472
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:472
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:455
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:538
 msgid "Download canceled..."
 msgstr "تم إلغاء التحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:477
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:477
 msgid "Download complete..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:530
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:530
 msgid "Cancelling download..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:555
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:555
 msgid "Download paused..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:561
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:500
 #: /home/smo/Documents/gmediafinder/GmediaFinder/functions.py:594
@@ -171,68 +197,58 @@ msgstr ""
 msgid "Resuming download..."
 msgstr "مواصلة التحميل..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:575
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:575
 msgid "Extracting audio..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/downloads/downloader.py:582
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/downloads/downloader.py:582
 msgid "Extraction failed..."
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:47
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:47
 msgid "Add link in debrider:"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:69
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:69
 msgid "Error 503"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/debrid.py:95
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/debrid.py:95
 msgid "Invalide link or no account ..."
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:31
-#, python-format
-msgid "%s: Searching for %s with dilandau..."
-msgstr ""
-
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:48
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:78
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:71
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:72
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:82
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:112
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:48
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Redtube/Redtube.py:78
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Xvideos/Xvideos.py:73
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:71
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:72
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:82
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:112
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:39
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:80
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:61
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:65
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:38
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:51
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:55
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:77
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Skip/Mp3Skip.py:51
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:59
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:49
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:53
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/YouPorn/YouPorn.py:85
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Empflix/Empflix.py:72
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Redtube/Redtube.py:80
-#, python-format
-msgid "%s: No results for %s..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Dilandau/Dilandau.py:35
+#, fuzzy, python-format
+msgid "%(name)s: Searching for %(query)s with dilandau..."
 msgstr "%s: لا توجد نتائج لـ %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Dilandau/Dilandau.py:53
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:79
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:72
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:74
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:69
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:73
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:81
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:118
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:41
+#, fuzzy, python-format
+msgid "%(name)s: No results for %(query)s..."
+msgstr "%s: لا توجد نتائج لـ %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:23
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:23
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:21
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:22
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:28
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:24
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:27
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:21
@@ -261,6 +277,8 @@ msgstr "%s: لا توجد نتائج لـ %s..."
 msgid "Order by: "
 msgstr "ترتيب حسب: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:38
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:29
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:29
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:29
@@ -272,6 +290,8 @@ msgstr "ترتيب حسب: "
 msgid "Category: "
 msgstr "الفئة: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:39
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:25
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:39
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:26
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:26
@@ -280,6 +300,11 @@ msgstr "الفئة: "
 msgid "Filters: "
 msgstr "ترشيح: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:40
+msgid "Search for:"
+msgstr ""
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:53
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:51
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:49
@@ -288,6 +313,7 @@ msgstr "ترشيح: "
 msgid "Quality"
 msgstr "جودة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:111
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:109
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:108
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:107
@@ -296,6 +322,27 @@ msgstr "جودة"
 msgid "Paste youtube link"
 msgstr "ألصق وصلة youtube"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:119
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:123
+#, fuzzy
+msgid "Videos"
+msgstr "كل الفيديوهات"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:119
+#, fuzzy
+msgid "Playlist"
+msgstr "قائمة الأغاني"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:126
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:144
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:33
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:38
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:50
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:54
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:115
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:133
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
@@ -334,6 +381,13 @@ msgstr "ألصق وصلة youtube"
 msgid "Most relevant"
 msgstr "الأكثر ملاءمة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:127
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:29
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:42
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:48
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:29
@@ -361,6 +415,11 @@ msgstr "الأكثر ملاءمة"
 msgid "Most recent"
 msgstr "الأخيرة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:127
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:37
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:48
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:116
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:37
@@ -381,6 +440,11 @@ msgstr "الأخيرة"
 msgid "Most viewed"
 msgstr "الأكثر مشاهدة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:128
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:33
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:34
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:117
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:30
@@ -402,6 +466,7 @@ msgstr "الأكثر مشاهدة"
 msgid "Most rated"
 msgstr "الأكثر تقييما"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:135
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:122
@@ -410,6 +475,7 @@ msgstr "الأكثر تقييما"
 msgid "Sport"
 msgstr "رياضة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:136
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
@@ -418,6 +484,7 @@ msgstr "رياضة"
 msgid "Films"
 msgstr "أفلام"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:136
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:123
@@ -426,6 +493,7 @@ msgstr "أفلام"
 msgid "Cars"
 msgstr "سيارات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -434,6 +502,7 @@ msgstr "سيارات"
 msgid "Music"
 msgstr "موسيقى"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -442,6 +511,7 @@ msgstr "موسيقى"
 msgid "Technology"
 msgstr "تكنولوجية"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:137
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:124
@@ -450,6 +520,7 @@ msgstr "تكنولوجية"
 msgid "Animals"
 msgstr "حيوانات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -458,6 +529,7 @@ msgstr "حيوانات"
 msgid "Travel"
 msgstr "سفر"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -466,6 +538,7 @@ msgstr "سفر"
 msgid "Games"
 msgstr "ألعاب"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:125
@@ -474,6 +547,7 @@ msgstr "ألعاب"
 msgid "Comedy"
 msgstr "فكاهة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
@@ -482,6 +556,7 @@ msgstr "فكاهة"
 msgid "Peoples"
 msgstr "أشخاص"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:126
@@ -490,6 +565,7 @@ msgstr "أشخاص"
 msgid "News"
 msgstr "أخبار"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:140
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
@@ -498,6 +574,7 @@ msgstr "أخبار"
 msgid "Entertainement"
 msgstr "ترفيه"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:140
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:129
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:128
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:127
@@ -506,6 +583,8 @@ msgstr "ترفيه"
 msgid "Trailers"
 msgstr "أفلام قصيرة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:149
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:37
@@ -514,11 +593,13 @@ msgstr "أفلام قصيرة"
 msgid "HD"
 msgstr "HD"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:149
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:139
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:138
 msgid "3D"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:178
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:167
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:166
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:156
@@ -527,6 +608,8 @@ msgstr ""
 msgid "There's no link to paste..."
 msgstr "ليس هنالك أي وصلة للصق..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:206
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:209
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:195
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:194
@@ -550,22 +633,25 @@ msgstr ""
 "\n"
 "إنها ليست وصلة youtube سليمة"
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:255
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:266
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:254
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:265
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:227
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:238
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:223
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:234
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:222
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:233
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:218
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:227
-#, python-format
-msgid "%s: No results for %s ..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:272
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:284
+#, fuzzy, python-format
+msgid "%(name)s: No results for %(query)s ..."
 msgstr "%s: لا توجد نتائج لـ %s ..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:351
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:350
+#, fuzzy, python-format
+msgid ""
+"\n"
+"\n"
+"<small><b>videos in the playlist:</b> %(count)s</small>"
+msgstr ""
+"\n"
+"<small><b>عرضw:</b> %(count)s        <b>مدة:</b> %(duration)s</small>"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:384
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:383
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:327
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:326
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:323
@@ -581,12 +667,15 @@ msgstr ""
 "\n"
 "<small><b>عرضw:</b> %(count)s        <b>مدة:</b> %(duration)s</small>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:23
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:23
 msgid "Tag: "
 msgstr "وسم: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:49
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:32
@@ -596,48 +685,59 @@ msgstr "وسم: "
 msgid "Date of release"
 msgstr "تاريخ النسخة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:32
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:32
 msgid "Average rating"
 msgstr "متوسط التقييم"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 msgid "Week rating"
 msgstr "تقييم الأسبوع"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:33
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:33
 msgid "Month rating"
 msgstr "تقييم الشهر"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Listened"
 msgstr "سُمِع له من فبل"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Starred"
 msgstr "Starred"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:34
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:34
 msgid "Tag relevant"
 msgstr "وسم ذا صلة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Jamendo/Jamendo.py:50
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Jamendo/Jamendo.py:47
 msgid "music"
 msgstr "موسيقى"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:82
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:95
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:81
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:94
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:84
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:99
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:84
@@ -648,36 +748,36 @@ msgstr "موسيقى"
 msgid "%s: Connexion failed..."
 msgstr "%s: فشل الإتصال..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Top rated"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:35
 msgid "Longest"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:86
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
-#, python-format
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:74
+#, fuzzy, python-format
 msgid ""
 "\n"
-"<small><b>views:</b> %s        <b>Duration:</b> %s</small>"
+"<small><b>views:</b> %(total)s        <b>Duration:</b> %(duration)s</small>"
 msgstr ""
 "\n"
-"<small><b>عرض:</b> %s        <b>مدة:</b> %s</small>"
+"<small><b>عرضw:</b> %(count)s        <b>مدة:</b> %(duration)s</small>"
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:89
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:89
-#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:79
-#, python-format
-msgid "%s: No more results for %s..."
-msgstr "%s: لا توجد نتائج أكثر لـ %s..."
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:78
+#, fuzzy, python-format
+msgid "%(name)s: No more results for %(query)s..."
+msgstr "%s: لا توجد نتائج لـ %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:49
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:51
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:38
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:51
@@ -687,6 +787,8 @@ msgstr "%s: لا توجد نتائج أكثر لـ %s..."
 msgid "Duration"
 msgstr "المدة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:42
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:42
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:35
@@ -695,44 +797,49 @@ msgstr "المدة"
 msgid "Relevant"
 msgstr "وسم ذا صلة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:35
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:35
 msgid "Date"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:36
 msgid "Alphabetical"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:36
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:36
 #, fuzzy
 msgid "Plays"
 msgstr "تشغيل:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:37
 msgid "Likes"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:37
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:37
 msgid "Comments"
 msgstr ""
 
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:32
-#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:31
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:33
 #, fuzzy, python-format
-msgid "%s: Searching for %s..."
+msgid "%(name)s: Searching for %(query)s..."
 msgstr "%s: لا توجد نتائج لـ %s..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/functions.py:84
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/functions.py:84
 #, python-format
 msgid "%(min)02d:%(sec)02d"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:199
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:198
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:195
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:256
@@ -740,6 +847,7 @@ msgstr ""
 msgid " Results : "
 msgstr " نتائج: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:232
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:231
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:228
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:287
@@ -747,6 +855,7 @@ msgstr " نتائج: "
 msgid "Copy file link"
 msgstr "نسخ الوصلة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:234
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:233
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:230
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:289
@@ -754,6 +863,7 @@ msgstr "نسخ الوصلة"
 msgid "Add to Library"
 msgstr "إضافة إلى المكتبة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:288
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:285
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:343
@@ -761,6 +871,7 @@ msgstr "إضافة إلى المكتبة"
 msgid "All"
 msgstr "الكل"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:290
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:289
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:286
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:344
@@ -768,6 +879,7 @@ msgstr "الكل"
 msgid "All audios"
 msgstr "كل الصوتيات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:291
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:290
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:287
 #: /home/smo/Documents/gmediafinder/GmediaFinder/gmediafinder.py:345
@@ -775,6 +887,7 @@ msgstr "كل الصوتيات"
 msgid "All videos"
 msgstr "كل الفيديوهات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:498
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:497
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
@@ -784,6 +897,7 @@ msgstr "كل الفيديوهات"
 msgid "Please select a search engine..."
 msgstr "الرجاء تحديد أداة البحث..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:502
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:501
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
@@ -793,6 +907,7 @@ msgstr "الرجاء تحديد أداة البحث..."
 msgid "Please enter an artist/album or song name..."
 msgstr "الرجاء إدخال فنان/ألبوم أو إسم الأغنية..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:505
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:504
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:508
@@ -802,12 +917,15 @@ msgstr "الرجاء إدخال فنان/ألبوم أو إسم الأغنية..
 msgid "Please select an engine..."
 msgstr "الرجاء تحديد أداة..."
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:803
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:793
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:792
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:796
 msgid "This link has been removed or is expired...!"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:1057
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/gmediafinder.py:1127
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1047
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1117
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/gmediafinder.py:1046
@@ -824,6 +942,7 @@ msgstr ""
 msgid "Searching for %(query)s with %(engine)s (page: %(page)s)"
 msgstr "البحث عن %(query)s بـ %(engine)s (صفحة: %(page)s)"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:11
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:11
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:11
 msgid ""
@@ -859,31 +978,38 @@ msgstr ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:78
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:78
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:78
 msgid "About"
 msgstr "حول"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:113
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:113
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:113
 msgid "Previous page"
 msgstr "الصفحة السابقة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:137
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:137
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:137
 msgid "Next page"
 msgstr "الصفحة التالية"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:161
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:161
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:161
 msgid "Stop search"
 msgstr "إيقاف البحث"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:195
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:195
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:195
 msgid "Preferences"
 msgstr "تفضيلات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:232
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:234
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:232
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:234
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:232
@@ -891,6 +1017,8 @@ msgstr "تفضيلات"
 msgid "Start search"
 msgstr "بدء البحث"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:233
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:235
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:233
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:235
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:233
@@ -898,6 +1026,7 @@ msgstr "بدء البحث"
 msgid "Clean"
 msgstr "تنظيف"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:338
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:338
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:45
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:338
@@ -905,11 +1034,14 @@ msgstr "تنظيف"
 msgid "Engine: "
 msgstr "أداة: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:445
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:445
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:445
 msgid "results"
 msgstr "النتائج"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:469
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:476
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:469
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:476
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:469
@@ -917,125 +1049,149 @@ msgstr "النتائج"
 msgid "Add playlist"
 msgstr "إضافة قائمة الأغاني"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:492
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:492
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:492
 msgid "Remove selected"
 msgstr "حذف المحددة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:499
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:499
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:499
 msgid "Remove playlist"
 msgstr "حذف قائمة الأغاني"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:550
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:550
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:550
 msgid "playlists"
 msgstr "قائمة الأغاني"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:750
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:750
 msgid "Browser"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:770
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:770
 msgid "Video"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:833
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:833
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:622
 msgid "Play/Stop"
 msgstr "بدء/إيقاف"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:857
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:857
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:645
 msgid "Pause"
 msgstr "إيقاف مؤقت"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:881
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:881
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:668
 msgid "Shuffle"
 msgstr "عشوائي"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:905
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:905
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:691
 msgid "Repeat"
 msgstr "إعادة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:950
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:950
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:736
 msgid "Download"
 msgstr "تحميل"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:989
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:989
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:767
 msgid "Downloads manager"
 msgstr "مدير التحميلات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1239
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1239
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:984
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:963
 msgid "page 1"
 msgstr "الصفحة 1"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1318
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1318
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1056
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1035
 msgid "Home"
 msgstr "المنزل"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1348
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1348
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1086
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1065
 msgid "Download path :     "
 msgstr "مسار التحميل:     "
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1366
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1366
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1104
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1083
 msgid "Choose a folder"
 msgstr "حدد مجلدا"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1397
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1397
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1135
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1114
 msgid "<b>Downloads  : </b>"
 msgstr "<b>تحميلات  : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1413
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1413
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1151
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1130
 msgid "page 2"
 msgstr "الصفحة 2"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1497
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1497
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1193
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1172
 msgid "New Playlist"
 msgstr "قائمة أغاني جديدة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1556
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1556
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1252
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1231
 msgid "Enter a name for the new playlist"
 msgstr "أدخل إسم لقائمة أغاني جديدة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1587
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1587
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1283
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1262
 msgid "Playlist select"
 msgstr "حدد قائمة الأغاني"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1650
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1650
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1346
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1325
 msgid "Select a playlist"
 msgstr "حدد قائمة تشغيل"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1663
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1663
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1359
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1338
 msgid "Create new playlist"
 msgstr "إنشاء قائمة أغاني جديدة"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1710
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2185
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1710
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2185
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1406
@@ -1045,60 +1201,70 @@ msgstr "إنشاء قائمة أغاني جديدة"
 msgid "Options"
 msgstr "خيارات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1792
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1792
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1488
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1467
 msgid "Show preview images"
 msgstr "عرض صور الإظهار"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1805
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1805
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1501
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1480
 msgid "<b>Playlist options : </b>"
 msgstr "<b>خيارات قائمة التشغيل : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1838
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1838
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1534
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1513
 msgid "Max resolution : "
 msgstr "الحد الأقصى للدقة: "
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1865
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1865
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1561
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1540
 msgid "320x240"
 msgstr "320x240"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1882
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1882
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1578
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1557
 msgid "640x360"
 msgstr "640x360"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1899
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1899
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1595
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1574
 msgid "854x480"
 msgstr "854x480"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1916
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1916
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1612
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1591
 msgid "1280x720"
 msgstr "1280x720"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1933
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1933
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1629
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1608
 msgid "1920x1080"
 msgstr "1920x1080"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1963
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1963
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1659
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1638
 msgid "<b>Youtube video options : </b>"
 msgstr "<b>خيارات فيديوهات Youtube : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:1994
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:1994
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1689
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1668
@@ -1125,54 +1291,63 @@ msgstr ""
 "corona\n"
 "bumpscope"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1719
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1698
 msgid "<b>Visualisations :</b>"
 msgstr "<b>مرئيات :</b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2049
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2049
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1744
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1723
 msgid "Enable downloads"
 msgstr "تفعيل التحميلات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2065
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2065
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1760
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1739
 msgid "Enable audio extraction"
 msgstr "تفعيل إستخراج الصوت"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2081
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2081
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1776
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1755
 msgid "Enable systray"
 msgstr "تفعيل تصغير إلى الشريط"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2126
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2126
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1821
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1800
 msgid "Clear history"
 msgstr "مسح التاريخ"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2161
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2161
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1856
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1835
 msgid "<b>Extras options : </b>"
 msgstr "<b>خيارات إضافية : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2241
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2241
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1936
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1915
 msgid "<b>Select your engines : </b>"
 msgstr "<b>حدد الأداتك : </b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2266
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2266
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1961
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1940
 msgid "Engines"
 msgstr "أدوات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2298
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2298
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1993
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1972
@@ -1189,18 +1364,21 @@ msgstr ""
 "إدخال صندوق البحث: BackSpace\n"
 "عرض التحميلات: d"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2311
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2311
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2006
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:1985
 msgid "<b>Shortcuts:</b>"
 msgstr "<b>إختصارات:</b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2329
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2329
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2024
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2003
 msgid "Infos"
 msgstr "معلومات"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2372
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2372
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2067
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2046
@@ -1214,36 +1392,42 @@ msgstr ""
 "إضغط الوصلة في الأسفل, وتبرع.\n"
 "شكراً"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2414
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2414
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2109
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2088
 msgid "<b>Support : </b>"
 msgstr "<b>الدعم :</b>"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2432
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2432
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2127
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2106
 msgid "Support"
 msgstr "دعم"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2504
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2504
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2199
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2178
 msgid "I refuse"
 msgstr "أرفض"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2547
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2547
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2242
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2221
 msgid "I accept"
 msgstr "أوافق"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2594
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2594
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2289
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2268
 msgid "  Disclaimer, Please read:"
 msgstr "إخلاء ، الرجاء القراءة :"
 
+#: /home/smo/Documents/projects/gmediafinder-3/data/glade/mainGui.glade:2625
 #: /home/smo/Documents/projects/gmediafinder-rew/data/glade/mainGui.glade:2625
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2320
 #: /home/smo/Documents/gmediafinder/data/glade/mainGui.glade:2299
@@ -1327,6 +1511,101 @@ msgstr ""
 "\n"
 "gmediafinder team reserves the right to update this policy at any time "
 "without notice."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DrTuber/DrTuber.py:68
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/YouPorn/YouPorn.py:80
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Vimeo/Vimeo.py:117
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Eporner/Eporner.py:71
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:48
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:71
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/YouPorn/YouPorn.py:82
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Vimeo/Vimeo.py:112
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:48
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Redtube/Redtube.py:78
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Xvideos/Xvideos.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DrTuber/DrTuber.py:71
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/PornHub/PornHub.py:72
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/YouPorn/YouPorn.py:82
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Vimeo/Vimeo.py:112
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:39
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Redtube/Redtube.py:80
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:61
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DrTuber/DrTuber.py:65
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:38
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:51
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:55
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/PornHub/PornHub.py:77
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Skip/Mp3Skip.py:51
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Xvideos/Xvideos.py:70
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Realm/Mp3Realm.py:59
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:49
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:53
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/YouPorn/YouPorn.py:85
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Empflix/Empflix.py:72
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Redtube/Redtube.py:80
+#, python-format
+msgid "%s: No results for %s..."
+msgstr "%s: لا توجد نتائج لـ %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:73
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:86
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:86
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
+#, python-format
+msgid ""
+"\n"
+"<small><b>views:</b> %s        <b>Duration:</b> %s</small>"
+msgstr ""
+"\n"
+"<small><b>عرض:</b> %s        <b>مدة:</b> %s</small>"
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:76
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:89
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/DailyMotion/DailyMotion.py:89
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/DailyMotion/DailyMotion.py:79
+#, python-format
+msgid "%s: No more results for %s..."
+msgstr "%s: لا توجد نتائج أكثر لـ %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Mp3Juices/Mp3Juices.py:32
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Juices/Mp3Juices.py:31
+#, fuzzy, python-format
+msgid "%s: Searching for %s..."
+msgstr "%s: لا توجد نتائج لـ %s..."
+
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/engines/Youtube/Youtube.py:283
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:255
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:266
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:254
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:265
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:227
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:238
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:223
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:234
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:222
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Youtube.py:233
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:218
+#: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Youtube/Youtube.py:227
+#, python-format
+msgid "%s: No results for %s ..."
+msgstr "%s: لا توجد نتائج لـ %s ..."
+
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Dilandau/Dilandau.py:31
+#: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Youtube/Dilandau/Dilandau.py:31
+#, python-format
+msgid "%s: Searching for %s with dilandau..."
+msgstr ""
 
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:31
 #: /home/smo/Documents/gmediafinder/GmediaFinder/lib/engines/Mp3Moo/Mp3Moo.py:30

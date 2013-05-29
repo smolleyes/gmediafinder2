@@ -70,7 +70,8 @@ class Xvideos(object):
                 flag_found = True
                 continue
         if not flag_found:
-            self.print_info(_("%s: No results for %s...") % (self.name,user_search))
+            values = {'name': self.name, 'query': user_search}
+            self.print_info(_("%(name)s: No results for %(query)s...") % values)
             time.sleep(5)
         self.thread_stop=True
     

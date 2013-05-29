@@ -308,6 +308,7 @@ class GsongFinder(object):
         self.statbar.hide()
         self.media_link=''
         self.media_link_id = ''
+        self.media_link_name=''
         
         ## hide some icons by default
         self.stop_search_btn.set_sensitive(0)
@@ -767,6 +768,7 @@ class GsongFinder(object):
         self.path = self.model.get_path(self.selected_iter)
         try:
             self.media_link_id = self.model.get_value(self.selected_iter, 2)
+            self.media_link_name=self.clean_markup(self.model.get_value(self.selected_iter, 4))
             self.search_engine.get_media_infos()
         except:
             return

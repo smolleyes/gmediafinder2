@@ -268,7 +268,8 @@ class Youtube(object):
         if not vquery :
             self.num_start = 1
             self.current_page = 1
-            self.print_info(_("%s: No results for %s ...") % (self.name,user_search))
+            values = {'name': self.name, 'query': user_search}
+            self.print_info(_("%(name)s: No results for %(query)s ...") % values)
             time.sleep(5)
             self.thread_stop=True
 
@@ -279,7 +280,8 @@ class Youtube(object):
         
         try:
             if len(vquery) == 0:
-                self.print_info(_("%s: No results for %s ...") % (self.name,user_search))
+                values = {'name': self.name, 'query': user_search}
+                self.print_info(_("%(name)s: No results for %(query)s ...") % values)
                 time.sleep(5)
                 self.thread_stop=True
                 return

@@ -114,7 +114,8 @@ class Vimeo(object):
                 gobject.idle_add(self.gui.add_sound, title, 'http://vimeo.com/'+link, img, None, self.name)
 
         if not flag_found:
-            self.print_info(_("%s: No results for %s...") % (self.name,user_search))
+            values = {'name': self.name, 'query': user_search}
+            self.print_info(_("%(name)s: No results for %(query)s...") % values)
             time.sleep(5)
         self.thread_stop=True
     

@@ -109,7 +109,7 @@ class Browser():
 	#self.view.connect("navigation-policy-decision-requested",self._nav_request_policy_decision_cb)
 	#self.view.connect("hovering-over-link", self._hovering_over_link_cb)
 	self.view.connect("load-finished", self.load_finished)
-	#self.view.connect("navigation-requested", self.on_click_link)
+	self.view.connect("navigation-requested", self.on_click_link)
 	self.console_response = self.view.connect('console-message', self.on_console_message)
 	#self.view.connect('resource-response-received', self.on_response_received)
 	self._hovered_uri = None
@@ -194,6 +194,9 @@ class Browser():
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 	
+    def print_info(self,msg):
+        gobject.idle_add(self.mainGui.info_label.set_text,msg)
+	
     def load_uri(self,uri,name=None,origin=None):
 	self.origin=None
 	try:
@@ -220,15 +223,13 @@ class Browser():
 	print "load finished"
 	self.analyse_req()
 	
-    def on_click_link(view, frame, networkRequest,data=None):
+    def on_click_link(self,view, frame, networkRequest):
 	# get uri from request object
-	uri=networkRequest.get_uri()
-	print "request to go to %s" % uri
-	# load the page somehow.....
-	page=urllib.urlopen(networkRequest.get_uri())
-	# load into associated view, passing in uri
-	# return 1 to stop any other handlers running
-	# eg. the default uri handler...
+	self.origin=''
+	self.stream_name=''
+	req=str(networkRequest.get_uri())
+	if 'dpstreaming.org' in req and 'streaming-telecharger' in req or 'streaming-streaming' in req or '-streaming' in req:
+	    self.analyzed=False
     
     def _nav_request_policy_decision_cb(self,view,frame,net_req,nav_act,pol_dec):
         pass
@@ -236,25 +237,59 @@ class Browser():
     def resource_cb(self, view, frame, resource, request, response):
 	req = request.get_uri()
 	if 'http://www.debrideurstreaming.com/stats.php' in req:
+	    if self.analyzed is True:
+		return
 	    html=self.view.get_html()
+	    save_html(html)
 	    if 'purevid.com/get' in html:
 		link=re.search('(.*)href="((.*)start=(.*?))"',html).group(2).replace('&amp;','&')
+		print 'purevid stream found : %s' % link
 		if self.stream_name != '':
 		    self.mainGui.media_name=self.stream_name
+		elif self.mainGui.media_link_name != '':
+		    self.mainGui.media_name=self.mainGui.media_link_name
 		else:
 		    self.mainGui.media_name='streaming purevid...'
+		## verify link
 		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.mainGui.start_play,link)
 		gobject.idle_add(self.view.stop_loading)
+		self.analyzed=True
+		return
 	    elif 'uploadhero.co/v.php?s' in html or 'uploadhero.com/v.php?s' in html:
 		link=re.search('(.*)href="((.*)start=(.*?))"',html).group(2).replace('&amp;','&')
+		print 'uploadhero stream found : %s' % link
 		if self.stream_name != '':
 		    self.mainGui.media_name=self.stream_name
+		elif self.mainGui.media_link_name != '':
+		    self.mainGui.media_name=self.mainGui.media_link_name
 		else:
-		    self.mainGui.media_name='streaming purevid...'
+		    self.mainGui.media_name='streaming uploadhero...'
 		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.mainGui.start_play,link)
 		gobject.idle_add(self.view.stop_loading)
+		self.analyzed=True
+		return
+	    elif 'file=http://127.0.0.1' in html and '/SD' in html or 'file=http://127.0.0.1' in html and 'HD' in html:
+		try:
+		    link=re.search('.*file=(http://127.0.0.1:[0-9](.*)HD)',html).group(1)
+		except:
+		    try:
+			link=re.search('.*file=(http://127.0.0.1:[0-9](.*)SD)',html).group(1)
+		    except:
+			return
+		print 'mixture stream found : %s' % link
+		if self.stream_name != '':
+		    self.mainGui.media_name=self.stream_name
+		elif self.mainGui.media_link_name != '':
+		    self.mainGui.media_name=self.mainGui.media_link_name
+		else:
+		    self.mainGui.media_name='streaming mixture...'
+		gobject.idle_add(self.mainGui.info_label.set_text,'')
+		gobject.idle_add(self.mainGui.start_play,link)
+		gobject.idle_add(self.view.stop_loading)
+		self.analyzed=True
+		return
 	elif 'http://www.youtube.com/watch?v=' in req or 'http://m.youtube.com/watch?' in req:
 		ytid=''
 		try:
@@ -365,21 +400,21 @@ class Browser():
 			    self.load_uri(video_url,origin=req)
 			except:
 			    pass
-	elif 'dpstreaming.org' in req and 'streaming-telecharger' in req:
-	    if self.analyzed:
+	elif 'dpstreaming.org' in req and 'streaming-telecharger' in req or 'streaming-streaming' in req  or '-streaming' in req:
+	    if self.analyzed is True:
 		return
 	    html=self.view.get_html()
 	    link=''
 	    img_link=''
 	    name=''
 	    try:
-		link=re.search('http://uploadhero.co(.*?)"',html).group().replace('"','')
+		link=re.search('http://www.purevid.com/v/(.*?)/',html).group()
 	    except:
 		try:
-		    link=re.search('http://www.purevid.com/v/(.*?)/',html).group()
+		    link=re.search('http://www.mixturecloud.com/media/(.*?)"',html).group().replace('"','')
 		except:
 		    try:
-			link=re.search('http://www.mixturecloud.com/media/(.*?)"',html).group().replace('"','')
+			link=re.search('http://uploadhero.co(.*?)"',html).group().replace('"','')
 		    except:
 			return
 	    try:
@@ -387,7 +422,10 @@ class Browser():
 		img=download_photo(img_link)
 	    except:
 		img=None
-	    name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
+	    try:
+		name=re.search('rel="bookmark"(.*?)title="Permanent Link to(.*?)\[',html).group(2).replace('"','').replace('&amp;','&')
+	    except:
+		name=None
 	    self.stream_name=name
 	    gobject.idle_add(self.mainGui.model.clear)
 	    gobject.idle_add(self.mainGui.add_sound, name, "http://www.debrideurstreaming.com/?chrome&lien_debrid=%s" % link, img, None, 'DpStreaming',None, None)
@@ -502,7 +540,7 @@ class Browser():
            It then checks to see if we can go back, if we can it makes the
            back button clickable.  Then it does the same for the foward
            button.'''
-        self.url_bar.set_text(widget.get_main_frame().get_uri())
+        gobject.idle_add(self.url_bar.set_text,widget.get_main_frame().get_uri())
         gobject.idle_add(self.back_button.set_sensitive,self.view.can_go_back)
         gobject.idle_add(self.forward_button.set_sensitive,self.view.can_go_forward)
 	
@@ -553,6 +591,28 @@ class Browser():
 	    </body>
 	</html>''' % ('50%','50%',icon)
 	gobject.idle_add(self.view.load_html_string,html, "file:///#")
+	
+    def start_link(self, link):
+        self.print_info("Lien Ok, Verification du flux, patience...")
+        response = None
+        try:
+            request = urllib2.Request(link)
+            request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30')
+            response = urllib2.urlopen(request, timeout=120)
+        except:
+            return False
+        # check content type:
+        content = response.info().getheader('Content-Type')
+        print 'link content type: %s' % content
+        if ('application/octet-stream' in content or 'download' in content or 'video' in content):
+            self.print_info("Flux valide, chargement... (patience)")
+            self.valid_url = True
+            self.media_link = link
+            return True
+        else:
+            self.print_info("Flux invalide!, analyse du lien suivant")
+            return False
+
  
 def zoom_in_cb(menu_item, web_view):
     """Zoom into the page"""
@@ -593,6 +653,7 @@ def page_properties_cb(menu_item, web_view):
     window.add(vbox)
     window.show_all()
     window.present()
+  
   
   
 def view_source_mode_requested_cb(widget, is_active, content_pane):

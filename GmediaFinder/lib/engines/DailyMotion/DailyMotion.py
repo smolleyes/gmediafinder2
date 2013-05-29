@@ -70,10 +70,12 @@ class DailyMotion(object):
             duration = "%d:%s" % (calc[0],seconds)
             total = dic['views_total']
             img = download_photo(img_link)
-            markup = _("\n<small><b>views:</b> %s        <b>Duration:</b> %s</small>") % (total, duration)
+            values = {'total': total, 'duration': duration}
+            markup = _("\n<small><b>views:</b> %(total)s        <b>Duration:</b> %(duration)s</small>") % values
             gobject.idle_add(self.gui.add_sound, title, link, img, None, self.name, markup)
         if js['has_more'] != 'true':
-            self.print_info(_("%s: No more results for %s...") % (self.name,user_search))
+            values = {'name': self.name, 'query': user_search}
+            self.print_info(_("%(name)s: No more results for %(query)s...") % values)
             time.sleep(5)
         self.thread_stop=True
         

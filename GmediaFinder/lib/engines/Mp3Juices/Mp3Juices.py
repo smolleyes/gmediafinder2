@@ -29,14 +29,16 @@ class Mp3Juices(object):
         pass
     
     def get_search_url(self,query,page):
-        self.print_info(_('%s: Searching for %s...') % (self.name,query))
+	values = {'name': self.name, 'query': query}
+        self.print_info(_('%(name)s: Searching for %(query)s...') % values)
         return self.search_url % (query,page)
         
     def filter(self, d, user_search):
 		flag_found = False
 		data=d.read().split('loadPlayer')
 		if len(data) == 0:
-			self.print_info(_("%s: No results for %s...") % (self.name,user_search))
+			values = {'name': self.name, 'query': user_search}
+			self.print_info(_("%(name)s: No results for %(query)s...") % values)
 			time.sleep(5)
 			self.thread_stop=True
 		d=data[0].split('[url]"')
