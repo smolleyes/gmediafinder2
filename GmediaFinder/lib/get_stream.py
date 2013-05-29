@@ -238,7 +238,7 @@ class Browser():
 	if 'http://www.debrideurstreaming.com/stats.php' in req:
 	    html=self.view.get_html()
 	    if 'purevid.com/get' in html:
-		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
+		link=re.search('(.*)href="((.*)start=(.*?))"',html).group(2).replace('&amp;','&')
 		if self.stream_name != '':
 		    self.mainGui.media_name=self.stream_name
 		else:
@@ -246,8 +246,8 @@ class Browser():
 		gobject.idle_add(self.mainGui.info_label.set_text,'')
 		gobject.idle_add(self.mainGui.start_play,link)
 		gobject.idle_add(self.view.stop_loading)
-	    elif 'uploadhero.co/v.php?s' in html:
-		link=re.search('Actualiser</div><a href="(.*?)start=',html).group(1).replace('&amp;','&')+'&start='
+	    elif 'uploadhero.co/v.php?s' in html or 'uploadhero.com/v.php?s' in html:
+		link=re.search('(.*)href="((.*)start=(.*?))"',html).group(2).replace('&amp;','&')
 		if self.stream_name != '':
 		    self.mainGui.media_name=self.stream_name
 		else:
