@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 14:34+0200\n"
+"POT-Creation-Date: 2013-05-30 00:09+0200\n"
 "PO-Revision-Date: 2012-10-13 02:25+0200\n"
 "Last-Translator: root <s.lagui@free.fr>\n"
 "Language-Team: Language PL\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:246
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:490
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:489
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
@@ -84,6 +85,7 @@ msgstr ""
 msgid "Playing:"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:509
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501

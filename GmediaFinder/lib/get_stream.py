@@ -26,8 +26,8 @@ except:
  
 class WebView(webkit.WebView):
     def __init__(self):
-	gobject.threads_init()
 	webkit.WebView.__init__(self)
+	gobject.threads_init()
 	settings = self.get_settings()
 	
 	# scale other content besides from text as well
@@ -92,12 +92,9 @@ class Browser():
 	## debrider
 	self.debrider = debrider.Debrid(self.mainGui)
 	
-        self.view.connect("script-alert",
-                              self._javascript_script_alert_cb)
-        self.view.connect("script-confirm",
-                              self._javascript_script_confirm_cb)
-        self.view.connect("script-prompt",
-                              self._javascript_script_prompt_cb)
+        self.view.connect("script-alert",self._javascript_script_alert_cb)
+        self.view.connect("script-confirm",self._javascript_script_confirm_cb)
+        self.view.connect("script-prompt",self._javascript_script_prompt_cb)
 	
 	self.settings = self.view.get_settings()
 	self.settings.set_property('enable-plugins',False)
@@ -109,9 +106,9 @@ class Browser():
 	#self.view.connect("navigation-policy-decision-requested",self._nav_request_policy_decision_cb)
 	#self.view.connect("hovering-over-link", self._hovering_over_link_cb)
 	self.view.connect("load-finished", self.load_finished)
-	self.view.connect("navigation-requested", self.on_click_link)
+	#self.view.connect("navigation-requested", self.on_click_link)
 	self.console_response = self.view.connect('console-message', self.on_console_message)
-	#self.view.connect('resource-response-received', self.on_response_received)
+	self.view.connect('resource-response-received', self.on_response_received)
 	self._hovered_uri = None
 	self.isLoading=False
 	self.page_requests=[]
@@ -120,6 +117,7 @@ class Browser():
 	self.ytid=''
 	self.l_uri=''
 	self.origin=''
+	self.stream_name=''
 	self.view.set_settings(self.settings)
 	## opt
 	self.homepage = 'http://www.google.com'
@@ -136,6 +134,7 @@ class Browser():
     
     def _javascript_script_alert_cb(self, view, frame, message):
         print "alert", message
+	return 1
 
     def _javascript_script_prompt_cb(self, view, frame, message, default, text):
         print "javascript prompt"
@@ -145,16 +144,11 @@ class Browser():
         print "javascript confirm %s %s" % (message, isConfirmed)
 	return 1
     
-    def javaScriptAlert(self, frame, message):
-        """Override default JavaScript alert popup and print results
-        """
-        common.logger.debug('Alert:' + message)
-    
-    def on_console_message(self, *args):
+    def on_console_message(self, a, b,c, d):
         """ callback on 'console-message' webkit.WebView signal """
         #print ('Myconsole:' + str(args))
         self.view.stop_emission('console-message')
-	return True
+	#return True
 	
     def on_response_received(self,view,frame,resource,response):
 	pass
@@ -190,15 +184,13 @@ class Browser():
 	gobject.idle_add(window.show_all)
         return True
 	
-    
     def _hovering_over_link_cb (self, view, title, uri):
         self._hovered_uri = uri
 	
     def print_info(self,msg):
         gobject.idle_add(self.mainGui.info_label.set_text,msg)
 	
-    def load_uri(self,uri,name=None,origin=None):
-	self.origin=None
+    def load_uri(self,uri,name='',origin=''):
 	try:
 	    if self.mainGui.search_engine.name=='Youtube' or self.mainGui.search_engine.name=='DailyMotion' or self.mainGui.search_engine.name=='Vimeo':
 		self.settings.set_property('user-agent','Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.5 Safari/537.36')
@@ -211,9 +203,9 @@ class Browser():
 	    gobject.idle_add(self.view.set_settings,self.settings)
 	except:
 	    pass
-	if name:
+	if name != '':
 	    self.stream_name=name
-	if origin:
+	if origin != '':
 	    self.origin=origin
 	self.analyzed=False
 	print "loading uri: %s" % uri
@@ -227,12 +219,9 @@ class Browser():
 	# get uri from request object
 	self.origin=''
 	self.stream_name=''
-	req=str(networkRequest.get_uri())
+	req=networkRequest.get_uri()
 	if 'dpstreaming.org' in req and 'streaming-telecharger' in req or 'streaming-streaming' in req or '-streaming' in req:
 	    self.analyzed=False
-    
-    def _nav_request_policy_decision_cb(self,view,frame,net_req,nav_act,pol_dec):
-        pass
     
     def resource_cb(self, view, frame, resource, request, response):
 	req = request.get_uri()
@@ -240,7 +229,6 @@ class Browser():
 	    if self.analyzed is True:
 		return
 	    html=self.view.get_html()
-	    save_html(html)
 	    if 'purevid.com/get' in html:
 		link=re.search('(.*)href="((.*)start=(.*?))"',html).group(2).replace('&amp;','&')
 		print 'purevid stream found : %s' % link
@@ -332,9 +320,6 @@ class Browser():
 		    except:
 			print 'can t find video url...'
 			try:
-			     f=open('/tmp/truc',"w")
-			     f.writelines(code)
-			     f.close()
 			     u=re.search('http://dailymotion.com(.*)&cache=0',code).group()
 			except:
 			    print ''
@@ -495,16 +480,6 @@ class Browser():
 	x.write(html)
 	x.close()
     
-    def stop_player(self):
-	## hide/stop the flashplayer
-	return
-	try:
-	    script = "player = document.getElementById('movie_player');"
-	    script += "player.mute();"
-	    script += "player.stopVideo();"
-	    self.view.execute_script(script)
-	except:
-	    print "no player loaded"
     
     def on_active(self, widget, data=None):
         '''When the user enters an address in the bar, we check to make
@@ -521,26 +496,28 @@ class Browser():
     def go_home(self,widget):
 	gobject.idle_add(self.view.open,self.homepage)
     
-    def go_back(self, widget, data=None):
+    def go_back(self, widget):
         '''Webkit will remember the links and this will allow us to go
            backwards.'''
         gobject.idle_add(self.view.go_back)
 
-    def go_forward(self, widget, data=None):
+    def go_forward(self, widget):
         '''Webkit will remember the links and this will allow us to go
            forwards.'''
         gobject.idle_add(self.view.go_forward)
 
-    def refresh(self, widget, data=None):
+    def refresh(self, widget):
         '''Simple makes webkit reload the current back.'''
         gobject.idle_add(self.view.reload)
 
-    def update_buttons(self, widget, data=None):
+    def update_buttons(self, widget, data):
+	return
         '''Gets the current url entry and puts that into the url bar.
            It then checks to see if we can go back, if we can it makes the
            back button clickable.  Then it does the same for the foward
            button.'''
-        gobject.idle_add(self.url_bar.set_text,widget.get_main_frame().get_uri())
+	text=widget.get_main_frame().get_uri()
+        gobject.idle_add(self.url_bar.set_text,text)
         gobject.idle_add(self.back_button.set_sensitive,self.view.can_go_back)
         gobject.idle_add(self.forward_button.set_sensitive,self.view.can_go_forward)
 	
@@ -591,27 +568,6 @@ class Browser():
 	    </body>
 	</html>''' % ('50%','50%',icon)
 	gobject.idle_add(self.view.load_html_string,html, "file:///#")
-	
-    def start_link(self, link):
-        self.print_info("Lien Ok, Verification du flux, patience...")
-        response = None
-        try:
-            request = urllib2.Request(link)
-            request.add_header('User-Agent', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.30 (KHTML, like Gecko) Ubuntu/11.04 Chromium/12.0.742.112 Chrome/12.0.742.112 Safari/534.30')
-            response = urllib2.urlopen(request, timeout=120)
-        except:
-            return False
-        # check content type:
-        content = response.info().getheader('Content-Type')
-        print 'link content type: %s' % content
-        if ('application/octet-stream' in content or 'download' in content or 'video' in content):
-            self.print_info("Flux valide, chargement... (patience)")
-            self.valid_url = True
-            self.media_link = link
-            return True
-        else:
-            self.print_info("Flux invalide!, analyse du lien suivant")
-            return False
 
  
 def zoom_in_cb(menu_item, web_view):
@@ -654,13 +610,6 @@ def page_properties_cb(menu_item, web_view):
     window.show_all()
     window.present()
   
-  
-  
-def view_source_mode_requested_cb(widget, is_active, content_pane):
-    currentTab = content_pane.get_nth_page(content_pane.get_current_page())
-    childView = currentTab.get_child()
-    childView.set_view_source_mode(is_active)
-    childView.reload()
     
 # context menu item callbacks
 def about_pywebkitgtk_cb(menu_item, web_view):

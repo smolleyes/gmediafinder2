@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 14:34+0200\n"
+"POT-Creation-Date: 2013-05-30 00:09+0200\n"
 "PO-Revision-Date: 2012-11-10 12:11+0000\n"
 "Last-Translator: symbianflo <symbianflo@fastwebnet.it>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,6 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:246
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:490
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:489
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
@@ -88,6 +89,7 @@ msgstr "Encoding: "
 msgid "Playing:"
 msgstr "Riproducendo:"
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:509
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501

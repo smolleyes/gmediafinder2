@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gmediafinder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-29 14:34+0200\n"
+"POT-Creation-Date: 2013-05-30 00:09+0200\n"
 "PO-Revision-Date: 2012-10-13 00:11+0000\n"
 "Last-Translator: paokouran <s.lagui@free.fr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,7 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:246
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:490
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:489
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:247
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:488
@@ -87,6 +88,7 @@ msgstr ""
 msgid "Playing:"
 msgstr ""
 
+#: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:509
 #: /home/smo/Documents/projects/gmediafinder-3/GmediaFinder/lib/player/player_gui.py:508
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:507
 #: /home/smo/Documents/projects/gmediafinder-rew/GmediaFinder/lib/player/player_gui.py:501

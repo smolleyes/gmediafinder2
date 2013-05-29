@@ -406,6 +406,7 @@ class Player(gobject.GObject):
 	    self.play_options = ""
 		
     def check_play_options(self):
+	time.sleep(1)
 	try:
 	    self.selected_iter = self.mainGui.selected_iter
 	    path = self.mainGui.model.get_path(self.selected_iter)
