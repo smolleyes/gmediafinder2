@@ -1,4 +1,4 @@
-gmediafinder (1.5.1-0ppa2~raring) raring; urgency=high
+gmediafinder (1.5.1-0ppa2~precise) precise; urgency=high
 
   * add youtube playlists support
   * fix dilandau and drTuber engines
