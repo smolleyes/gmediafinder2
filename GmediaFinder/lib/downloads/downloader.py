@@ -318,6 +318,7 @@ class FileDownloader(threading.Thread, Downloader):
         self.gui.downloader.download_treestore.set_value(self.treeiter, 7, '')
         
     def download(self, url, destination):
+        print url
         self.increase_down_count()
         self.url = url
         self.target = destination
